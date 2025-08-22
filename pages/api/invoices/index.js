@@ -1,10 +1,14 @@
-import { supabase } from "../../../lib/supabaseClient"
+import { supabase } from "@/lib/supabaseClient"
 
 export default async function handler(req, res) {
   const userId = req.headers["x-user-id"] || "demo-user"
 
   if (req.method === "GET") {
-    const { data, error } = await supabase.from("invoices").select("*").eq("user_id", userId)
+    const { data, error } = await supabase
+      .from("invoices")
+      .select("*")
+      .eq("user_id", userId)
+
     if (error) return res.status(400).json({ error })
     return res.status(200).json(data)
   }
