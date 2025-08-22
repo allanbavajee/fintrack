@@ -1,16 +1,19 @@
-import { supabase } from "../../../lib/supabaseClient"
+import { supabase } from "@/lib/supabaseClient"
 
 export default async function handler(req, res) {
   const userId = req.headers["x-user-id"] || "demo-user"
 
   if (req.method === "GET") {
-    const { data, error } = await supabase.from("quotes").select("*").eq("user_id", userId)
+    const { data, error } = await supabase
+      .from("quotes")
+      .select("*")
+      .eq("user_id", userId)
+
     if (error) return res.status(400).json({ error })
     return res.status(200).json(data)
   }
 
   if (req.method === "POST") {
-    // Vérifier compteur
     const { data: usage } = await supabase
       .from("usage_counters")
       .select("*")
@@ -30,7 +33,6 @@ export default async function handler(req, res) {
 
     if (error) return res.status(400).json({ error })
 
-    // Update compteur
     if (usage) {
       await supabase
         .from("usage_counters")
