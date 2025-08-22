@@ -1,11 +1,17 @@
-import { supabase } from "../../../lib/supabaseClient"
+import { supabase } from "@/lib/supabaseClient"
 
 export default async function handler(req, res) {
   const userId = req.headers["x-user-id"] || "demo-user"
   const { id } = req.query
 
   if (req.method === "GET") {
-    const { data, error } = await supabase.from("invoices").select("*").eq("id", id).eq("user_id", userId).single()
+    const { data, error } = await supabase
+      .from("invoices")
+      .select("*")
+      .eq("id", id)
+      .eq("user_id", userId)
+      .single()
+
     if (error) return res.status(400).json({ error })
     return res.status(200).json(data)
   }
@@ -18,12 +24,18 @@ export default async function handler(req, res) {
       .eq("id", id)
       .eq("user_id", userId)
       .select()
+
     if (error) return res.status(400).json({ error })
     return res.status(200).json(data[0])
   }
 
   if (req.method === "DELETE") {
-    const { error } = await supabase.from("invoices").delete().eq("id", id).eq("user_id", userId)
+    const { error } = await supabase
+      .from("invoices")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", userId)
+
     if (error) return res.status(400).json({ error })
     return res.status(204).end()
   }
