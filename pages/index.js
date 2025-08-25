@@ -105,9 +105,9 @@ export default function Home() {
       {/* Clients */}
       <h2>Clients</h2>
       <ul>
-        {clients.map(c => (
+        {clients.filter(c => c).map(c => (
           <li key={c.id}>
-            {c.company_name} - {c.contact_name} - {c.email} - {c.phone}
+            {c.company_name || "No Company"} - {c.contact_name || "No Contact"} - {c.email || "No Email"} - {c.phone || "No Phone"}
           </li>
         ))}
       </ul>
@@ -123,11 +123,11 @@ export default function Home() {
       {/* Quotes */}
       <h2>Quotes</h2>
       <ul>
-        {quotes.map(q => {
+        {quotes.filter(q => q).map(q => {
           const client = clients.find(c => c.id === q.client_id)
           return (
             <li key={q.id}>
-              {client ? client.company_name : "Unknown client"} - Amount: {q.amount} - Status: {q.status}
+              {client ? client.company_name : "Unknown client"} - Amount: {q.amount || 0} - Status: {q.status || "draft"}
             </li>
           )
         })}
@@ -136,7 +136,7 @@ export default function Home() {
       <form onSubmit={handleQuoteSubmit}>
         <select value={quoteForm.client_id} onChange={e => setQuoteForm({...quoteForm, client_id: e.target.value})} required>
           <option value="">Select Client</option>
-          {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
+          {clients.filter(c => c).map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
         </select>
         <input type="number" placeholder="Amount" value={quoteForm.amount} onChange={e => setQuoteForm({...quoteForm, amount: e.target.value})} required/>
         <select value={quoteForm.status} onChange={e => setQuoteForm({...quoteForm, status: e.target.value})}>
@@ -150,11 +150,11 @@ export default function Home() {
       {/* Invoices */}
       <h2>Invoices</h2>
       <ul>
-        {invoices.map(i => {
+        {invoices.filter(i => i).map(i => {
           const client = clients.find(c => c.id === i.client_id)
           return (
             <li key={i.id}>
-              {client ? client.company_name : "Unknown client"} - Amount: {i.amount} - Status: {i.status}
+              {client ? client.company_name : "Unknown client"} - Amount: {i.amount || 0} - Status: {i.status || "draft"}
             </li>
           )
         })}
@@ -163,7 +163,7 @@ export default function Home() {
       <form onSubmit={handleInvoiceSubmit}>
         <select value={invoiceForm.client_id} onChange={e => setInvoiceForm({...invoiceForm, client_id: e.target.value})} required>
           <option value="">Select Client</option>
-          {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
+          {clients.filter(c => c).map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
         </select>
         <input type="number" placeholder="Amount" value={invoiceForm.amount} onChange={e => setInvoiceForm({...invoiceForm, amount: e.target.value})} required/>
         <select value={invoiceForm.status} onChange={e => setInvoiceForm({...invoiceForm, status: e.target.value})}>
