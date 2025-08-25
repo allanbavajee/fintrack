@@ -1,5 +1,6 @@
+// pages/invoices/AddInvoice.jsx
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
 export default function AddInvoice({ clientId, quoteId }) {
   const [amount, setAmount] = useState("");
@@ -17,8 +18,8 @@ export default function AddInvoice({ clientId, quoteId }) {
         "Authorization": `Bearer ${session.access_token}`
       },
       body: JSON.stringify({
-        client_id: clientId,
-        quote_id: quoteId,
+        client_id: clientId,  // passer le clientId
+        quote_id: quoteId,    // passer le quoteId
         amount: parseFloat(amount),
         status
       })
