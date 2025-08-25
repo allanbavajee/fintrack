@@ -8,6 +8,7 @@ export default async function handler(req, res) {
       .from("quotes")
       .select("*")
       .eq("user_id", userId)
+
     if (error) return res.status(400).json({ error })
     return res.status(200).json(data)
   }
@@ -15,31 +16,44 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const { client_id, date, description, quantity, price, status } = req.body
 
-    // Récupérer le client
-    const { data: client, error: clientError } = await supabase
-      .from("clients")
+    // Vérification simple
+    if (!client_id) return res.status(400).json({ error: { message: "client_id is required" } })
+    if (!date || !description) return res.status(400).json({ error: { message: "date and description are required" } })
+
+    // Vérifier le compteur gratuit
+    const { data: usage } = await supabase
+      .from("usage_counters")
       .select("*")
-      .eq("id", client_id)
+      .eq("user_id", userId)
       .single()
-    if (clientError) return res.status(400).json({ error: clientError })
 
-    // Incrémenter quote_sequence
-    const newSequence = (client.quote_sequence || 0) + 1
-    await supabase
-      .from("clients")
-      .update({ quote_sequence: newSequence })
-      .eq("id", client_id)
+    if (usage && usage.quotes_count >= 15) {
+      return res.status(403).json({ error: { message: "Free limit reached (15 quotes)" } })
+    }
 
-    const quote_number = `${client.company_name.toUpperCase().slice(0,4)}/QTE/${String(newSequence).padStart(4,'0')}`
-    const total = quantity * price
+    const total = (quantity || 0) * (price || 0)
 
     const { data, error } = await supabase
       .from("quotes")
-      .insert([{ client_id, date, description, quantity, price, total, quote_number, status, user_id: userId }])
+      .insert([{ client_id, date, description, quantity, price, total, status, user_id: userId }])
       .select()
+
     if (error) return res.status(400).json({ error })
+
+    // Mettre à jour le compteur
+    if (usage) {
+      await supabase
+        .from("usage_counters")
+        .update({ quotes_count: usage.quotes_count + 1 })
+        .eq("user_id", userId)
+    } else {
+      await supabase
+        .from("usage_counters")
+        .insert([{ user_id: userId, quotes_count: 1, invoices_count: 0 }])
+    }
+
     return res.status(201).json(data[0])
   }
 
-  res.status(405).json({ error: "Method not allowed" })
+  res.status(405).json({ error: { message: "Method not allowed" } })
 }
