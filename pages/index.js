@@ -4,7 +4,6 @@ export default function QuotesPage() {
   const [clients, setClients] = useState([])
   const [quotes, setQuotes] = useState([])
 
-  // Formulaire pour ajouter une quote
   const [form, setForm] = useState({
     client_id: "",
     date: "",
@@ -15,12 +14,10 @@ export default function QuotesPage() {
   })
 
   useEffect(() => {
-    // Fetch clients
     fetch("/api/clients", { headers: { "x-user-id": "demo-user" } })
       .then(res => res.json())
       .then(data => setClients(data))
 
-    // Fetch quotes
     fetch("/api/quotes", { headers: { "x-user-id": "demo-user" } })
       .then(res => res.json())
       .then(data => setQuotes(data))
@@ -35,19 +32,12 @@ export default function QuotesPage() {
     e.preventDefault()
     const res = await fetch("/api/quotes", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-user-id": "demo-user"
-      },
+      headers: { "Content-Type": "application/json", "x-user-id": "demo-user" },
       body: JSON.stringify(form)
     })
     const data = await res.json()
-    if (!res.ok) {
-      alert(`Error: ${data.error.message || "Unknown error"}`)
-      return
-    }
+    if (!res.ok) return alert(`Error: ${data.error?.message || "Unknown"}`)
     setQuotes(prev => [...prev, data])
-    // Reset form
     setForm({ client_id: "", date: "", description: "", quantity: 1, price: 0, status: "draft" })
   }
 
@@ -66,27 +56,22 @@ export default function QuotesPage() {
             ))}
           </select>
         </label>
-        <br />
         <label>
           Date:
           <input type="date" name="date" value={form.date} onChange={handleChange} required />
         </label>
-        <br />
         <label>
           Description:
-          <input type="text" name="description" value={form.description} onChange={handleChange} />
+          <input type="text" name="description" value={form.description} onChange={handleChange} required />
         </label>
-        <br />
         <label>
           Quantity:
-          <input type="number" name="quantity" value={form.quantity} onChange={handleChange} min="1" />
+          <input type="number" name="quantity" value={form.quantity} onChange={handleChange} />
         </label>
-        <br />
         <label>
           Price:
-          <input type="number" name="price" value={form.price} onChange={handleChange} min="0" step="0.01" />
+          <input type="number" name="price" value={form.price} onChange={handleChange} />
         </label>
-        <br />
         <label>
           Status:
           <select name="status" value={form.status} onChange={handleChange}>
@@ -94,24 +79,16 @@ export default function QuotesPage() {
             <option value="sent">Sent</option>
           </select>
         </label>
-        <br />
         <button type="submit">Add Quote</button>
       </form>
 
-      <h2>List of Quotes</h2>
+      <h2>All Quotes</h2>
       <ul>
         {quotes.map(q => {
           const client = clients.find(c => c.id === q.client_id)
           return (
-            <li key={q.id} style={{ marginBottom: "1rem" }}>
-              <strong>Client:</strong> {client ? client.company_name : "Unknown"} <br />
-              <strong>Quote Number:</strong> {q.quote_number} <br />
-              <strong>Date:</strong> {q.date} <br />
-              <strong>Description:</strong> {q.description} <br />
-              <strong>Quantity:</strong> {q.quantity} <br />
-              <strong>Price:</strong> ${q.price} <br />
-              <strong>Total:</strong> ${q.total} <br />
-              <strong>Status:</strong> {q.status}
+            <li key={q.id}>
+              {client ? client.company_name : "Unknown client"} - {q.description} - Qty: {q.quantity} - Price: {q.price} - Total: {q.total} - Status: {q.status}
             </li>
           )
         })}
