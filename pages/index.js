@@ -105,7 +105,11 @@ export default function Home() {
       {/* Clients */}
       <h2>Clients</h2>
       <ul>
-        {clients.map(c => <li key={c.id}>{c.company_name} - {c.contact_name} - {c.email} - {c.phone}</li>)}
+        {clients.map(c => (
+          <li key={c.id}>
+            {c.company_name} - {c.contact_name} - {c.email} - {c.phone}
+          </li>
+        ))}
       </ul>
       <h3>Add Client</h3>
       <form onSubmit={handleClientSubmit}>
@@ -121,7 +125,11 @@ export default function Home() {
       <ul>
         {quotes.map(q => {
           const client = clients.find(c => c.id === q.client_id)
-          return <li key={q.id}>{client ? client.company_name : "Unknown client"} - Amount: {q.amount} - Status: {q.status}</li>
+          return (
+            <li key={q.id}>
+              {client ? client.company_name : "Unknown client"} - Amount: {q.amount} - Status: {q.status}
+            </li>
+          )
         })}
       </ul>
       <h3>Add Quote</h3>
@@ -144,10 +152,11 @@ export default function Home() {
       <ul>
         {invoices.map(i => {
           const client = clients.find(c => c.id === i.client_id)
-         <li key={i.id}>
-  {client ? client.company_name : "Unknown client"} - Amount: {i.amount} - Status: {i.status}
-</li>
-
+          return (
+            <li key={i.id}>
+              {client ? client.company_name : "Unknown client"} - Amount: {i.amount} - Status: {i.status}
+            </li>
+          )
         })}
       </ul>
       <h3>Add Invoice</h3>
