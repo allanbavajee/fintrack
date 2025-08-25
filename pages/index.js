@@ -144,7 +144,7 @@ export default function Home() {
       <ul>
         {invoices.map(i => {
           const client = clients.find(c => c.id === i.client_id)
-          return <li key={i.id}>{client ? client.company_name : "Unknown client"} - Amount: {i.amount} - Status: {i.status}</li>
+         <li key={i.id}>{client ? client.company_name : "Unknown client"} - Amount: {i.amount} - Status: {i.status}</li>
         })}
       </ul>
       <h3>Add Invoice</h3>
