@@ -1,5 +1,6 @@
+// pages/quotes/AddQuote.jsx
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
 export default function AddQuote({ clientId }) {
   const [description, setDescription] = useState("");
@@ -19,7 +20,7 @@ export default function AddQuote({ clientId }) {
         "Authorization": `Bearer ${session.access_token}`
       },
       body: JSON.stringify({
-        client_id: clientId,
+        client_id: clientId,   // tu dois passer le clientId depuis ton état ou sélection
         description,
         quantity,
         amount: parseFloat(amount),
@@ -40,9 +41,3 @@ export default function AddQuote({ clientId }) {
       <select value={status} onChange={e => setStatus(e.target.value)}>
         <option value="draft">Draft</option>
         <option value="sent">Sent</option>
-      </select>
-      <button type="submit">Create Quote</button>
-      <p>{message}</p>
-    </form>
-  );
-}
