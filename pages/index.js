@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
 
-export default function QuotesPage() {
+export default function Home() {
   const [clients, setClients] = useState([])
   const [quotes, setQuotes] = useState([])
-
   const [form, setForm] = useState({
     client_id: "",
     date: "",
@@ -13,40 +12,61 @@ export default function QuotesPage() {
     status: "draft"
   })
 
+  // Récupérer clients
   useEffect(() => {
-    fetch("/api/clients", { headers: { "x-user-id": "demo-user" } })
+    fetch("/api/clients")
       .then(res => res.json())
       .then(data => setClients(data))
-
-    fetch("/api/quotes", { headers: { "x-user-id": "demo-user" } })
-      .then(res => res.json())
-      .then(data => setQuotes(data))
+      .catch(err => console.error("Error fetching clients:", err))
   }, [])
 
-  const handleChange = e => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
+  // Récupérer quotes
+  useEffect(() => {
+    fetch("/api/quotes")
+      .then(res => res.json())
+      .then(data => setQuotes(data))
+      .catch(err => console.error("Error fetching quotes:", err))
+  }, [])
+
+  const handleChange = (e) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await fetch("/api/quotes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-user-id": "demo-user" },
-      body: JSON.stringify(form)
-    })
-    const data = await res.json()
-    if (!res.ok) return alert(`Error: ${data.error?.message || "Unknown"}`)
-    setQuotes(prev => [...prev, data])
-    setForm({ client_id: "", date: "", description: "", quantity: 1, price: 0, status: "draft" })
+    console.log("Submitting form:", form)
+
+    if (!form.client_id) {
+      alert("Please select a client")
+      return
+    }
+
+    try {
+      const res = await fetch("/api/quotes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-user-id": "demo-user" },
+        body: JSON.stringify(form)
+      })
+      const data = await res.json()
+      if (res.status !== 201) {
+        console.error("Error creating quote:", data)
+        alert(`Error: ${data.error?.message || "Unknown error"}`)
+        return
+      }
+      setQuotes(prev => [...prev, data])
+      setForm({ client_id: "", date: "", description: "", quantity: 1, price: 0, status: "draft" })
+    } catch (err) {
+      console.error("Network error:", err)
+      alert("Network error, see console")
+    }
   }
 
   return (
     <div style={{ padding: "2rem" }}>
       <h1>FinTrack Demo - Quotes</h1>
-
       <h2>Add New Quote</h2>
-      <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
+
+      <form onSubmit={handleSubmit}>
         <label>
           Client:
           <select name="client_id" value={form.client_id} onChange={handleChange} required>
