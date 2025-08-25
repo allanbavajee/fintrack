@@ -27,7 +27,7 @@ export default function Home() {
   const [invoiceDate, setInvoiceDate] = useState("");
   const [invoiceDescription, setInvoiceDescription] = useState("");
   const [invoiceQuantity, setInvoiceQuantity] = useState(1);
-  const [invoicePrice, setInvoicePrice] = useState(0);
+  const [invoiceAmount, setInvoiceAmount] = useState(0); // <- amount instead of price
   const [invoiceStatus, setInvoiceStatus] = useState("Draft");
 
   // Fetch Clients
@@ -78,7 +78,13 @@ export default function Home() {
         "Content-Type": "application/json",
         "x-user-id": DEMO_USER_ID
       },
-      body: JSON.stringify({ company_name: companyName, brn, email, phone, contact_name: contactName })
+      body: JSON.stringify({
+        company_name: companyName,
+        brn,
+        email,
+        phone,
+        contact_name: contactName
+      })
     });
     const data = await res.json();
     if (res.ok) {
@@ -136,14 +142,14 @@ export default function Home() {
         date: invoiceDate,
         description: invoiceDescription,
         quantity: invoiceQuantity,
-        price: invoicePrice,
+        amount: invoiceAmount, // <- amount instead of price
         status: invoiceStatus
       })
     });
     const data = await res.json();
     if (res.ok) {
       setInvoices([...invoices, data]);
-      setInvoiceDescription(""); setInvoiceQuantity(1); setInvoicePrice(0);
+      setInvoiceDescription(""); setInvoiceQuantity(1); setInvoiceAmount(0);
     } else {
       alert(data.error?.message || "Error adding invoice");
     }
@@ -213,7 +219,7 @@ export default function Home() {
         <input type="date" value={invoiceDate} onChange={e => setInvoiceDate(e.target.value)} />
         <input placeholder="Description" value={invoiceDescription} onChange={e => setInvoiceDescription(e.target.value)} />
         <input type="number" value={invoiceQuantity} onChange={e => setInvoiceQuantity(Number(e.target.value))} />
-        <input type="number" value={invoicePrice} onChange={e => setInvoicePrice(Number(e.target.value))} />
+        <input type="number" value={invoiceAmount} onChange={e => setInvoiceAmount(Number(e.target.value))} />
         <select value={invoiceStatus} onChange={e => setInvoiceStatus(e.target.value)}>
           <option value="Draft">Draft</option>
           <option value="Sent">Sent</option>
@@ -227,7 +233,7 @@ export default function Home() {
           const client = clients.find(c => c.id === i.client_id);
           return (
             <li key={i.id}>
-              {client ? client.company_name : "Unknown client"} - {i.description} - Qty: {i.quantity} - Price: {i.price} - Status: {i.status}
+              {client ? client.company_name : "Unknown client"} - {i.description} - Qty: {i.quantity} - Amount: {i.amount} - Status: {i.status}
             </li>
           )
         })}
