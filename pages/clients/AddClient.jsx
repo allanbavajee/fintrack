@@ -1,5 +1,6 @@
+// pages/clients/AddClient.jsx
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
 export default function AddClient() {
   const [company_name, setCompanyName] = useState("");
