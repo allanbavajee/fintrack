@@ -17,7 +17,8 @@ export default function Home() {
       const res = await fetch("/api/clients")
       if (!res.ok) throw new Error(await res.text())
       const data = await res.json()
-      setClients(data)
+      // Filtrer les éléments null pour éviter les erreurs
+      setClients(Array.isArray(data) ? data.filter(c => c != null) : [])
     } catch (err) {
       console.error("Fetch clients error:", err)
       setError(err.message)
@@ -43,9 +44,12 @@ export default function Home() {
         body: JSON.stringify(form)
       })
       if (!res.ok) throw new Error(await res.text())
-      const newClient = await res.json()
-      setClients([...clients, newClient])
-      setForm({ company_name: "", email: "", phone: "", contact_name: "" })
+      const result = await res.json()
+      const newClient = Array.isArray(result) ? result[0] : result
+      if (newClient) {
+        setClients([...clients, newClient])
+        setForm({ company_name: "", email: "", phone: "", contact_name: "" })
+      }
     } catch (err) {
       console.error("Add client error:", err)
       setError(err.message)
@@ -64,7 +68,7 @@ export default function Home() {
       <ul>
         {Array.isArray(clients) && clients.map(client => (
           <li key={client.id}>
-            {client.company_name} - {client.email} - {client.phone} - {client.contact_name}
+            {client.company_name} - {client.contact_name} - {client.email} - {client.phone}
           </li>
         ))}
       </ul>
