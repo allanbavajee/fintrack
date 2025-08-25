@@ -1,114 +1,100 @@
 import { useEffect, useState } from "react"
 
-export default function Home() {
+export default function InvoicesPage() {
   const [clients, setClients] = useState([])
-  const [quotes, setQuotes] = useState([])
-  const [form, setForm] = useState({
-    client_id: "",
-    date: "",
-    description: "",
-    quantity: 1,
-    price: 0,
-    status: "draft"
-  })
+  const [invoices, setInvoices] = useState([])
 
-  // Récupérer clients
+  // Formulaire
+  const [clientId, setClientId] = useState("")
+  const [date, setDate] = useState("")
+  const [description, setDescription] = useState("")
+  const [quantity, setQuantity] = useState(1)
+  const [price, setPrice] = useState(0)
+  const [status, setStatus] = useState("Draft")
+
+  // Fetch clients et invoices
   useEffect(() => {
-    fetch("/api/clients")
+    fetch("/api/clients", { headers: { "x-user-id": "demo-user" } })
       .then(res => res.json())
       .then(data => setClients(data))
-      .catch(err => console.error("Error fetching clients:", err))
-  }, [])
 
-  // Récupérer quotes
-  useEffect(() => {
-    fetch("/api/quotes")
+    fetch("/api/invoices", { headers: { "x-user-id": "demo-user" } })
       .then(res => res.json())
-      .then(data => setQuotes(data))
-      .catch(err => console.error("Error fetching quotes:", err))
+      .then(data => setInvoices(data))
   }, [])
 
-  const handleChange = (e) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log("Submitting form:", form)
-
-    if (!form.client_id) {
-      alert("Please select a client")
+  const addInvoice = async () => {
+    if (!clientId || !date || !description) {
+      alert("Client, date and description are required")
       return
     }
 
-    try {
-      const res = await fetch("/api/quotes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-user-id": "demo-user" },
-        body: JSON.stringify(form)
-      })
-      const data = await res.json()
-      if (res.status !== 201) {
-        console.error("Error creating quote:", data)
-        alert(`Error: ${data.error?.message || "Unknown error"}`)
-        return
-      }
-      setQuotes(prev => [...prev, data])
-      setForm({ client_id: "", date: "", description: "", quantity: 1, price: 0, status: "draft" })
-    } catch (err) {
-      console.error("Network error:", err)
-      alert("Network error, see console")
+    const res = await fetch("/api/invoices", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-user-id": "demo-user"
+      },
+      body: JSON.stringify({ client_id: clientId, date, description, quantity, price, status })
+    })
+
+    const data = await res.json()
+    if (res.ok) {
+      setInvoices([...invoices, data])
+      setDescription("")
+      setQuantity(1)
+      setPrice(0)
+    } else {
+      alert(data.error?.message || "Error adding invoice")
     }
   }
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>FinTrack Demo - Quotes</h1>
-      <h2>Add New Quote</h2>
+      <h1>FinTrack Demo - Invoices</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Client:
-          <select name="client_id" value={form.client_id} onChange={handleChange} required>
-            <option value="">Select client</option>
-            {clients.map(c => (
-              <option key={c.id} value={c.id}>{c.company_name}</option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Date:
-          <input type="date" name="date" value={form.date} onChange={handleChange} required />
-        </label>
-        <label>
-          Description:
-          <input type="text" name="description" value={form.description} onChange={handleChange} required />
-        </label>
-        <label>
-          Quantity:
-          <input type="number" name="quantity" value={form.quantity} onChange={handleChange} />
-        </label>
-        <label>
-          Price:
-          <input type="number" name="price" value={form.price} onChange={handleChange} />
-        </label>
-        <label>
-          Status:
-          <select name="status" value={form.status} onChange={handleChange}>
-            <option value="draft">Draft</option>
-            <option value="sent">Sent</option>
-          </select>
-        </label>
-        <button type="submit">Add Quote</button>
-      </form>
+      <h2>Add New Invoice</h2>
+      <div>
+        <label>Client:</label>
+        <select value={clientId} onChange={e => setClientId(e.target.value)}>
+          <option value="">Select client</option>
+          {clients.map(c => (
+            <option key={c.id} value={c.id}>{c.company_name}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label>Date:</label>
+        <input type="date" value={date} onChange={e => setDate(e.target.value)} />
+      </div>
+      <div>
+        <label>Description:</label>
+        <input type="text" value={description} onChange={e => setDescription(e.target.value)} />
+      </div>
+      <div>
+        <label>Quantity:</label>
+        <input type="number" value={quantity} onChange={e => setQuantity(Number(e.target.value))} />
+      </div>
+      <div>
+        <label>Price:</label>
+        <input type="number" value={price} onChange={e => setPrice(Number(e.target.value))} />
+      </div>
+      <div>
+        <label>Status:</label>
+        <select value={status} onChange={e => setStatus(e.target.value)}>
+          <option value="Draft">Draft</option>
+          <option value="Sent">Sent</option>
+        </select>
+      </div>
+      <button onClick={addInvoice}>Add Invoice</button>
 
-      <h2>All Quotes</h2>
+      <h2>All Invoices</h2>
       <ul>
-        {quotes.map(q => {
-          const client = clients.find(c => c.id === q.client_id)
+        {invoices.map(i => {
+          const client = clients.find(c => c.id === i.client_id)
           return (
-            <li key={q.id}>
-              {client ? client.company_name : "Unknown client"} - {q.description} - Qty: {q.quantity} - Price: {q.price} - Total: {q.total} - Status: {q.status}
+            <li key={i.id}>
+              {client ? client.company_name : "Unknown client"} - Amount: {i.total} - Status: {i.status}
             </li>
           )
         })}
