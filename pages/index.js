@@ -27,11 +27,11 @@ export default function HomePage() {
   const [invoicePrice, setInvoicePrice] = useState(0)
   const [invoiceStatus, setInvoiceStatus] = useState("Draft")
 
-  const userId = "demo-user"
+  const 90aba89c-43d7-4a70-aa4e-068e03e229f2 = "demo-user"
 
   // Fetch Clients
   useEffect(() => {
-    fetch("/api/clients", { headers: { "x-user-id": userId } })
+    fetch("/api/clients", { headers: { "x-user-id": 90aba89c-43d7-4a70-aa4e-068e03e229f2 } })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setClients(data)
@@ -41,7 +41,7 @@ export default function HomePage() {
 
   // Fetch Quotes
   useEffect(() => {
-    fetch("/api/quotes", { headers: { "x-user-id": userId } })
+    fetch("/api/quotes", { headers: { "x-user-id": 90aba89c-43d7-4a70-aa4e-068e03e229f2 } })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setQuotes(data)
@@ -51,7 +51,7 @@ export default function HomePage() {
 
   // Fetch Invoices
   useEffect(() => {
-    fetch("/api/invoices", { headers: { "x-user-id": userId } })
+    fetch("/api/invoices", { headers: { "x-user-id": 90aba89c-43d7-4a70-aa4e-068e03e229f2 } })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setInvoices(data)
@@ -64,7 +64,7 @@ export default function HomePage() {
     if (!companyName) return alert("Company name is required")
     const res = await fetch("/api/clients", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-user-id": userId },
+      headers: { "Content-Type": "application/json", "x-user-id": 90aba89c-43d7-4a70-aa4e-068e03e229f2 },
       body: JSON.stringify({ company_name: companyName, brn, phone, email, contact_name: contactName })
     })
     const data = await res.json()
@@ -79,7 +79,7 @@ export default function HomePage() {
     if (!quoteClientId || !quoteDate || !quoteDescription) return alert("Client, date and description required")
     const res = await fetch("/api/quotes", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-user-id": userId },
+      headers: { "Content-Type": "application/json", "x-user-id": 90aba89c-43d7-4a70-aa4e-068e03e229f2 },
       body: JSON.stringify({ client_id: quoteClientId, date: quoteDate, description: quoteDescription, quantity: quoteQuantity, price: quotePrice, status: quoteStatus })
     })
     const data = await res.json()
@@ -94,7 +94,7 @@ export default function HomePage() {
     if (!invoiceClientId || !invoiceDate || !invoiceDescription) return alert("Client, date and description required")
     const res = await fetch("/api/invoices", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-user-id": userId },
+      headers: { "Content-Type": "application/json", "x-user-id": 90aba89c-43d7-4a70-aa4e-068e03e229f2 },
       body: JSON.stringify({ client_id: invoiceClientId, date: invoiceDate, description: invoiceDescription, quantity: invoiceQuantity, price: invoicePrice, status: invoiceStatus })
     })
     const data = await res.json()
