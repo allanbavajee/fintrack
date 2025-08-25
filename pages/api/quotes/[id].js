@@ -11,20 +11,18 @@ export default async function handler(req, res) {
       .eq("id", id)
       .eq("user_id", userId)
       .single()
-
     if (error) return res.status(400).json({ error })
     return res.status(200).json(data)
   }
 
   if (req.method === "PUT") {
-    const { client_id, total, status } = req.body
+    const { date, description, quantity, price, status } = req.body
     const { data, error } = await supabase
       .from("quotes")
-      .update({ client_id, total, status })
+      .update({ date, description, quantity, price, total: quantity*price, status })
       .eq("id", id)
       .eq("user_id", userId)
       .select()
-
     if (error) return res.status(400).json({ error })
     return res.status(200).json(data[0])
   }
@@ -35,7 +33,6 @@ export default async function handler(req, res) {
       .delete()
       .eq("id", id)
       .eq("user_id", userId)
-
     if (error) return res.status(400).json({ error })
     return res.status(204).end()
   }
