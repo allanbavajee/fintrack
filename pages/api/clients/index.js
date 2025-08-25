@@ -16,8 +16,7 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const { company_name, contact_name, email, phone } = req.body
 
-    const { data, error } = await supabase
-      .from("clients")
+    const { data, error } = await supabase.from("clients").select("*")
       .insert([{ company_name, contact_name, email, phone, user_id: userId }])
       .select()
 
