@@ -15,13 +15,15 @@ export default function InvoicesPage() {
   // Fetch clients et invoices
   useEffect(() => {
     fetch("/api/clients", { headers: { "x-user-id": "demo-user" } })
-      .then(res => res.json())
-      .then(data => setClients(data))
-
-    fetch("/api/invoices", { headers: { "x-user-id": "demo-user" } })
-      .then(res => res.json())
-      .then(data => setInvoices(data))
-  }, [])
+  .then(res => res.json())
+  .then(data => {
+    if (Array.isArray(data)) {
+      setClients(data)
+    } else {
+      console.error("Clients fetch error:", data)
+      setClients([])
+    }
+  })
 
   const addInvoice = async () => {
     if (!clientId || !date || !description) {
