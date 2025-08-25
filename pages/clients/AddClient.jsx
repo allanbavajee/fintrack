@@ -1,4 +1,4 @@
-// pages/clients/AddClient.jsx
+//pages/clients/AddClient.jsx
 import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
