@@ -17,10 +17,10 @@ export default function AddQuote({ clientId }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${session.access_token}`
+        "Authorization": `Bearer ${session?.access_token || ""}`
       },
       body: JSON.stringify({
-        client_id: clientId,   // tu dois passer le clientId depuis ton état ou sélection
+        client_id: clientId,
         description,
         quantity,
         amount: parseFloat(amount),
@@ -30,14 +30,36 @@ export default function AddQuote({ clientId }) {
 
     const data = await res.json();
     if (res.ok) setMessage("Quote created ✅");
-    else setMessage("Error: " + data.error.message);
+    else setMessage("Error: " + (data.error?.message || "Unknown error"));
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
-      <input type="number" placeholder="Quantity" value={quantity} onChange={e => setQuantity(e.target.value)} />
-      <input type="number" placeholder="Amount" value={amount} onChange={e => setAmount(e.target.value)} />
+      <input
+        placeholder="Description"
+        value={description}
+        onChange={e => setDescription(e.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="Quantity"
+        value={quantity}
+        onChange={e => setQuantity(e.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="Amount"
+        value={amount}
+        onChange={e => setAmount(e.target.value)}
+      />
       <select value={status} onChange={e => setStatus(e.target.value)}>
         <option value="draft">Draft</option>
         <option value="sent">Sent</option>
+      </select>
+
+      <button type="submit">Add Quote</button>
+
+      {message && <p>{message}</p>}
+    </form>
+  );
+}
