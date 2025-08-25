@@ -4,10 +4,16 @@ export default function Home() {
   const [clients, setClients] = useState([])
 
   useEffect(() => {
-    fetch("/api/clients", { headers: { "x-user-id": "demo-user" } })
-      .then(res => res.json())
-      .then(data => setClients(data))
-  }, [])
+  fetch("/api/clients", {
+    headers: {
+      "x-user-id": "demo-user",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(data => setClients(data))
+    .catch(err => console.error("Fetch error:", err))
+}, [])
 
   return (
     <div style={{ padding: "2rem" }}>
