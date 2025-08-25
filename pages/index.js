@@ -12,18 +12,19 @@ export default function InvoicesPage() {
   const [price, setPrice] = useState(0)
   const [status, setStatus] = useState("Draft")
 
-  // Fetch clients et invoices
+  // Fetch clients
   useEffect(() => {
     fetch("/api/clients", { headers: { "x-user-id": "demo-user" } })
-  .then(res => res.json())
-  .then(data => {
-    if (Array.isArray(data)) {
-      setClients(data)
-    } else {
-      console.error("Clients fetch error:", data)
-      setClients([])
-    }
-  })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setClients(data)
+        } else {
+          console.error("Clients fetch error:", data)
+          setClients([])
+        }
+      })
+  }, []) // <-- fermeture correcte du useEffect
 
   const addInvoice = async () => {
     if (!clientId || !date || !description) {
@@ -96,7 +97,7 @@ export default function InvoicesPage() {
           const client = clients.find(c => c.id === i.client_id)
           return (
             <li key={i.id}>
-              {client ? client.company_name : "Unknown client"} - Amount: {i.total} - Status: {i.status}
+              {client ? client.company_name : "Unknown client"} - Amount: {i.price * i.quantity} - Status: {i.status}
             </li>
           )
         })}
