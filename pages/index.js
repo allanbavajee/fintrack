@@ -19,7 +19,7 @@ export default function Home() {
   const [quoteDate, setQuoteDate] = useState("");
   const [quoteDescription, setQuoteDescription] = useState("");
   const [quoteQuantity, setQuoteQuantity] = useState(1);
-  const [quotePrice, setQuotePrice] = useState(0);
+  const [quoteAmount, setQuoteAmount] = useState(0);
   const [quoteStatus, setQuoteStatus] = useState("Draft");
 
   // Formulaire Invoices
@@ -27,16 +27,14 @@ export default function Home() {
   const [invoiceDate, setInvoiceDate] = useState("");
   const [invoiceDescription, setInvoiceDescription] = useState("");
   const [invoiceQuantity, setInvoiceQuantity] = useState(1);
-  const [invoiceAmount, setInvoiceAmount] = useState(0); // <- amount instead of price
+  const [invoiceAmount, setInvoiceAmount] = useState(0);
   const [invoiceStatus, setInvoiceStatus] = useState("Draft");
 
   // Fetch Clients
   useEffect(() => {
-    fetch("/api/clients", {
-      headers: { "x-user-id": DEMO_USER_ID }
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    fetch("/api/clients", { headers: { "x-user-id": DEMO_USER_ID } })
+      .then(res => res.json())
+      .then(data => {
         if (Array.isArray(data)) setClients(data);
         else setClients([]);
       });
@@ -44,11 +42,9 @@ export default function Home() {
 
   // Fetch Quotes
   useEffect(() => {
-    fetch("/api/quotes", {
-      headers: { "x-user-id": DEMO_USER_ID }
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    fetch("/api/quotes", { headers: { "x-user-id": DEMO_USER_ID } })
+      .then(res => res.json())
+      .then(data => {
         if (Array.isArray(data)) setQuotes(data);
         else setQuotes([]);
       });
@@ -56,11 +52,9 @@ export default function Home() {
 
   // Fetch Invoices
   useEffect(() => {
-    fetch("/api/invoices", {
-      headers: { "x-user-id": DEMO_USER_ID }
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    fetch("/api/invoices", { headers: { "x-user-id": DEMO_USER_ID } })
+      .then(res => res.json())
+      .then(data => {
         if (Array.isArray(data)) setInvoices(data);
         else setInvoices([]);
       });
@@ -78,13 +72,7 @@ export default function Home() {
         "Content-Type": "application/json",
         "x-user-id": DEMO_USER_ID
       },
-      body: JSON.stringify({
-        company_name: companyName,
-        brn,
-        email,
-        phone,
-        contact_name: contactName
-      })
+      body: JSON.stringify({ company_name: companyName, brn, email, phone, contact_name: contactName })
     });
     const data = await res.json();
     if (res.ok) {
@@ -112,14 +100,14 @@ export default function Home() {
         date: quoteDate,
         description: quoteDescription,
         quantity: quoteQuantity,
-        price: quotePrice,
+        amount: quoteAmount,
         status: quoteStatus
       })
     });
     const data = await res.json();
     if (res.ok) {
       setQuotes([...quotes, data]);
-      setQuoteDescription(""); setQuoteQuantity(1); setQuotePrice(0);
+      setQuoteDescription(""); setQuoteQuantity(1); setQuoteAmount(0);
     } else {
       alert(data.error?.message || "Error adding quote");
     }
@@ -142,7 +130,7 @@ export default function Home() {
         date: invoiceDate,
         description: invoiceDescription,
         quantity: invoiceQuantity,
-        amount: invoiceAmount, // <- amount instead of price
+        amount: invoiceAmount,
         status: invoiceStatus
       })
     });
@@ -173,9 +161,7 @@ export default function Home() {
       <h2>All Clients</h2>
       <ul>
         {clients.map(c => (
-          <li key={c.id}>
-            {c.company_name} - {c.brn} - {c.email} - {c.phone} - {c.contact_name}
-          </li>
+          <li key={c.id}>{c.company_name} - {c.brn} - {c.email} - {c.phone} - {c.contact_name}</li>
         ))}
       </ul>
 
@@ -184,12 +170,12 @@ export default function Home() {
       <div>
         <select value={quoteClientId} onChange={e => setQuoteClientId(e.target.value)}>
           <option value="">Select client</option>
-          {clients.map(c => (<option key={c.id} value={c.id}>{c.company_name}</option>))}
+          {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
         </select>
         <input type="date" value={quoteDate} onChange={e => setQuoteDate(e.target.value)} />
         <input placeholder="Description" value={quoteDescription} onChange={e => setQuoteDescription(e.target.value)} />
         <input type="number" value={quoteQuantity} onChange={e => setQuoteQuantity(Number(e.target.value))} />
-        <input type="number" value={quotePrice} onChange={e => setQuotePrice(Number(e.target.value))} />
+        <input type="number" value={quoteAmount} onChange={e => setQuoteAmount(Number(e.target.value))} />
         <select value={quoteStatus} onChange={e => setQuoteStatus(e.target.value)}>
           <option value="Draft">Draft</option>
           <option value="Sent">Sent</option>
@@ -203,9 +189,9 @@ export default function Home() {
           const client = clients.find(c => c.id === q.client_id);
           return (
             <li key={q.id}>
-              {client ? client.company_name : "Unknown client"} - {q.description} - Qty: {q.quantity} - Price: {q.price} - Status: {q.status}
+              {client ? client.company_name : "Unknown client"} - {q.description} - Qty: {q.quantity} - Amount: {q.amount} - Status: {q.status}
             </li>
-          )
+          );
         })}
       </ul>
 
@@ -214,7 +200,7 @@ export default function Home() {
       <div>
         <select value={invoiceClientId} onChange={e => setInvoiceClientId(e.target.value)}>
           <option value="">Select client</option>
-          {clients.map(c => (<option key={c.id} value={c.id}>{c.company_name}</option>))}
+          {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
         </select>
         <input type="date" value={invoiceDate} onChange={e => setInvoiceDate(e.target.value)} />
         <input placeholder="Description" value={invoiceDescription} onChange={e => setInvoiceDescription(e.target.value)} />
@@ -235,7 +221,7 @@ export default function Home() {
             <li key={i.id}>
               {client ? client.company_name : "Unknown client"} - {i.description} - Qty: {i.quantity} - Amount: {i.amount} - Status: {i.status}
             </li>
-          )
+          );
         })}
       </ul>
     </div>
