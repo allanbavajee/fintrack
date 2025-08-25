@@ -1,178 +1,121 @@
 import { useEffect, useState } from "react"
 
-export default function Home() {
+export default function QuotesPage() {
   const [clients, setClients] = useState([])
   const [quotes, setQuotes] = useState([])
-  const [invoices, setInvoices] = useState([])
 
-  const [clientForm, setClientForm] = useState({ company_name: "", contact_name: "", email: "", phone: "" })
-  const [quoteForm, setQuoteForm] = useState({ client_id: "", amount: "", status: "draft" })
-  const [invoiceForm, setInvoiceForm] = useState({ client_id: "", amount: "", status: "draft" })
-
-  const [error, setError] = useState(null)
-  const [loadingClient, setLoadingClient] = useState(false)
-  const [loadingQuote, setLoadingQuote] = useState(false)
-  const [loadingInvoice, setLoadingInvoice] = useState(false)
-
-  // Fetch clients, quotes, invoices
-  const fetchClients = async () => {
-    try {
-      const res = await fetch("/api/clients")
-      if (!res.ok) throw new Error(await res.text())
-      const data = await res.json()
-      setClients(Array.isArray(data) ? data.filter(c => c != null) : [])
-    } catch (err) { console.error(err); setError(err.message) }
-  }
-
-  const fetchQuotes = async () => {
-    try {
-      const res = await fetch("/api/quotes")
-      if (!res.ok) throw new Error(await res.text())
-      const data = await res.json()
-      setQuotes(Array.isArray(data) ? data.filter(q => q != null) : [])
-    } catch (err) { console.error(err); setError(err.message) }
-  }
-
-  const fetchInvoices = async () => {
-    try {
-      const res = await fetch("/api/invoices")
-      if (!res.ok) throw new Error(await res.text())
-      const data = await res.json()
-      setInvoices(Array.isArray(data) ? data.filter(i => i != null) : [])
-    } catch (err) { console.error(err); setError(err.message) }
-  }
+  // Formulaire pour ajouter une quote
+  const [form, setForm] = useState({
+    client_id: "",
+    date: "",
+    description: "",
+    quantity: 1,
+    price: 0,
+    status: "draft"
+  })
 
   useEffect(() => {
-    fetchClients()
-    fetchQuotes()
-    fetchInvoices()
+    // Fetch clients
+    fetch("/api/clients", { headers: { "x-user-id": "demo-user" } })
+      .then(res => res.json())
+      .then(data => setClients(data))
+
+    // Fetch quotes
+    fetch("/api/quotes", { headers: { "x-user-id": "demo-user" } })
+      .then(res => res.json())
+      .then(data => setQuotes(data))
   }, [])
 
-  // Add client
-  const handleClientSubmit = async (e) => {
-    e.preventDefault()
-    setLoadingClient(true)
-    setError(null)
-    try {
-      const res = await fetch("/api/clients", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(clientForm) })
-      if (!res.ok) throw new Error(await res.text())
-      const result = await res.json()
-      const newClient = Array.isArray(result) ? result[0] : result
-      setClients([...clients, newClient])
-      setClientForm({ company_name: "", contact_name: "", email: "", phone: "" })
-    } catch (err) { console.error(err); setError(err.message) }
-    finally { setLoadingClient(false) }
+  const handleChange = e => {
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  // Add quote
-  const handleQuoteSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    setLoadingQuote(true)
-    setError(null)
-    try {
-      const res = await fetch("/api/quotes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(quoteForm) })
-      if (!res.ok) throw new Error(await res.text())
-      const result = await res.json()
-      const newQuote = Array.isArray(result) ? result[0] : result
-      setQuotes([...quotes, newQuote])
-      setQuoteForm({ client_id: "", amount: "", status: "draft" })
-    } catch (err) { console.error(err); setError(err.message) }
-    finally { setLoadingQuote(false) }
-  }
-
-  // Add invoice
-  const handleInvoiceSubmit = async (e) => {
-    e.preventDefault()
-    setLoadingInvoice(true)
-    setError(null)
-    try {
-      const res = await fetch("/api/invoices", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(invoiceForm) })
-      if (!res.ok) throw new Error(await res.text())
-      const result = await res.json()
-      const newInvoice = Array.isArray(result) ? result[0] : result
-      setInvoices([...invoices, newInvoice])
-      setInvoiceForm({ client_id: "", amount: "", status: "draft" })
-    } catch (err) { console.error(err); setError(err.message) }
-    finally { setLoadingInvoice(false) }
+    const res = await fetch("/api/quotes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-user-id": "demo-user"
+      },
+      body: JSON.stringify(form)
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      alert(`Error: ${data.error.message || "Unknown error"}`)
+      return
+    }
+    setQuotes(prev => [...prev, data])
+    // Reset form
+    setForm({ client_id: "", date: "", description: "", quantity: 1, price: 0, status: "draft" })
   }
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>FinTrack Demo</h1>
+      <h1>FinTrack Demo - Quotes</h1>
 
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-
-      {/* Clients */}
-      <h2>Clients</h2>
-      <ul>
-        {clients.filter(c => c).map(c => (
-          <li key={c.id}>
-            {c.company_name || "No Company"} - {c.contact_name || "No Contact"} - {c.email || "No Email"} - {c.phone || "No Phone"}
-          </li>
-        ))}
-      </ul>
-      <h3>Add Client</h3>
-      <form onSubmit={handleClientSubmit}>
-        <input type="text" placeholder="Company Name" value={clientForm.company_name} onChange={e => setClientForm({...clientForm, company_name: e.target.value})} required/>
-        <input type="text" placeholder="Contact Name" value={clientForm.contact_name} onChange={e => setClientForm({...clientForm, contact_name: e.target.value})} required/>
-        <input type="email" placeholder="Email" value={clientForm.email} onChange={e => setClientForm({...clientForm, email: e.target.value})} required/>
-        <input type="text" placeholder="Phone" value={clientForm.phone} onChange={e => setClientForm({...clientForm, phone: e.target.value})} required/>
-        <button type="submit" disabled={loadingClient}>{loadingClient ? "Adding..." : "Add Client"}</button>
+      <h2>Add New Quote</h2>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
+        <label>
+          Client:
+          <select name="client_id" value={form.client_id} onChange={handleChange} required>
+            <option value="">Select client</option>
+            {clients.map(c => (
+              <option key={c.id} value={c.id}>{c.company_name}</option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <label>
+          Date:
+          <input type="date" name="date" value={form.date} onChange={handleChange} required />
+        </label>
+        <br />
+        <label>
+          Description:
+          <input type="text" name="description" value={form.description} onChange={handleChange} />
+        </label>
+        <br />
+        <label>
+          Quantity:
+          <input type="number" name="quantity" value={form.quantity} onChange={handleChange} min="1" />
+        </label>
+        <br />
+        <label>
+          Price:
+          <input type="number" name="price" value={form.price} onChange={handleChange} min="0" step="0.01" />
+        </label>
+        <br />
+        <label>
+          Status:
+          <select name="status" value={form.status} onChange={handleChange}>
+            <option value="draft">Draft</option>
+            <option value="sent">Sent</option>
+          </select>
+        </label>
+        <br />
+        <button type="submit">Add Quote</button>
       </form>
 
-      {/* Quotes */}
-      <h2>Quotes</h2>
+      <h2>List of Quotes</h2>
       <ul>
-        {quotes.filter(q => q).map(q => {
+        {quotes.map(q => {
           const client = clients.find(c => c.id === q.client_id)
           return (
-            <li key={q.id}>
-              {client ? client.company_name : "Unknown client"} - Amount: {q.amount || 0} - Status: {q.status || "draft"}
+            <li key={q.id} style={{ marginBottom: "1rem" }}>
+              <strong>Client:</strong> {client ? client.company_name : "Unknown"} <br />
+              <strong>Quote Number:</strong> {q.quote_number} <br />
+              <strong>Date:</strong> {q.date} <br />
+              <strong>Description:</strong> {q.description} <br />
+              <strong>Quantity:</strong> {q.quantity} <br />
+              <strong>Price:</strong> ${q.price} <br />
+              <strong>Total:</strong> ${q.total} <br />
+              <strong>Status:</strong> {q.status}
             </li>
           )
         })}
       </ul>
-      <h3>Add Quote</h3>
-      <form onSubmit={handleQuoteSubmit}>
-        <select value={quoteForm.client_id} onChange={e => setQuoteForm({...quoteForm, client_id: e.target.value})} required>
-          <option value="">Select Client</option>
-          {clients.filter(c => c).map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
-        </select>
-        <input type="number" placeholder="Amount" value={quoteForm.amount} onChange={e => setQuoteForm({...quoteForm, amount: e.target.value})} required/>
-        <select value={quoteForm.status} onChange={e => setQuoteForm({...quoteForm, status: e.target.value})}>
-          <option value="draft">Draft</option>
-          <option value="sent">Sent</option>
-          <option value="paid">Paid</option>
-        </select>
-        <button type="submit" disabled={loadingQuote}>{loadingQuote ? "Adding..." : "Add Quote"}</button>
-      </form>
-
-      {/* Invoices */}
-      <h2>Invoices</h2>
-      <ul>
-        {invoices.filter(i => i).map(i => {
-          const client = clients.find(c => c.id === i.client_id)
-          return (
-            <li key={i.id}>
-              {client ? client.company_name : "Unknown client"} - Amount: {i.amount || 0} - Status: {i.status || "draft"}
-            </li>
-          )
-        })}
-      </ul>
-      <h3>Add Invoice</h3>
-      <form onSubmit={handleInvoiceSubmit}>
-        <select value={invoiceForm.client_id} onChange={e => setInvoiceForm({...invoiceForm, client_id: e.target.value})} required>
-          <option value="">Select Client</option>
-          {clients.filter(c => c).map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
-        </select>
-        <input type="number" placeholder="Amount" value={invoiceForm.amount} onChange={e => setInvoiceForm({...invoiceForm, amount: e.target.value})} required/>
-        <select value={invoiceForm.status} onChange={e => setInvoiceForm({...invoiceForm, status: e.target.value})}>
-          <option value="draft">Draft</option>
-          <option value="sent">Sent</option>
-          <option value="paid">Paid</option>
-        </select>
-        <button type="submit" disabled={loadingInvoice}>{loadingInvoice ? "Adding..." : "Add Invoice"}</button>
-      </form>
     </div>
   )
 }
