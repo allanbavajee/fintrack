@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const user?.id = "286d8893-45d5-4beb-86d0-50e697386500";
+import { supabase } from "../lib/supabaseClient";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const [user, setUser] = useState(null);
   const [clients, setClients] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const [invoices, setInvoices] = useState([]);
@@ -31,47 +32,60 @@ export default function Home() {
   const [invoiceAmount, setInvoiceAmount] = useState(0);
   const [invoiceStatus, setInvoiceStatus] = useState("Draft");
 
+  const router = useRouter();
+
+  // Vérifie session et utilisateur connecté
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setUser(session.user);
+    });
+
+    // Abonnement aux changements d'auth
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  // Redirige vers login si pas connecté
+  useEffect(() => {
+    if (user === null) return; // encore indéterminé
+    if (!user) router.push("/login");
+  }, [user]);
+
   // Fetch Clients
   useEffect(() => {
-    fetch("/api/clients", { headers: { "x-user-id": user?.id } })
+    if (!user) return;
+    fetch("/api/clients", { headers: { "x-user-id": user.id } })
       .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setClients(data);
-        else setClients([]);
-      });
-  }, []);
+      .then(data => setClients(Array.isArray(data) ? data : []));
+  }, [user]);
 
   // Fetch Quotes
   useEffect(() => {
-    fetch("/api/quotes", { headers: { "x-user-id": user?.id } })
+    if (!user) return;
+    fetch("/api/quotes", { headers: { "x-user-id": user.id } })
       .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setQuotes(data);
-        else setQuotes([]);
-      });
-  }, []);
+      .then(data => setQuotes(Array.isArray(data) ? data : []));
+  }, [user]);
 
   // Fetch Invoices
   useEffect(() => {
-    fetch("/api/invoices", { headers: { "x-user-id": user?.id } })
+    if (!user) return;
+    fetch("/api/invoices", { headers: { "x-user-id": user.id } })
       .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setInvoices(data);
-        else setInvoices([]);
-      });
-  }, []);
+      .then(data => setInvoices(Array.isArray(data) ? data : []));
+  }, [user]);
 
   // Add Client
   const addClient = async () => {
-    if (!companyName) {
-      alert("Company name is required");
-      return;
-    }
+    if (!companyName) return alert("Company name is required");
     const res = await fetch("/api/clients", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-user-id": user?.id
+        "x-user-id": user.id
       },
       body: JSON.stringify({ company_name: companyName, brn, email, phone, contact_name: contactName })
     });
@@ -79,22 +93,17 @@ export default function Home() {
     if (res.ok) {
       setClients([...clients, data]);
       setCompanyName(""); setBrn(""); setEmail(""); setPhone(""); setContactName("");
-    } else {
-      alert(data.error?.message || "Error adding client");
-    }
+    } else alert(data.error?.message || "Error adding client");
   };
 
   // Add Quote
   const addQuote = async () => {
-    if (!quoteClientId || !quoteDate || !quoteDescription) {
-      alert("Client, date, and description are required");
-      return;
-    }
+    if (!quoteClientId || !quoteDate || !quoteDescription) return alert("Client, date, and description are required");
     const res = await fetch("/api/quotes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-user-id": user?.id
+        "x-user-id": user.id
       },
       body: JSON.stringify({
         client_id: quoteClientId,
@@ -109,22 +118,17 @@ export default function Home() {
     if (res.ok) {
       setQuotes([...quotes, data]);
       setQuoteDescription(""); setQuoteQuantity(1); setQuoteAmount(0);
-    } else {
-      alert(data.error?.message || "Error adding quote");
-    }
+    } else alert(data.error?.message || "Error adding quote");
   };
 
   // Add Invoice
   const addInvoice = async () => {
-    if (!invoiceClientId || !invoiceDate || !invoiceDescription) {
-      alert("Client, date, and description are required");
-      return;
-    }
+    if (!invoiceClientId || !invoiceDate || !invoiceDescription) return alert("Client, date, and description are required");
     const res = await fetch("/api/invoices", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-user-id": user?.id
+        "x-user-id": user.id
       },
       body: JSON.stringify({
         client_id: invoiceClientId,
@@ -139,19 +143,16 @@ export default function Home() {
     if (res.ok) {
       setInvoices([...invoices, data]);
       setInvoiceDescription(""); setInvoiceQuantity(1); setInvoiceAmount(0);
-    } else {
-      alert(data.error?.message || "Error adding invoice");
-    }
+    } else alert(data.error?.message || "Error adding invoice");
   };
+
+  if (!user) return <p>Loading...</p>;
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>FinTrack Demo</h1>
+      <h1>FinTrack Dashboard</h1>
 
-      {/* Bouton Login */}
-      <Link href="/login">
-        <button style={{ marginBottom: "20px" }}>Login</button>
-      </Link>
+      <button onClick={async () => { await supabase.auth.signOut(); router.push("/login"); }}>Logout</button>
 
       {/* Clients */}
       <h2>Add New Client</h2>
@@ -163,7 +164,6 @@ export default function Home() {
         <input placeholder="Contact Name" value={contactName} onChange={e => setContactName(e.target.value)} />
         <button onClick={addClient}>Add Client</button>
       </div>
-
       <h2>All Clients</h2>
       <ul>
         {clients.map(c => (
@@ -188,7 +188,6 @@ export default function Home() {
         </select>
         <button onClick={addQuote}>Add Quote</button>
       </div>
-
       <h2>All Quotes</h2>
       <ul>
         {quotes.map(q => {
@@ -218,7 +217,6 @@ export default function Home() {
         </select>
         <button onClick={addInvoice}>Add Invoice</button>
       </div>
-
       <h2>All Invoices</h2>
       <ul>
         {invoices.map(i => {
