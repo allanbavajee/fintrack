@@ -1,24 +1,19 @@
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { supabase } from "../lib/supabaseClient";
-import { useRouter } from "next/router";
 
 export default function Home() {
-  const router = useRouter();
-
   const [user, setUser] = useState(null);
-
   const [clients, setClients] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const [invoices, setInvoices] = useState([]);
 
-  // Formulaire Clients
   const [companyName, setCompanyName] = useState("");
   const [brn, setBrn] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [contactName, setContactName] = useState("");
 
-  // Formulaire Quotes
   const [quoteClientId, setQuoteClientId] = useState("");
   const [quoteDate, setQuoteDate] = useState("");
   const [quoteDescription, setQuoteDescription] = useState("");
@@ -26,7 +21,6 @@ export default function Home() {
   const [quoteAmount, setQuoteAmount] = useState(0);
   const [quoteStatus, setQuoteStatus] = useState("Draft");
 
-  // Formulaire Invoices
   const [invoiceClientId, setInvoiceClientId] = useState("");
   const [invoiceDate, setInvoiceDate] = useState("");
   const [invoiceDescription, setInvoiceDescription] = useState("");
@@ -34,93 +28,60 @@ export default function Home() {
   const [invoiceAmount, setInvoiceAmount] = useState(0);
   const [invoiceStatus, setInvoiceStatus] = useState("Draft");
 
-  // Vérifie l'utilisateur connecté
+  // Récupération utilisateur connecté
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/login");
-      } else {
-        setUser(user);
-      }
+      if (!user) return;
+      setUser(user);
+
+      // fetch clients, quotes, invoices
+      fetch("/api/clients", { headers: { "x-user-id": user.id } })
+        .then(res => res.json())
+        .then(data => setClients(Array.isArray(data) ? data : []));
+
+      fetch("/api/quotes", { headers: { "x-user-id": user.id } })
+        .then(res => res.json())
+        .then(data => setQuotes(Array.isArray(data) ? data : []));
+
+      fetch("/api/invoices", { headers: { "x-user-id": user.id } })
+        .then(res => res.json())
+        .then(data => setInvoices(Array.isArray(data) ? data : []));
     };
     getUser();
-  }, [router]);
+  }, []);
 
-  // Fetch Clients
-  useEffect(() => {
-    if (!user) return;
-    fetch("/api/clients", { headers: { "x-user-id": user.id } })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setClients(data);
-        else setClients([]);
-      });
-  }, [user]);
+  if (!user) {
+    return (
+      <div style={{ padding: "2rem" }}>
+        <h1>Bienvenue sur FinTrack Demo</h1>
+        <Link href="/login">
+          <button style={{ padding: "10px" }}>Se connecter</button>
+        </Link>
+      </div>
+    );
+  }
 
-  // Fetch Quotes
-  useEffect(() => {
-    if (!user) return;
-    fetch("/api/quotes", { headers: { "x-user-id": user.id } })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setQuotes(data);
-        else setQuotes([]);
-      });
-  }, [user]);
-
-  // Fetch Invoices
-  useEffect(() => {
-    if (!user) return;
-    fetch("/api/invoices", { headers: { "x-user-id": user.id } })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setInvoices(data);
-        else setInvoices([]);
-      });
-  }, [user]);
-
-  // Logout
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-  };
-
-  // Add Client
+  // Fonctions Add
   const addClient = async () => {
-    if (!companyName) {
-      alert("Company name is required");
-      return;
-    }
+    if (!companyName) return alert("Company name is required");
     const res = await fetch("/api/clients", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-user-id": user.id
-      },
+      headers: { "Content-Type": "application/json", "x-user-id": user.id },
       body: JSON.stringify({ company_name: companyName, brn, email, phone, contact_name: contactName })
     });
     const data = await res.json();
     if (res.ok) {
       setClients([...clients, data]);
       setCompanyName(""); setBrn(""); setEmail(""); setPhone(""); setContactName("");
-    } else {
-      alert(data.error?.message || "Error adding client");
-    }
+    } else alert(data.error?.message || "Error adding client");
   };
 
-  // Add Quote
   const addQuote = async () => {
-    if (!quoteClientId || !quoteDate || !quoteDescription) {
-      alert("Client, date, and description are required");
-      return;
-    }
+    if (!quoteClientId || !quoteDate || !quoteDescription) return alert("Client, date, and description are required");
     const res = await fetch("/api/quotes", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-user-id": user.id
-      },
+      headers: { "Content-Type": "application/json", "x-user-id": user.id },
       body: JSON.stringify({
         client_id: quoteClientId,
         date: quoteDate,
@@ -134,23 +95,14 @@ export default function Home() {
     if (res.ok) {
       setQuotes([...quotes, data]);
       setQuoteDescription(""); setQuoteQuantity(1); setQuoteAmount(0);
-    } else {
-      alert(data.error?.message || "Error adding quote");
-    }
+    } else alert(data.error?.message || "Error adding quote");
   };
 
-  // Add Invoice
   const addInvoice = async () => {
-    if (!invoiceClientId || !invoiceDate || !invoiceDescription) {
-      alert("Client, date, and description are required");
-      return;
-    }
+    if (!invoiceClientId || !invoiceDate || !invoiceDescription) return alert("Client, date, and description are required");
     const res = await fetch("/api/invoices", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-user-id": user.id
-      },
+      headers: { "Content-Type": "application/json", "x-user-id": user.id },
       body: JSON.stringify({
         client_id: invoiceClientId,
         date: invoiceDate,
@@ -164,19 +116,13 @@ export default function Home() {
     if (res.ok) {
       setInvoices([...invoices, data]);
       setInvoiceDescription(""); setInvoiceQuantity(1); setInvoiceAmount(0);
-    } else {
-      alert(data.error?.message || "Error adding invoice");
-    }
+    } else alert(data.error?.message || "Error adding invoice");
   };
-
-  if (!user) return null; // évite rendu avant récupération de l'user
 
   return (
     <div style={{ padding: "2rem" }}>
       <h1>FinTrack Dashboard</h1>
-      <button onClick={handleLogout} style={{ marginBottom: "20px" }}>Logout</button>
 
-      {/* Clients */}
       <h2>Add New Client</h2>
       <div>
         <input placeholder="Company Name" value={companyName} onChange={e => setCompanyName(e.target.value)} />
@@ -188,13 +134,8 @@ export default function Home() {
       </div>
 
       <h2>All Clients</h2>
-      <ul>
-        {clients.map(c => (
-          <li key={c.id}>{c.company_name} - {c.brn} - {c.email} - {c.phone} - {c.contact_name}</li>
-        ))}
-      </ul>
+      <ul>{clients.map(c => <li key={c.id}>{c.company_name} - {c.brn} - {c.email}</li>)}</ul>
 
-      {/* Quotes */}
       <h2>Add New Quote</h2>
       <div>
         <select value={quoteClientId} onChange={e => setQuoteClientId(e.target.value)}>
@@ -216,15 +157,10 @@ export default function Home() {
       <ul>
         {quotes.map(q => {
           const client = clients.find(c => c.id === q.client_id);
-          return (
-            <li key={q.id}>
-              {client ? client.company_name : "Unknown client"} - {q.description} - Qty: {q.quantity} - Amount: {q.amount} - Status: {q.status}
-            </li>
-          );
+          return <li key={q.id}>{client ? client.company_name : "Unknown client"} - {q.description}</li>;
         })}
       </ul>
 
-      {/* Invoices */}
       <h2>Add New Invoice</h2>
       <div>
         <select value={invoiceClientId} onChange={e => setInvoiceClientId(e.target.value)}>
@@ -243,16 +179,10 @@ export default function Home() {
       </div>
 
       <h2>All Invoices</h2>
-      <ul>
-        {invoices.map(i => {
-          const client = clients.find(c => c.id === i.client_id);
-          return (
-            <li key={i.id}>
-              {client ? client.company_name : "Unknown client"} - {i.description} - Qty: {i.quantity} - Amount: {i.amount} - Status: {i.status}
-            </li>
-          );
-        })}
-      </ul>
+      <ul>{invoices.map(i => {
+        const client = clients.find(c => c.id === i.client_id);
+        return <li key={i.id}>{client ? client.company_name : "Unknown"} - {i.description}</li>;
+      })}</ul>
     </div>
   );
 }
