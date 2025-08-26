@@ -1,12 +1,12 @@
-import { supabaseServer } from "../../lib/supabaseServer";
+import { supabaseServer } from "@/lib/supabaseServer";
 
 export default async function handler(req, res) {
-  const token = req.headers.authorization?.split("Bearer ")[1];
-  if (!token) return res.status(401).json({ error: "No token" });
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: "Missing authorization header" });
 
-  // Récupérer l'utilisateur
+  const token = authHeader.replace("Bearer ", "");
   const { data: { user }, error: userError } = await supabaseServer.auth.getUser(token);
-  if (userError || !user) return res.status(401).json({ error: "Unauthorized" });
+  if (userError || !user) return res.status(401).json({ error: "Invalid token" });
 
   const userId = user.id;
 
@@ -15,6 +15,7 @@ export default async function handler(req, res) {
       .from("clients")
       .select("*")
       .eq("user_id", userId);
+
     if (error) return res.status(400).json({ error });
     return res.status(200).json(data);
   }
@@ -26,8 +27,9 @@ export default async function handler(req, res) {
       .insert([{ company_name, brn, email, phone, contact_name, user_id: userId }])
       .select()
       .single();
+
     if (error) return res.status(400).json({ error });
-    return res.status(200).json(data);
+    return res.status(201).json(data);
   }
 
   res.setHeader("Allow", ["GET", "POST"]);
