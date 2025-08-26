@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/router";
 
@@ -7,6 +7,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const router = useRouter();
+
+  // Si déjà connecté, redirige vers le dashboard
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        router.push("/");
+      }
+    };
+    checkUser();
+  }, [router]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,13 +28,33 @@ export default function LoginPage() {
       password,
     });
 
-    if (error) setError(error.message);
-    else router.push("/"); // redirection vers dashboard
+    if (error) {
+      setError(error.message);
+    } else {
+      // Redirection vers le dashboard après login
+      router.push("/");
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      alert("Sign up successful! Please check your email to confirm your account.");
+    }
   };
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Login</h1>
+      <h1>Login / Sign Up</h1>
       <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}>
         <input
           type="email"
@@ -35,16 +66,16 @@ export default function LoginPage() {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           style={{ marginBottom: "10px", padding: "8px" }}
         />
-        <button type="submit" style={{ padding: "10px" }}>Login</button>
+        <button type="submit" style={{ padding: "10px", marginBottom: "10px" }}>Se connecter</button>
+        <button type="button" onClick={handleSignUp} style={{ padding: "10px" }}>Créer un compte</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <p>No account? <a href="/signup">Sign Up</a></p>
     </div>
   );
 }
