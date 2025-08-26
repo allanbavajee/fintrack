@@ -1,3 +1,4 @@
+// pages/index.js
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "../lib/supabaseClient";
@@ -8,12 +9,14 @@ export default function Home() {
   const [quotes, setQuotes] = useState([]);
   const [invoices, setInvoices] = useState([]);
 
+  // Formulaire Clients
   const [companyName, setCompanyName] = useState("");
   const [brn, setBrn] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [contactName, setContactName] = useState("");
 
+  // Formulaire Quotes
   const [quoteClientId, setQuoteClientId] = useState("");
   const [quoteDate, setQuoteDate] = useState("");
   const [quoteDescription, setQuoteDescription] = useState("");
@@ -21,6 +24,7 @@ export default function Home() {
   const [quoteAmount, setQuoteAmount] = useState(0);
   const [quoteStatus, setQuoteStatus] = useState("Draft");
 
+  // Formulaire Invoices
   const [invoiceClientId, setInvoiceClientId] = useState("");
   const [invoiceDate, setInvoiceDate] = useState("");
   const [invoiceDescription, setInvoiceDescription] = useState("");
@@ -28,101 +32,74 @@ export default function Home() {
   const [invoiceAmount, setInvoiceAmount] = useState(0);
   const [invoiceStatus, setInvoiceStatus] = useState("Draft");
 
-  // Récupération utilisateur connecté
+  const fetchData = async (endpoint, setData) => {
+    if (!user) return;
+    const token = await supabase.auth.getSession().then(res => res.data.session?.access_token);
+    if (!token) return;
+
+    const res = await fetch(`/api/${endpoint}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (Array.isArray(data)) setData(data);
+    else setData([]);
+  };
+
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      setUser(user);
-
-      // fetch clients, quotes, invoices
-      fetch("/api/clients", { headers: { "x-user-id": user.id } })
-        .then(res => res.json())
-        .then(data => setClients(Array.isArray(data) ? data : []));
-
-      fetch("/api/quotes", { headers: { "x-user-id": user.id } })
-        .then(res => res.json())
-        .then(data => setQuotes(Array.isArray(data) ? data : []));
-
-      fetch("/api/invoices", { headers: { "x-user-id": user.id } })
-        .then(res => res.json())
-        .then(data => setInvoices(Array.isArray(data) ? data : []));
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user || null);
     };
     getUser();
   }, []);
 
+  useEffect(() => { fetchData("clients", setClients); }, [user]);
+  useEffect(() => { fetchData("quotes", setQuotes); }, [user]);
+  useEffect(() => { fetchData("invoices", setInvoices); }, [user]);
+
+  const handleAdd = async (endpoint, body, resetFields) => {
+    if (!user) {
+      alert("You must be logged in");
+      return;
+    }
+    const token = await supabase.auth.getSession().then(res => res.data.session?.access_token);
+    const res = await fetch(`/api/${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      if (endpoint === "clients") setClients([...clients, data]);
+      if (endpoint === "quotes") setQuotes([...quotes, data]);
+      if (endpoint === "invoices") setInvoices([...invoices, data]);
+      resetFields();
+    } else {
+      alert(data.error?.message || "Error adding data");
+    }
+  };
+
   if (!user) {
     return (
       <div style={{ padding: "2rem" }}>
-        <h1>Bienvenue sur FinTrack Demo</h1>
+        <h1>FinTrack Demo</h1>
         <Link href="/login">
-          <button style={{ padding: "10px" }}>Se connecter</button>
+          <button style={{ padding: "10px" }}>Login</button>
         </Link>
       </div>
     );
   }
 
-  // Fonctions Add
-  const addClient = async () => {
-    if (!companyName) return alert("Company name is required");
-    const res = await fetch("/api/clients", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-user-id": user.id },
-      body: JSON.stringify({ company_name: companyName, brn, email, phone, contact_name: contactName })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setClients([...clients, data]);
-      setCompanyName(""); setBrn(""); setEmail(""); setPhone(""); setContactName("");
-    } else alert(data.error?.message || "Error adding client");
-  };
-
-  const addQuote = async () => {
-    if (!quoteClientId || !quoteDate || !quoteDescription) return alert("Client, date, and description are required");
-    const res = await fetch("/api/quotes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-user-id": user.id },
-      body: JSON.stringify({
-        client_id: quoteClientId,
-        date: quoteDate,
-        description: quoteDescription,
-        quantity: quoteQuantity,
-        amount: quoteAmount,
-        status: quoteStatus
-      })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setQuotes([...quotes, data]);
-      setQuoteDescription(""); setQuoteQuantity(1); setQuoteAmount(0);
-    } else alert(data.error?.message || "Error adding quote");
-  };
-
-  const addInvoice = async () => {
-    if (!invoiceClientId || !invoiceDate || !invoiceDescription) return alert("Client, date, and description are required");
-    const res = await fetch("/api/invoices", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-user-id": user.id },
-      body: JSON.stringify({
-        client_id: invoiceClientId,
-        date: invoiceDate,
-        description: invoiceDescription,
-        quantity: invoiceQuantity,
-        amount: invoiceAmount,
-        status: invoiceStatus
-      })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setInvoices([...invoices, data]);
-      setInvoiceDescription(""); setInvoiceQuantity(1); setInvoiceAmount(0);
-    } else alert(data.error?.message || "Error adding invoice");
-  };
-
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>FinTrack Dashboard</h1>
+      <h1>FinTrack Demo</h1>
 
+      {/* Clients */}
       <h2>Add New Client</h2>
       <div>
         <input placeholder="Company Name" value={companyName} onChange={e => setCompanyName(e.target.value)} />
@@ -130,12 +107,20 @@ export default function Home() {
         <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
         <input placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
         <input placeholder="Contact Name" value={contactName} onChange={e => setContactName(e.target.value)} />
-        <button onClick={addClient}>Add Client</button>
+        <button onClick={() => handleAdd("clients", { company_name: companyName, brn, email, phone, contact_name: contactName },
+          () => { setCompanyName(""); setBrn(""); setEmail(""); setPhone(""); setContactName(""); })}>
+          Add Client
+        </button>
       </div>
 
       <h2>All Clients</h2>
-      <ul>{clients.map(c => <li key={c.id}>{c.company_name} - {c.brn} - {c.email}</li>)}</ul>
+      <ul>
+        {clients.map(c => (
+          <li key={c.id}>{c.company_name} - {c.brn} - {c.email} - {c.phone} - {c.contact_name}</li>
+        ))}
+      </ul>
 
+      {/* Quotes */}
       <h2>Add New Quote</h2>
       <div>
         <select value={quoteClientId} onChange={e => setQuoteClientId(e.target.value)}>
@@ -150,17 +135,25 @@ export default function Home() {
           <option value="Draft">Draft</option>
           <option value="Sent">Sent</option>
         </select>
-        <button onClick={addQuote}>Add Quote</button>
+        <button onClick={() => handleAdd("quotes", { client_id: quoteClientId, date: quoteDate, description: quoteDescription, quantity: quoteQuantity, amount: quoteAmount, status: quoteStatus },
+          () => { setQuoteClientId(""); setQuoteDate(""); setQuoteDescription(""); setQuoteQuantity(1); setQuoteAmount(0); setQuoteStatus("Draft"); })}>
+          Add Quote
+        </button>
       </div>
 
       <h2>All Quotes</h2>
       <ul>
         {quotes.map(q => {
           const client = clients.find(c => c.id === q.client_id);
-          return <li key={q.id}>{client ? client.company_name : "Unknown client"} - {q.description}</li>;
+          return (
+            <li key={q.id}>
+              {client ? client.company_name : "Unknown client"} - {q.description} - Qty: {q.quantity} - Amount: {q.amount} - Status: {q.status}
+            </li>
+          );
         })}
       </ul>
 
+      {/* Invoices */}
       <h2>Add New Invoice</h2>
       <div>
         <select value={invoiceClientId} onChange={e => setInvoiceClientId(e.target.value)}>
@@ -175,14 +168,23 @@ export default function Home() {
           <option value="Draft">Draft</option>
           <option value="Sent">Sent</option>
         </select>
-        <button onClick={addInvoice}>Add Invoice</button>
+        <button onClick={() => handleAdd("invoices", { client_id: invoiceClientId, date: invoiceDate, description: invoiceDescription, quantity: invoiceQuantity, amount: invoiceAmount, status: invoiceStatus },
+          () => { setInvoiceClientId(""); setInvoiceDate(""); setInvoiceDescription(""); setInvoiceQuantity(1); setInvoiceAmount(0); setInvoiceStatus("Draft"); })}>
+          Add Invoice
+        </button>
       </div>
 
       <h2>All Invoices</h2>
-      <ul>{invoices.map(i => {
-        const client = clients.find(c => c.id === i.client_id);
-        return <li key={i.id}>{client ? client.company_name : "Unknown"} - {i.description}</li>;
-      })}</ul>
+      <ul>
+        {invoices.map(i => {
+          const client = clients.find(c => c.id === i.client_id);
+          return (
+            <li key={i.id}>
+              {client ? client.company_name : "Unknown client"} - {i.description} - Qty: {i.quantity} - Amount: {i.amount} - Status: {i.status}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
