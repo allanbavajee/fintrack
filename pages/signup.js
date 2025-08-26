@@ -5,40 +5,32 @@ import { useRouter } from "next/router";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const router = useRouter();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError(null);
-    setMessage("");
+    setMessage(null);
 
-    // Envoie le mail de confirmation avec redirectTo
-    const { data, error } = await supabase.auth.signUp(
-      {
-        email,
-        password,
-      },
-      {
-        redirectTo: `${window.location.origin}/login`, // Redirection après confirmation
-      }
-    );
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage("Signup successful! Check your email to confirm your account.");
+    if (error) setError(error.message);
+    else {
+      setMessage("Signup successful! Check your email to confirm.");
+      // Optionnel : rediriger vers login
+      router.push("/login");
     }
   };
 
   return (
     <div style={{ padding: "2rem" }}>
       <h1>Sign Up</h1>
-      <form
-        onSubmit={handleSignup}
-        style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}
-      >
+      <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}>
         <input
           type="email"
           placeholder="Email"
@@ -55,12 +47,11 @@ export default function SignupPage() {
           required
           style={{ marginBottom: "10px", padding: "8px" }}
         />
-        <button type="submit" style={{ padding: "10px" }}>
-          Sign Up
-        </button>
+        <button type="submit" style={{ padding: "10px" }}>Sign Up</button>
       </form>
       {message && <p style={{ color: "green" }}>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+      <p>Already have an account? <a href="/login">Login</a></p>
     </div>
   );
 }
