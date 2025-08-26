@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const DEMO_USER_ID = "286d8893-45d5-4beb-86d0-50e697386500";
 
@@ -148,7 +148,7 @@ export default function Home() {
     <div style={{ padding: "2rem" }}>
       <h1>FinTrack Demo</h1>
 
-      {/* ✅ Bouton Login en haut */}
+      {/* Bouton Login */}
       <Link href="/login">
         <button style={{ marginBottom: "20px" }}>Login</button>
       </Link>
