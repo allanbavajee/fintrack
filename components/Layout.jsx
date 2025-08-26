@@ -14,6 +14,7 @@ export default function Layout({ children }) {
         <Link href="/clients/AddClient">Add Client</Link>
         <Link href="/quotes/AddQuote">Add Quote</Link>
         <Link href="/invoices/AddInvoice">Add Invoice</Link>
+        <Link href="/login">Login</Link>
       </nav>
       <main style={{ padding: "20px" }}>
         {children}
