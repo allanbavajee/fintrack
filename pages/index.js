@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-const DEMO_USER_ID = "286d8893-45d5-4beb-86d0-50e697386500";
+const user?.id = "286d8893-45d5-4beb-86d0-50e697386500";
 
 export default function Home() {
   const [clients, setClients] = useState([]);
@@ -33,7 +33,7 @@ export default function Home() {
 
   // Fetch Clients
   useEffect(() => {
-    fetch("/api/clients", { headers: { "x-user-id": DEMO_USER_ID } })
+    fetch("/api/clients", { headers: { "x-user-id": user?.id } })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setClients(data);
@@ -43,7 +43,7 @@ export default function Home() {
 
   // Fetch Quotes
   useEffect(() => {
-    fetch("/api/quotes", { headers: { "x-user-id": DEMO_USER_ID } })
+    fetch("/api/quotes", { headers: { "x-user-id": user?.id } })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setQuotes(data);
@@ -53,7 +53,7 @@ export default function Home() {
 
   // Fetch Invoices
   useEffect(() => {
-    fetch("/api/invoices", { headers: { "x-user-id": DEMO_USER_ID } })
+    fetch("/api/invoices", { headers: { "x-user-id": user?.id } })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setInvoices(data);
@@ -71,7 +71,7 @@ export default function Home() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-user-id": DEMO_USER_ID
+        "x-user-id": user?.id
       },
       body: JSON.stringify({ company_name: companyName, brn, email, phone, contact_name: contactName })
     });
@@ -94,7 +94,7 @@ export default function Home() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-user-id": DEMO_USER_ID
+        "x-user-id": user?.id
       },
       body: JSON.stringify({
         client_id: quoteClientId,
@@ -124,7 +124,7 @@ export default function Home() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-user-id": DEMO_USER_ID
+        "x-user-id": user?.id
       },
       body: JSON.stringify({
         client_id: invoiceClientId,
