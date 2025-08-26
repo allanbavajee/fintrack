@@ -20,7 +20,7 @@ export default function LoginPage() {
     if (error) {
       setError(error.message);
     } else {
-      // ✅ redirection vers la page d’accueil après login
+      // ✅ redirection vers la page d’accueil après login //
       router.push("/");
     }
   };
