@@ -1,18 +1,22 @@
-import { useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/router";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  // Connexion
+  useEffect(() => {
+    // Vérifie si l'utilisateur est déjà connecté
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) router.push("/");
+    });
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -23,66 +27,38 @@ export default function LoginPage() {
     if (error) {
       setError(error.message);
     } else {
-      router.push("/"); // redirection vers Dashboard
+      router.push("/"); // Redirige vers dashboard après login
     }
-    setLoading(false);
-  };
-
-  // Inscription
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      alert("Compte créé ! Vérifie ton email pour confirmer.");
-    }
-    setLoading(false);
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "2rem auto" }}>
-      <h1>Login / Signup</h1>
-      <form>
-        <label>Email</label>
+    <div style={{ padding: "2rem" }}>
+      <h1>Login</h1>
+      <form
+        onSubmit={handleLogin}
+        style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}
+      >
         <input
           type="email"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{ display: "block", width: "100%", marginBottom: "1rem" }}
+          style={{ marginBottom: "10px", padding: "8px" }}
         />
-
-        <label>Password</label>
         <input
           type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{ display: "block", width: "100%", marginBottom: "1rem" }}
+          style={{ marginBottom: "10px", padding: "8px" }}
         />
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-          style={{ marginRight: "1rem" }}
-        >
-          {loading ? "Connexion..." : "Login"}
-        </button>
-
-        <button onClick={handleSignup} disabled={loading}>
-          {loading ? "Inscription..." : "Signup"}
+        <button type="submit" style={{ padding: "10px" }}>
+          Login
         </button>
       </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
