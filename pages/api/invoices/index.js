@@ -1,47 +1,37 @@
-import { supabase } from "@/lib/supabaseClient";
+import { supabaseServer } from "@/lib/supabaseServer";
 
 export default async function handler(req, res) {
-  try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ error: "Missing Authorization header" });
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: "Missing authorization header" });
 
-    const { data: { user }, error: userError } = await supabase.auth.getUser(token);
-    if (userError || !user) return res.status(401).json({ error: "Unauthorized" });
+  const token = authHeader.replace("Bearer ", "");
+  const { data: { user }, error: userError } = await supabaseServer.auth.getUser(token);
+  if (userError || !user) return res.status(401).json({ error: "Invalid token" });
 
-    if (req.method === "GET") {
-      const { data, error } = await supabase
-        .from("invoices")
-        .select("*")
-        .eq("user_id", user.id);
+  const userId = user.id;
 
-      if (error) return res.status(400).json({ error });
-      return res.status(200).json(data);
-    }
+  if (req.method === "GET") {
+    const { data, error } = await supabaseServer
+      .from("invoices")
+      .select("*")
+      .eq("user_id", userId);
 
-    if (req.method === "POST") {
-      const { quote_id, client_id, date, amount, status } = req.body;
-
-      const { data, error } = await supabase
-        .from("invoices")
-        .insert([{
-          quote_id,
-          client_id,
-          date,
-          amount,
-          status,
-          user_id: user.id
-        }])
-        .select()
-        .single();
-
-      if (error) return res.status(400).json({ error });
-      return res.status(201).json(data);
-    }
-
-    res.setHeader("Allow", ["GET", "POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    if (error) return res.status(400).json({ error });
+    return res.status(200).json(data);
   }
+
+  if (req.method === "POST") {
+    const { client_id, date, description, quantity, amount, status } = req.body;
+    const { data, error } = await supabaseServer
+      .from("invoices")
+      .insert([{ client_id, date, description, quantity, amount, status, user_id: userId }])
+      .select()
+      .single();
+
+    if (error) return res.status(400).json({ error });
+    return res.status(201).json(data);
+  }
+
+  res.setHeader("Allow", ["GET", "POST"]);
+  res.status(405).end(`Method ${req.method} Not Allowed`);
 }
