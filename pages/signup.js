@@ -14,15 +14,10 @@ export default function SignupPage() {
     setError(null);
     setMessage(null);
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
+    const { error } = await supabase.auth.signUp({ email, password });
     if (error) setError(error.message);
     else {
       setMessage("Signup successful! Check your email to confirm.");
-      // Optionnel : rediriger vers login
       router.push("/login");
     }
   };
@@ -31,23 +26,9 @@ export default function SignupPage() {
     <div style={{ padding: "2rem" }}>
       <h1>Sign Up</h1>
       <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ marginBottom: "10px", padding: "8px" }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ marginBottom: "10px", padding: "8px" }}
-        />
-        <button type="submit" style={{ padding: "10px" }}>Sign Up</button>
+        <input type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required />
+        <input type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} required />
+        <button type="submit">Sign Up</button>
       </form>
       {message && <p style={{ color: "green" }}>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
