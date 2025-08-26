@@ -39,6 +39,24 @@ export default function Home() {
         else setClients([]);
       });
   }, []);
+  
+  import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const DEMO_USER_ID = "286d8893-45d5-4beb-86d0-50e697386500";
+
+export default function Home() {
+  // ... ton state existant
+
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h1>FinTrack Demo</h1>
+
+      {/* Bouton login */}
+      <Link href="/login">
+        <button style={{ marginBottom: "20px" }}>Login</button>
+      </Link>
+    
 
   // Fetch Quotes
   useEffect(() => {
