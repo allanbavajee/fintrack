@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+
   const [user, setUser] = useState(null);
+
   const [clients, setClients] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const [invoices, setInvoices] = useState([]);
@@ -32,34 +34,28 @@ export default function Home() {
   const [invoiceAmount, setInvoiceAmount] = useState(0);
   const [invoiceStatus, setInvoiceStatus] = useState("Draft");
 
-  const router = useRouter();
-
-  // Vérifie session et utilisateur connecté
+  // Vérifie l'utilisateur connecté
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setUser(session.user);
-    });
-
-    // Abonnement aux changements d'auth
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  // Redirige vers login si pas connecté
-  useEffect(() => {
-    if (user === null) return; // encore indéterminé
-    if (!user) router.push("/login");
-  }, [user]);
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login");
+      } else {
+        setUser(user);
+      }
+    };
+    getUser();
+  }, [router]);
 
   // Fetch Clients
   useEffect(() => {
     if (!user) return;
     fetch("/api/clients", { headers: { "x-user-id": user.id } })
       .then(res => res.json())
-      .then(data => setClients(Array.isArray(data) ? data : []));
+      .then(data => {
+        if (Array.isArray(data)) setClients(data);
+        else setClients([]);
+      });
   }, [user]);
 
   // Fetch Quotes
@@ -67,7 +63,10 @@ export default function Home() {
     if (!user) return;
     fetch("/api/quotes", { headers: { "x-user-id": user.id } })
       .then(res => res.json())
-      .then(data => setQuotes(Array.isArray(data) ? data : []));
+      .then(data => {
+        if (Array.isArray(data)) setQuotes(data);
+        else setQuotes([]);
+      });
   }, [user]);
 
   // Fetch Invoices
@@ -75,12 +74,24 @@ export default function Home() {
     if (!user) return;
     fetch("/api/invoices", { headers: { "x-user-id": user.id } })
       .then(res => res.json())
-      .then(data => setInvoices(Array.isArray(data) ? data : []));
+      .then(data => {
+        if (Array.isArray(data)) setInvoices(data);
+        else setInvoices([]);
+      });
   }, [user]);
+
+  // Logout
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
 
   // Add Client
   const addClient = async () => {
-    if (!companyName) return alert("Company name is required");
+    if (!companyName) {
+      alert("Company name is required");
+      return;
+    }
     const res = await fetch("/api/clients", {
       method: "POST",
       headers: {
@@ -93,12 +104,17 @@ export default function Home() {
     if (res.ok) {
       setClients([...clients, data]);
       setCompanyName(""); setBrn(""); setEmail(""); setPhone(""); setContactName("");
-    } else alert(data.error?.message || "Error adding client");
+    } else {
+      alert(data.error?.message || "Error adding client");
+    }
   };
 
   // Add Quote
   const addQuote = async () => {
-    if (!quoteClientId || !quoteDate || !quoteDescription) return alert("Client, date, and description are required");
+    if (!quoteClientId || !quoteDate || !quoteDescription) {
+      alert("Client, date, and description are required");
+      return;
+    }
     const res = await fetch("/api/quotes", {
       method: "POST",
       headers: {
@@ -118,12 +134,17 @@ export default function Home() {
     if (res.ok) {
       setQuotes([...quotes, data]);
       setQuoteDescription(""); setQuoteQuantity(1); setQuoteAmount(0);
-    } else alert(data.error?.message || "Error adding quote");
+    } else {
+      alert(data.error?.message || "Error adding quote");
+    }
   };
 
   // Add Invoice
   const addInvoice = async () => {
-    if (!invoiceClientId || !invoiceDate || !invoiceDescription) return alert("Client, date, and description are required");
+    if (!invoiceClientId || !invoiceDate || !invoiceDescription) {
+      alert("Client, date, and description are required");
+      return;
+    }
     const res = await fetch("/api/invoices", {
       method: "POST",
       headers: {
@@ -143,16 +164,17 @@ export default function Home() {
     if (res.ok) {
       setInvoices([...invoices, data]);
       setInvoiceDescription(""); setInvoiceQuantity(1); setInvoiceAmount(0);
-    } else alert(data.error?.message || "Error adding invoice");
+    } else {
+      alert(data.error?.message || "Error adding invoice");
+    }
   };
 
-  if (!user) return <p>Loading...</p>;
+  if (!user) return null; // évite rendu avant récupération de l'user
 
   return (
     <div style={{ padding: "2rem" }}>
       <h1>FinTrack Dashboard</h1>
-
-      <button onClick={async () => { await supabase.auth.signOut(); router.push("/login"); }}>Logout</button>
+      <button onClick={handleLogout} style={{ marginBottom: "20px" }}>Logout</button>
 
       {/* Clients */}
       <h2>Add New Client</h2>
@@ -164,6 +186,7 @@ export default function Home() {
         <input placeholder="Contact Name" value={contactName} onChange={e => setContactName(e.target.value)} />
         <button onClick={addClient}>Add Client</button>
       </div>
+
       <h2>All Clients</h2>
       <ul>
         {clients.map(c => (
@@ -188,6 +211,7 @@ export default function Home() {
         </select>
         <button onClick={addQuote}>Add Quote</button>
       </div>
+
       <h2>All Quotes</h2>
       <ul>
         {quotes.map(q => {
@@ -217,6 +241,7 @@ export default function Home() {
         </select>
         <button onClick={addInvoice}>Add Invoice</button>
       </div>
+
       <h2>All Invoices</h2>
       <ul>
         {invoices.map(i => {
