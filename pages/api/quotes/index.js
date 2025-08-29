@@ -1,4 +1,4 @@
-/* fintrack/pages/api/quotes/index.js */
+/* fintrack/pages/api/quotes/index.js*/
 import { supabaseServer } from "../../../lib/supabaseServer";
 
 export default async function handler(req, res) {
