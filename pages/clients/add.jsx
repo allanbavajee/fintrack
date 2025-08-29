@@ -1,47 +1,40 @@
-/*fintrack/pages/clients/add.jsx*/
+/* fintrack/pages/clients/add.jsx */
 import { useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 
 export default function AddClient() {
-  const [company_name, setCompanyName] = useState("");
-  const [brn, setBRN] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [contact_name, setContactName] = useState("");
-  const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setMessage("");
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      setMessage("You must be logged in");
-      return;
-    }
-    const token = session.access_token;
-    try {
-      const res = await fetch("/api/clients", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ company_name, brn, email, phone, contact_name })
-      });
-      const data = await res.json();
-      if (res.ok) setMessage("Client added ✅");
-      else setMessage("Error: " + data.error);
-    } catch {
-      setMessage("Failed to connect");
-    }
-  };
+    await fetch("/api/clients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email }),
+    });
+    window.location.href = "/clients";
+  }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display:"flex", flexDirection:"column", gap:"10px", padding:"20px" }}>
-      <input placeholder="Company Name" value={company_name} onChange={e => setCompanyName(e.target.value)} />
-      <input placeholder="BRN" value={brn} onChange={e => setBRN(e.target.value)} />
-      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
-      <input placeholder="Contact Name" value={contact_name} onChange={e => setContactName(e.target.value)} />
-      <button type="submit">Create Client</button>
-      {message && <p>{message}</p>}
-    </form>
+    <div style={{ padding: "2rem" }}>
+      <h1>➕ Ajouter un client</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Nom"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        /><br/>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        /><br/>
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
   );
 }
