@@ -1,44 +1,59 @@
-/* fintrack/pages/clients/index.jsx */
-import { useEffect, useState } from "react";
+/* fintrack/pages/clients/add.jsx */
+import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
-export default function ClientsPage() {
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+export default function AddClient() {
+  const [company_name, setCompanyName] = useState("");
+  const [brn, setBRN] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [contact_name, setContactName] = useState("");
+  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const fetchClients = async () => {
-      setLoading(true);
-      setError("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
 
-      const { data, error } = await supabase.from("clients").select("*");
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !session) {
+      setMessage("Vous devez être connecté pour ajouter un client.");
+      return;
+    }
 
-      if (error) {
-        setError("Erreur lors de la récupération des clients: " + error.message);
+    const token = session.access_token;
+
+    try {
+      const res = await fetch("/api/clients", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ company_name, brn, email, phone, contact_name })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setMessage("Client créé ✅");
+        setCompanyName(""); setBRN(""); setEmail(""); setPhone(""); setContactName("");
       } else {
-        setClients(data);
+        setMessage("Erreur: " + (data.error || "Erreur inconnue"));
       }
-
-      setLoading(false);
-    };
-
-    fetchClients();
-  }, []);
+    } catch (err) {
+      console.error("Erreur fetch:", err);
+      setMessage("Erreur de connexion au serveur");
+    }
+  };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
-      <h1>Liste des clients</h1>
-      {loading && <p>Chargement...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {clients.length === 0 && !loading && <p>Aucun client trouvé.</p>}
-      <ul>
-        {clients.map((client) => (
-          <li key={client.id}>
-            <strong>{client.company_name}</strong> - {client.email} - {client.phone}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px", padding: "2rem" }}>
+      <input placeholder="Nom de l'entreprise" value={company_name} onChange={e => setCompanyName(e.target.value)} />
+      <input placeholder="BRN" value={brn} onChange={e => setBRN(e.target.value)} />
+      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <input placeholder="Téléphone" value={phone} onChange={e => setPhone(e.target.value)} />
+      <input placeholder="Nom du contact" value={contact_name} onChange={e => setContactName(e.target.value)} />
+      <button type="submit">Créer le client</button>
+      {message && <p>{message}</p>}
+    </form>
   );
 }
