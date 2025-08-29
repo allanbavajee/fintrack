@@ -1,40 +1,23 @@
-/*fintrack/pages/quotes/index.jsx*/
+/* fintrack/pages/quotes/index.jsx */
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 
-export default function Quotes() {
+export default function QuotesPage() {
   const [quotes, setQuotes] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchQuotes = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        setError("Please login first");
-        return;
-      }
-      const token = session.access_token;
-      try {
-        const res = await fetch("/api/quotes", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (res.ok) setQuotes(data);
-        else setError(data.error);
-      } catch {
-        setError("Failed to load quotes");
-      }
-    };
-    fetchQuotes();
+    fetch("/api/quotes")
+      .then((res) => res.json())
+      .then((data) => setQuotes(data));
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Quotes</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={{ padding: "2rem" }}>
+      <h1>📝 Devis</h1>
       <ul>
-        {quotes.map(q => (
-          <li key={q.id}>Quote #{q.id} - {q.amount}</li>
+        {quotes.map((q) => (
+          <li key={q.id}>
+            Client {q.client_id} : {q.amount}€ - {q.description}
+          </li>
         ))}
       </ul>
     </div>
