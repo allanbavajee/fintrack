@@ -1,40 +1,24 @@
-/*fintrack/pages/clients/index.jsx*/
+/* fintrack/pages/clients/index.jsx */
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 
-export default function Clients() {
+export default function ClientsPage() {
   const [clients, setClients] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchClients = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        setError("Please login first");
-        return;
-      }
-      const token = session.access_token;
-      try {
-        const res = await fetch("/api/clients", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (res.ok) setClients(data);
-        else setError(data.error);
-      } catch {
-        setError("Failed to load clients");
-      }
-    };
-    fetchClients();
+    fetch("/api/clients")
+      .then((res) => res.json())
+      .then((data) => setClients(data));
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Clients</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={{ padding: "2rem" }}>
+      <h1>📋 Clients</h1>
+      <a href="/clients/add">+ Ajouter un client</a>
       <ul>
-        {clients.map(c => (
-          <li key={c.id}>{c.company_name} ({c.email})</li>
+        {clients.map((c) => (
+          <li key={c.id}>
+            {c.name} - {c.email}
+          </li>
         ))}
       </ul>
     </div>
