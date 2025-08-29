@@ -1,40 +1,23 @@
-/*fintrack/pages/invoices/index.jsx*/
+/* fintrack/pages/invoices/index.jsx */
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 
-export default function Invoices() {
+export default function InvoicesPage() {
   const [invoices, setInvoices] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchInvoices = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        setError("Please login first");
-        return;
-      }
-      const token = session.access_token;
-      try {
-        const res = await fetch("/api/invoices", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (res.ok) setInvoices(data);
-        else setError(data.error);
-      } catch {
-        setError("Failed to load invoices");
-      }
-    };
-    fetchInvoices();
+    fetch("/api/invoices")
+      .then((res) => res.json())
+      .then((data) => setInvoices(data));
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Invoices</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={{ padding: "2rem" }}>
+      <h1>💰 Factures</h1>
       <ul>
-        {invoices.map(i => (
-          <li key={i.id}>Invoice #{i.id} - {i.amount}</li>
+        {invoices.map((i) => (
+          <li key={i.id}>
+            Client {i.client_id} : {i.amount}€ - {i.status}
+          </li>
         ))}
       </ul>
     </div>
