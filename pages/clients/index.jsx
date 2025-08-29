@@ -1,5 +1,5 @@
 /* fintrack/pages/api/clients/index.js */
-import { supabaseServer } from "../../../lib/supabaseServer";
+import { supabase } from "../../../lib/supabaseServer";
 
 export default async function handler(req, res) {
   try {
