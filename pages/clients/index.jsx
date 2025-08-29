@@ -1,59 +1,44 @@
-/* fintrack/pages/clients/add.jsx */
-import { useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+/* fintrack/pages/api/clients/index.js */
+import { supabaseServer } from "../../../lib/supabaseServer";
 
-export default function AddClient() {
-  const [company_name, setCompanyName] = useState("");
-  const [brn, setBRN] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [contact_name, setContactName] = useState("");
-  const [message, setMessage] = useState("");
+export default async function handler(req, res) {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: "Missing Authorization header" });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
+    const token = authHeader.replace("Bearer ", "");
+    const { data: { user }, error: userError } = await supabaseServer.auth.getUser(token);
+    if (userError || !user) return res.status(401).json({ error: "Unauthorized" });
 
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    if (sessionError || !session) {
-      setMessage("Vous devez être connecté pour ajouter un client.");
-      return;
+    const userId = user.id;
+
+    if (req.method === "GET") {
+      const { data, error } = await supabaseServer.from("clients").select("*").eq("user_id", userId);
+      if (error) return res.status(400).json({ error: error.message });
+      return res.status(200).json(data);
     }
 
-    const token = session.access_token;
-
-    try {
-      const res = await fetch("/api/clients", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ company_name, brn, email, phone, contact_name })
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setMessage("Client créé ✅");
-        setCompanyName(""); setBRN(""); setEmail(""); setPhone(""); setContactName("");
-      } else {
-        setMessage("Erreur: " + (data.error || "Erreur inconnue"));
+    if (req.method === "POST") {
+      const { company_name, brn, email, phone, contact_name } = req.body;
+      if (!company_name || !brn || !email || !phone || !contact_name) {
+        return res.status(400).json({ error: "Tous les champs sont requis" });
       }
-    } catch (err) {
-      console.error("Erreur fetch:", err);
-      setMessage("Erreur de connexion au serveur");
-    }
-  };
 
-  return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px", padding: "2rem" }}>
-      <input placeholder="Nom de l'entreprise" value={company_name} onChange={e => setCompanyName(e.target.value)} />
-      <input placeholder="BRN" value={brn} onChange={e => setBRN(e.target.value)} />
-      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input placeholder="Téléphone" value={phone} onChange={e => setPhone(e.target.value)} />
-      <input placeholder="Nom du contact" value={contact_name} onChange={e => setContactName(e.target.value)} />
-      <button type="submit">Créer le client</button>
-      {message && <p>{message}</p>}
-    </form>
-  );
+      const { data, error } = await supabaseServer
+        .from("clients")
+        .insert([{ company_name, brn, email, phone, contact_name, user_id: userId }])
+        .select()
+        .single();
+
+      if (error) return res.status(400).json({ error: error.message });
+      return res.status(201).json(data);
+    }
+
+    res.setHeader("Allow", ["GET", "POST"]);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
+
+  } catch (err) {
+    console.log("Erreur serveur API clients:", err.message);
+    return res.status(500).json({ error: err.message });
+  }
 }
