@@ -1,0 +1,11 @@
+/* fintrack/styles/globals.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+}
+
+a {
+  text-decoration: none;
+}
