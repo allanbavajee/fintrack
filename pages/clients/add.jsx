@@ -4,52 +4,57 @@ import { supabase } from "../../lib/supabaseClient";
 
 export default function AddClient() {
   const [company_name, setCompanyName] = useState("");
-  const [contact_name, setContactName] = useState("");
-  const [brn, setBRN] = useState("");
+  const [BRN, setBRN] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [contact_name, setContactName] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+    setMessage("Envoi en cours...");
 
-    // Vérifie que tous les champs sont remplis
-    if (!company_name || !contact_name || !brn || !email || !phone) {
-      setMessage("Tous les champs sont requis !");
+    // Vérifie les champs
+    if (!company_name || !BRN || !email || !phone || !contact_name) {
+      setMessage("Tous les champs sont requis.");
       return;
     }
 
-    // Insert dans Supabase
-    const { data, error } = await supabase
-      .from("clients")
-      .insert([{ company_name, contact_name, brn, email, phone }]);
+    try {
+      // Ajout client via Supabase
+      const { data, error } = await supabase
+        .from("clients")
+        .insert([{ company_name, brn: BRN, email, phone, contact_name }])
+        .select()
+        .single();
 
-    if (error) {
-      console.error("Erreur ajout client:", error);
-      setMessage("Erreur lors de la création du client");
-    } else {
-      setMessage("Client créé ✅");
-      setCompanyName("");
-      setContactName("");
-      setBRN("");
-      setEmail("");
-      setPhone("");
+      if (error) {
+        console.error("Erreur ajout client:", error);
+        setMessage("Erreur: " + error.message);
+      } else {
+        console.log("Client créé:", data);
+        setMessage("Client créé ✅");
+        // Reset form
+        setCompanyName(""); setBRN(""); setEmail(""); setPhone(""); setContactName("");
+      }
+    } catch (err) {
+      console.error("Erreur fetch:", err);
+      setMessage("Erreur côté serveur ou connexion.");
     }
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Ajouter un client</h1>
+    <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
+      <h2>Ajouter un client</h2>
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
-        <input placeholder="Nom de l'entreprise" value={company_name} onChange={e => setCompanyName(e.target.value)} />
-        <input placeholder="Nom du contact" value={contact_name} onChange={e => setContactName(e.target.value)} />
-        <input placeholder="BRN" value={brn} onChange={e => setBRN(e.target.value)} />
+        <input placeholder="Company Name" value={company_name} onChange={e => setCompanyName(e.target.value)} />
+        <input placeholder="BRN" value={BRN} onChange={e => setBRN(e.target.value)} />
         <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input placeholder="Téléphone" value={phone} onChange={e => setPhone(e.target.value)} />
+        <input placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
+        <input placeholder="Contact Name" value={contact_name} onChange={e => setContactName(e.target.value)} />
         <button type="submit">Créer le client</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p style={{ marginTop: "1rem", color: message.startsWith("Erreur") ? "red" : "green" }}>{message}</p>}
     </div>
   );
 }
