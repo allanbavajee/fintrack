@@ -1,39 +1,76 @@
-/* fintrack/pages/clients/index.jsx */
-import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+/* pages/index.js */
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient";
 
-export default function Clients() {
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function Home() {
+  const [session, setSession] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const fetchClients = async () => {
-      const { data, error } = await supabase.from("clients").select("*");
-      if (error) {
-        console.error("Erreur fetching clients:", error);
-      } else {
-        setClients(data);
-      }
-      setLoading(false);
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
     };
-    fetchClients();
+    getSession();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => setSession(session)
+    );
+
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  if (loading) return <p>Chargement...</p>;
+  const handleSignup = async () => {
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) setMessage(error.message);
+    else setMessage("Inscription réussie ! Vérifie ton email.");
+  };
+
+  const handleSignin = async () => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) setMessage(error.message);
+    else setMessage("Connexion réussie !");
+  };
+
+  const handleSignout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+    setMessage("Déconnecté avec succès.");
+  };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Liste des clients</h1>
-      {clients.length === 0 ? (
-        <p>Aucun client trouvé.</p>
+    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+      <h1>Bienvenue sur Fintrack 🚀</h1>
+      {message && <p>{message}</p>}
+
+      {!session ? (
+        <>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button onClick={handleSignup}>S'inscrire</button>
+          <button onClick={handleSignin}>Se connecter</button>
+        </>
       ) : (
-        <ul>
-          {clients.map((c) => (
-            <li key={c.id}>
-              {c.company_name} - {c.contact_name}
-            </li>
-          ))}
-        </ul>
+        <>
+          <p>Connecté en tant que : {session.user.email}</p>
+          <button onClick={handleSignout}>Se déconnecter</button>
+          <p>
+            <a href="/clients/add">Ajouter un client</a> |{" "}
+            <a href="/clients">Voir mes clients</a>
+          </p>
+        </>
       )}
     </div>
   );
