@@ -1,99 +1,64 @@
-/* fintrack/pages/quotes/index.jsx */
-import { useEffect, useState } from "react";
+/* pages/quotes/index.jsx */
+import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
-export default function QuotesPage() {
+export default function ListQuotes() {
+  const [session, setSession] = useState(null);
   const [quotes, setQuotes] = useState([]);
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
 
-  // Récupère les devis existants
-  const fetchQuotes = async () => {
-    const { data: sessionData } = await supabase.auth.getSession();
-    const session = sessionData.session;
-    if (!session) return;
-
-    const token = session.access_token;
-
-    try {
-      const res = await fetch("/api/quotes", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
-      if (res.ok) setQuotes(data);
-      else console.error("Erreur fetch quotes:", data.error);
-    } catch (err) {
-      console.error("Erreur serveur:", err);
-    }
-  };
-
   useEffect(() => {
-    fetchQuotes();
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+      if (session) fetchQuotes(session);
+    };
+    getSession();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        if (session) fetchQuotes(session);
+      }
+    );
+
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  // Ajouter un nouveau devis
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    if (sessionError || !session) {
-      setMessage("Vous devez être connecté pour créer un devis.");
-      return;
-    }
-
-    const token = session.access_token;
-
+  const fetchQuotes = async (session) => {
     try {
-      const res = await fetch("/api/quotes", {
-        method: "POST",
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/quotes?select=*`, {
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title, amount }),
+          "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${session.access_token}`
+        }
       });
 
       const data = await res.json();
-
-      if (res.ok) {
-        setMessage("Devis créé ✅");
-        setTitle(""); setAmount("");
-        fetchQuotes(); // Rafraîchit la liste
-      } else {
-        setMessage("Erreur: " + (data.error || "Erreur inconnue"));
-      }
+      if (!res.ok) setMessage(`Erreur : ${JSON.stringify(data)}`);
+      else setQuotes(data);
     } catch (err) {
-      console.error("Erreur serveur:", err);
-      setMessage("Erreur connexion serveur");
+      setMessage(`Erreur : ${err.message}`);
     }
   };
 
-  return (
-    <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
-      <h1>Liste des devis</h1>
+  if (!session) return <p>Vous devez être connecté pour voir vos devis.</p>;
 
-      {quotes.length === 0 ? <p>Aucun devis trouvé.</p> :
+  return (
+    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+      <h2>Liste des devis</h2>
+      {message && <p>{message}</p>}
+      {quotes.length === 0 ? (
+        <p>Aucun devis trouvé.</p>
+      ) : (
         <ul>
-          {quotes.map((q) => (
-            <li key={q.id}>{q.title} - {q.amount}</li>
+          {quotes.map((quote) => (
+            <li key={quote.id}>
+              {quote.description} - {quote.amount} €
+            </li>
           ))}
         </ul>
-      }
-
-      <h2>Ajouter un devis</h2>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
-        <input placeholder="Titre" value={title} onChange={e => setTitle(e.target.value)} />
-        <input placeholder="Montant" value={amount} onChange={e => setAmount(e.target.value)} />
-        <button type="submit">Créer Devis</button>
-        {message && <p>{message}</p>}
-      </form>
+      )}
     </div>
   );
 }
