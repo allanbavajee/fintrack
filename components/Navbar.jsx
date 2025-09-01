@@ -1,26 +1,47 @@
-/* fintrack/components/Navbar.jsx */
+/* components/Navbar.jsx */
 import Link from "next/link";
+import { supabase } from "../lib/supabaseClient";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+    };
+    getSession();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => setSession(session)
+    );
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  const handleSignout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+  };
+
   return (
-    <nav
-      style={{
-        padding: "1rem",
-        background: "#222",
-        color: "white",
-        display: "flex",
-        gap: "1rem",
-      }}
-    >
-      <Link href="/" style={{ color: "white", textDecoration: "none" }}>
-        🏠 Accueil
-      </Link>
-      <Link href="/clients" style={{ color: "white", textDecoration: "none" }}>
-        👥 Clients
-      </Link>
-      <Link href="/clients/add" style={{ color: "white", textDecoration: "none" }}>
-        ➕ Ajouter Client
-      </Link>
+    <nav style={{ display: "flex", gap: "15px", padding: "10px", borderBottom: "1px solid #ccc" }}>
+      <Link href="/">Accueil</Link>
+      {session && <Link href="/clients">Clients</Link>}
+      {session && <Link href="/invoices">Invoices</Link>}
+      {session && <Link href="/quotes">Quotes</Link>}
+
+      <div style={{ marginLeft: "auto" }}>
+        {!session ? (
+          <Link href="/">Login / Signup</Link>
+        ) : (
+          <>
+            <span>{session.user.email}</span>
+            <button onClick={handleSignout} style={{ marginLeft: "10px" }}>Logout</button>
+          </>
+        )}
+      </div>
     </nav>
   );
 }
