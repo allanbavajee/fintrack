@@ -31,6 +31,7 @@ export default function Navbar() {
       {session && <Link href="/clients">Clients</Link>}
       {session && <Link href="/invoices">Invoices</Link>}
       {session && <Link href="/quotes">Quotes</Link>}
+      {session && <Link href="/quotes/add">Créer Quotation</Link>}
 
       <div style={{ marginLeft: "auto" }}>
         {!session ? (
