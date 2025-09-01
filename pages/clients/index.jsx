@@ -1,76 +1,63 @@
-/* pages/index.js */
+/* pages/clients/index.jsx */
 import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
-export default function Home() {
+export default function ListClients() {
   const [session, setSession] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [clients, setClients] = useState([]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
+      if (session) fetchClients(session);
     };
     getSession();
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => setSession(session)
+      (_event, session) => {
+        setSession(session);
+        if (session) fetchClients(session);
+      }
     );
 
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  const handleSignup = async () => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) setMessage(error.message);
-    else setMessage("Inscription réussie ! Vérifie ton email.");
+  const fetchClients = async (session) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/clients?select=*`, {
+        headers: {
+          "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${session.access_token}`
+        }
+      });
+
+      const data = await res.json();
+      if (!res.ok) setMessage(`Erreur : ${JSON.stringify(data)}`);
+      else setClients(data);
+    } catch (err) {
+      setMessage(`Erreur : ${err.message}`);
+    }
   };
 
-  const handleSignin = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setMessage(error.message);
-    else setMessage("Connexion réussie !");
-  };
-
-  const handleSignout = async () => {
-    await supabase.auth.signOut();
-    setSession(null);
-    setMessage("Déconnecté avec succès.");
-  };
+  if (!session) return <p>Vous devez être connecté pour voir vos clients.</p>;
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-      <h1>Bienvenue sur Fintrack 🚀</h1>
+    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+      <h2>Liste des clients</h2>
       {message && <p>{message}</p>}
-
-      {!session ? (
-        <>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button onClick={handleSignup}>S'inscrire</button>
-          <button onClick={handleSignin}>Se connecter</button>
-        </>
+      {clients.length === 0 ? (
+        <p>Aucun client trouvé.</p>
       ) : (
-        <>
-          <p>Connecté en tant que : {session.user.email}</p>
-          <button onClick={handleSignout}>Se déconnecter</button>
-          <p>
-            <a href="/clients/add">Ajouter un client</a> |{" "}
-            <a href="/clients">Voir mes clients</a>
-          </p>
-        </>
+        <ul>
+          {clients.map((client) => (
+            <li key={client.id}>
+              {client.name} - {client.email}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
