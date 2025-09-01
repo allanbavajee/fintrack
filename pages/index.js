@@ -23,13 +23,13 @@ export default function Home() {
   }, []);
 
   const handleSignup = async () => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signUp({ email, password });
     if (error) setMessage(error.message);
     else setMessage("Inscription réussie ! Vérifie ton email.");
   };
 
   const handleSignin = async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setMessage(error.message);
     else setMessage("Connexion réussie !");
   };
@@ -37,6 +37,7 @@ export default function Home() {
   const handleSignout = async () => {
     await supabase.auth.signOut();
     setSession(null);
+    setMessage("Déconnecté avec succès.");
   };
 
   return (
@@ -65,7 +66,9 @@ export default function Home() {
         <>
           <p>Connecté en tant que : {session.user.email}</p>
           <button onClick={handleSignout}>Se déconnecter</button>
-          <p>Tu peux maintenant <a href="/clients/add">ajouter un client</a></p>
+          <p>
+            Tu peux maintenant <a href="/clients/add">ajouter un client</a>
+          </p>
         </>
       )}
     </div>
