@@ -1,6 +1,7 @@
 /* pages/clients/add.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import Navbar from "../../components/Navbar";
 
 export default function AddClientREST() {
   const [session, setSession] = useState(null);
@@ -63,14 +64,17 @@ export default function AddClientREST() {
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "0 auto" }}>
-      <h2>Ajouter un client</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Nom" value={name} onChange={e => setName(e.target.value)} required />
-        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-        <button type="submit">Ajouter</button>
-      </form>
-    </div>
+    <>
+      <Navbar />
+      <div style={{ maxWidth: "500px", margin: "0 auto" }}>
+        <h2>Ajouter un client</h2>
+        {message && <p>{message}</p>}
+        <form onSubmit={handleSubmit}>
+          <input type="text" placeholder="Nom" value={name} onChange={e => setName(e.target.value)} required />
+          <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+          <button type="submit">Ajouter</button>
+        </form>
+      </div>
+    </>
   );
 }
