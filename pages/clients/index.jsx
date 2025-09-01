@@ -45,14 +45,14 @@ export default function ListClients() {
 
   if (!session) return (
     <>
-      <Navbar />
+      <Navbar /> {/* inclure seulement une fois */}
       <p>Vous devez être connecté pour voir vos clients.</p>
     </>
   );
 
   return (
     <>
-      <Navbar />
+      <Navbar /> {/* inclure seulement une fois */}
       <div style={{ maxWidth: "600px", margin: "0 auto" }}>
         <h2>Liste des clients</h2>
         {message && <p>{message}</p>}
