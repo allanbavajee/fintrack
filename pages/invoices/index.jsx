@@ -1,55 +1,63 @@
 /* pages/invoices/index.jsx */
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 import Link from "next/link";
+import { supabase } from "../../lib/supabaseClient";
 
-export default function InvoicesPage() {
+export default function InvoicesList() {
   const [invoices, setInvoices] = useState([]);
   const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getSession = async () => {
+    const load = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
-      if (session) fetchInvoices(session);
+
+      if (session) {
+        const { data, error } = await supabase
+          .from("invoices")
+          .select("id, amount, created_at, clients(name)")
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false });
+
+        if (!error) setInvoices(data || []);
+      }
+      setLoading(false);
     };
-    getSession();
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (session) fetchInvoices(session);
-    });
-
-    return () => listener.subscription.unsubscribe();
+    load();
   }, []);
 
-  const fetchInvoices = async (session) => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/invoices?select=*`,
-      {
-        headers: {
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      }
-    );
-    const data = await res.json();
-    if (res.ok) setInvoices(data);
-  };
-
-  if (!session) return <p>Vous devez être connecté.</p>;
+  if (loading) return <p>Chargement...</p>;
 
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-      <h2>Liste des factures</h2>
-      <Link href="/invoices/add">➕ Créer une facture</Link>
-      <ul>
-        {invoices.map((i) => (
-          <li key={i.id}>
-            Facture #{i.id} - {i.amount}€ - {i.status}
-          </li>
-        ))}
-      </ul>
+      <h2>Factures</h2>
+      <Link href="/invoices/create">
+        <button>➕ Créer une facture</button>
+      </Link>
+      {invoices.length === 0 ? (
+        <p>Aucune facture trouvée.</p>
+      ) : (
+        <table border="1" cellPadding="5" style={{ marginTop: "20px", width: "100%" }}>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Montant</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoices.map((i) => (
+              <tr key={i.id}>
+                <td>{i.clients?.name || "Inconnu"}</td>
+                <td>{i.amount} €</td>
+                <td>{new Date(i.created_at).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
