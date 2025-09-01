@@ -1,5 +1,4 @@
 /* pages/clients/index.jsx */
-/* pages/clients/index.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
@@ -7,12 +6,8 @@ export default function ClientsPage() {
   const [session, setSession] = useState(null);
   const [clients, setClients] = useState([]);
   const [form, setForm] = useState({
-    first_name: "",
-    last_name: "",
-    phone: "",
-    email: "",
-    company_number: "",
-    company_address: "",
+    name: "",
+    company: "",
   });
   const [message, setMessage] = useState("");
 
@@ -43,8 +38,8 @@ export default function ClientsPage() {
     e.preventDefault();
     setMessage("");
 
-    if (!form.first_name || !form.last_name || !form.phone) {
-      setMessage("Les champs Nom, Prénom et Téléphone sont obligatoires.");
+    if (!form.name) {
+      setMessage("Le champ Nom est obligatoire.");
       return;
     }
 
@@ -54,9 +49,7 @@ export default function ClientsPage() {
         .from("clients")
         .select("*")
         .eq("user_id", session.user.id)
-        .eq("first_name", form.first_name)
-        .eq("last_name", form.last_name)
-        .eq("phone", form.phone);
+        .eq("name", form.name);
 
       if (existing.length > 0) {
         setMessage("Ce client existe déjà !");
@@ -75,15 +68,11 @@ export default function ClientsPage() {
 
       setMessage("✅ Client ajouté avec succès !");
       setForm({
-        first_name: "",
-        last_name: "",
-        phone: "",
-        email: "",
-        company_number: "",
-        company_address: "",
+        name: "",
+        company: "",
       });
 
-      // Recharger la liste des clients (10 derniers)
+      // Recharger la liste des 10 derniers clients
       const { data: clientsData } = await supabase
         .from("clients")
         .select("*")
@@ -100,7 +89,7 @@ export default function ClientsPage() {
   if (!session) return <p>Veuillez vous connecter pour accéder aux clients.</p>;
 
   return (
-    <div style={{ display: "flex", gap: 40, maxWidth: 1000, margin: "0 auto" }}>
+    <div style={{ display: "flex", gap: 40, maxWidth: 900, margin: "0 auto" }}>
       {/* Formulaire à gauche */}
       <div style={{ flex: 1 }}>
         <h2>Ajouter un client</h2>
@@ -110,56 +99,18 @@ export default function ClientsPage() {
             <label>Nom *</label>
             <input
               type="text"
-              name="last_name"
-              value={form.last_name}
+              name="name"
+              value={form.name}
               onChange={handleChange}
               required
             />
           </div>
           <div>
-            <label>Prénom *</label>
+            <label>Nom de la société</label>
             <input
               type="text"
-              name="first_name"
-              value={form.first_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>Téléphone *</label>
-            <input
-              type="text"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Numéro société</label>
-            <input
-              type="text"
-              name="company_number"
-              value={form.company_number}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Adresse société</label>
-            <input
-              type="text"
-              name="company_address"
-              value={form.company_address}
+              name="company"
+              value={form.company}
               onChange={handleChange}
             />
           </div>
@@ -176,7 +127,7 @@ export default function ClientsPage() {
           <ul>
             {clients.map((c) => (
               <li key={c.id}>
-                {c.first_name} {c.last_name} - {c.phone}
+                {c.name} {c.company ? `– ${c.company}` : ""}
               </li>
             ))}
           </ul>
@@ -185,4 +136,3 @@ export default function ClientsPage() {
     </div>
   );
 }
-
