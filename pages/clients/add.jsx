@@ -7,29 +7,26 @@ export default function AddClient() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleAddClient = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setErrorMsg("");
     setLoading(true);
 
     try {
-      // insertion dans la table clients
       const { data, error } = await supabase
         .from("clients")
         .insert([{ name, email }]);
 
       if (error) throw error;
 
-      console.log("✅ Nouveau client ajouté:", data);
-
-      // redirige vers la liste des clients
-      router.push("/clients");
+      alert("Client ajouté avec succès ✅");
+      router.push("/clients"); // retour vers la liste
     } catch (err) {
-      console.error("❌ Erreur lors de l’ajout:", err.message);
-      setError(err.message);
+      console.error("Erreur ajout client:", err.message);
+      setErrorMsg(err.message);
     } finally {
       setLoading(false);
     }
@@ -37,9 +34,8 @@ export default function AddClient() {
 
   return (
     <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
-      <h1>Ajouter un client</h1>
-
-      <form onSubmit={handleAddClient} style={{ marginTop: "1rem" }}>
+      <h1>➕ Ajouter un client</h1>
+      <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
         <div style={{ marginBottom: "1rem" }}>
           <label>Nom :</label>
           <input
@@ -47,10 +43,9 @@ export default function AddClient() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            style={{ marginLeft: "1rem", padding: "0.5rem" }}
+            style={{ width: "100%", padding: "8px", marginTop: "4px" }}
           />
         </div>
-
         <div style={{ marginBottom: "1rem" }}>
           <label>Email :</label>
           <input
@@ -58,17 +53,14 @@ export default function AddClient() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ marginLeft: "1rem", padding: "0.5rem" }}
+            style={{ width: "100%", padding: "8px", marginTop: "4px" }}
           />
         </div>
-
-        {error && <p style={{ color: "red" }}>⚠ {error}</p>}
-
         <button
           type="submit"
           disabled={loading}
           style={{
-            padding: "0.6rem 1.2rem",
+            padding: "10px 20px",
             backgroundColor: "#0070f3",
             color: "white",
             border: "none",
@@ -76,9 +68,10 @@ export default function AddClient() {
             cursor: "pointer",
           }}
         >
-          {loading ? "Ajout en cours..." : "Ajouter"}
+          {loading ? "Ajout..." : "Ajouter le client"}
         </button>
       </form>
+      {errorMsg && <p style={{ color: "red" }}>⚠ {errorMsg}</p>}
     </div>
   );
 }
