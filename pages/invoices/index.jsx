@@ -1,6 +1,7 @@
 /* pages/invoices/index.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import Navbar from "../../components/Navbar";
 
 export default function ListInvoices() {
   const [session, setSession] = useState(null);
@@ -42,23 +43,31 @@ export default function ListInvoices() {
     }
   };
 
-  if (!session) return <p>Vous devez être connecté pour voir vos factures.</p>;
+  if (!session) return (
+    <>
+      <Navbar />
+      <p>Vous devez être connecté pour voir vos factures.</p>
+    </>
+  );
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Liste des factures</h2>
-      {message && <p>{message}</p>}
-      {invoices.length === 0 ? (
-        <p>Aucune facture trouvée.</p>
-      ) : (
-        <ul>
-          {invoices.map((invoice) => (
-            <li key={invoice.id}>
-              {invoice.description} - {invoice.amount} €
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+        <h2>Liste des factures</h2>
+        {message && <p>{message}</p>}
+        {invoices.length === 0 ? (
+          <p>Aucune facture trouvée.</p>
+        ) : (
+          <ul>
+            {invoices.map((invoice) => (
+              <li key={invoice.id}>
+                {invoice.description} - {invoice.amount} €
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
   );
 }
