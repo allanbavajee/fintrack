@@ -4,42 +4,29 @@ import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/router";
 
 export default function CreateQuote() {
-  const router = useRouter();
-  const [session, setSession] = useState(null);
-  const [clients, setClients] = useState([]);
   const [clientId, setClientId] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
+  const [clients, setClients] = useState([]);
+  const [session, setSession] = useState(null);
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-    };
-    getSession();
+    const load = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
 
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => setSession(session)
-    );
-
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (session) {
-      const fetchClients = async () => {
-        const { data, error } = await supabase
+      if (session) {
+        const { data: clientsData } = await supabase
           .from("clients")
           .select("id, name")
           .eq("user_id", session.user.id);
-
-        if (error) console.error(error);
-        else setClients(data);
-      };
-      fetchClients();
-    }
-  }, [session]);
+        setClients(clientsData || []);
+      }
+    };
+    load();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,24 +58,14 @@ export default function CreateQuote() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || "Erreur lors de l'insertion");
+        throw new Error(errorText || "Erreur lors de la création du devis");
       }
 
-      // 🔑 Vérifier si la réponse a du contenu avant de parser en JSON
-      let data = null;
-      const text = await response.text();
-      if (text) {
-        data = JSON.parse(text);
-      }
-
+      await response.text(); // 🔑 pas de JSON.parse
       setMessage("✅ Devis créé avec succès !");
-      console.log("Devis créé :", data);
-
       setClientId("");
       setDescription("");
       setAmount("");
-
-      // Rediriger vers la liste
       router.push("/quotes");
     } catch (error) {
       setMessage(`Erreur : ${error.message}`);
@@ -96,7 +73,7 @@ export default function CreateQuote() {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "500px", margin: "0 auto" }}>
       <h2>Créer un devis</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
@@ -107,10 +84,10 @@ export default function CreateQuote() {
             onChange={(e) => setClientId(e.target.value)}
             required
           >
-            <option value="">-- Sélectionner un client --</option>
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.name}
+            <option value="">-- Choisir un client --</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
               </option>
             ))}
           </select>
@@ -133,8 +110,9 @@ export default function CreateQuote() {
             required
           />
         </div>
-        <button type="submit">Créer devis</button>
+        <button type="submit">Créer</button>
       </form>
     </div>
   );
 }
+
