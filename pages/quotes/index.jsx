@@ -24,22 +24,24 @@ export default function QuotesList() {
       }
       setLoading(false);
     };
-
     load();
   }, []);
 
   if (loading) return <p>Chargement...</p>;
+  if (!session) return <p>Vous devez être connecté.</p>;
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ maxWidth: 800, margin: "0 auto" }}>
       <h2>Devis</h2>
+      {/* 🔁 lien vers /quotes/create */}
       <Link href="/quotes/create">
         <button>➕ Créer un devis</button>
       </Link>
+
       {quotes.length === 0 ? (
-        <p>Aucun devis trouvé.</p>
+        <p style={{ marginTop: 12 }}>Aucun devis trouvé.</p>
       ) : (
-        <table border="1" cellPadding="5" style={{ marginTop: "20px", width: "100%" }}>
+        <table border="1" cellPadding="5" style={{ marginTop: 20, width: "100%" }}>
           <thead>
             <tr>
               <th>Client</th>
@@ -51,7 +53,7 @@ export default function QuotesList() {
           <tbody>
             {quotes.map((q) => (
               <tr key={q.id}>
-                <td>{q.clients?.name || "Inconnu"}</td>
+                <td>{q.clients?.name || "—"}</td>
                 <td>{q.description}</td>
                 <td>{q.amount} €</td>
                 <td>{new Date(q.created_at).toLocaleDateString()}</td>
