@@ -19,7 +19,7 @@ export default function AddClient() {
       // insertion dans la table clients
       const { data, error } = await supabase
         .from("clients")
-        .insert([{ contact_name, email }]);
+        .insert([{ name, email }]);
 
       if (error) throw error;
 
