@@ -1,13 +1,14 @@
 /* pages/clients/add.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import Navbar from "../../components/Navbar";
+import { useRouter } from "next/router";
 
 export default function AddClientREST() {
-  const [session, setSession] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [session, setSession] = useState(null);
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const getSession = async () => {
@@ -37,9 +38,8 @@ export default function AddClientREST() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${session.access_token}`,
-            "Prefer": "return=representation"
+            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${session.access_token}`,
           },
           body: JSON.stringify({
             name,
@@ -49,14 +49,13 @@ export default function AddClientREST() {
         }
       );
 
-      let data;
-      try { data = await response.json(); } catch { data = null; }
+      const data = await response.json();
 
-      if (!response.ok) setMessage(`Erreur : ${JSON.stringify(data) || response.statusText}`);
-      else {
-        setMessage("Client ajouté avec succès !");
-        setName("");
-        setEmail("");
+      if (!response.ok) {
+        setMessage(`Erreur : ${JSON.stringify(data)}`);
+      } else {
+        setMessage("✅ Client ajouté avec succès !");
+        setTimeout(() => router.push("/clients"), 1500);
       }
     } catch (error) {
       setMessage(`Erreur : ${error.message}`);
@@ -64,17 +63,30 @@ export default function AddClientREST() {
   };
 
   return (
-    <>
-      <Navbar />
-      <div style={{ maxWidth: "500px", margin: "0 auto" }}>
-        <h2>Ajouter un client</h2>
-        {message && <p>{message}</p>}
-        <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="Nom" value={name} onChange={e => setName(e.target.value)} required />
-          <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-          <button type="submit">Ajouter</button>
-        </form>
-      </div>
-    </>
+    <div style={{ maxWidth: "500px", margin: "0 auto" }}>
+      <h2>Ajouter un client</h2>
+      {message && <p>{message}</p>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Nom :</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Email :</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
   );
 }
