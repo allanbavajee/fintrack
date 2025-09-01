@@ -1,6 +1,7 @@
 /* pages/clients/index.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import Navbar from "../../components/Navbar";
 
 export default function ListClients() {
   const [session, setSession] = useState(null);
@@ -42,23 +43,31 @@ export default function ListClients() {
     }
   };
 
-  if (!session) return <p>Vous devez être connecté pour voir vos clients.</p>;
+  if (!session) return (
+    <>
+      <Navbar />
+      <p>Vous devez être connecté pour voir vos clients.</p>
+    </>
+  );
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Liste des clients</h2>
-      {message && <p>{message}</p>}
-      {clients.length === 0 ? (
-        <p>Aucun client trouvé.</p>
-      ) : (
-        <ul>
-          {clients.map((client) => (
-            <li key={client.id}>
-              {client.name} - {client.email}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+        <h2>Liste des clients</h2>
+        {message && <p>{message}</p>}
+        {clients.length === 0 ? (
+          <p>Aucun client trouvé.</p>
+        ) : (
+          <ul>
+            {clients.map((client) => (
+              <li key={client.id}>
+                {client.name} - {client.email}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
   );
 }
