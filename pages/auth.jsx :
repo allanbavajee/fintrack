@@ -1,0 +1,32 @@
+/* pages/auth.jsx */
+import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+
+export default function AuthPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSignup = async () => {
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) setMessage(error.message);
+    else setMessage("Inscription réussie ! Vérifie ton email pour confirmer.");
+  };
+
+  const handleSignin = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) setMessage(error.message);
+    else setMessage("Connexion réussie !");
+  };
+
+  return (
+    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+      <h2>Connexion / Inscription</h2>
+      {message && <p>{message}</p>}
+      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} />
+      <button onClick={handleSignup}>S'inscrire</button>
+      <button onClick={handleSignin}>Se connecter</button>
+    </div>
+  );
+}
