@@ -16,7 +16,6 @@ export default function Navbar() {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => setSession(session)
     );
-
     return () => listener.subscription.unsubscribe();
   }, []);
 
@@ -26,12 +25,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav style={{ display: "flex", gap: "15px", padding: "10px", borderBottom: "1px solid #ccc" }}>
+    <nav style={{ display: "flex", gap: 12, padding: 10, borderBottom: "1px solid #ddd" }}>
       <Link href="/">Accueil</Link>
       {session && <Link href="/clients">Clients</Link>}
       {session && <Link href="/invoices">Invoices</Link>}
       {session && <Link href="/quotes">Quotes</Link>}
-      {session && <Link href="/quotes/add">Créer Quotation</Link>}
+      {/* 🔁 lien unifié vers /quotes/create (plus /quotes/add) */}
+      {session && <Link href="/quotes/create">Créer Quotation</Link>}
 
       <div style={{ marginLeft: "auto" }}>
         {!session ? (
@@ -39,7 +39,7 @@ export default function Navbar() {
         ) : (
           <>
             <span>{session.user.email}</span>
-            <button onClick={handleSignout} style={{ marginLeft: "10px" }}>Logout</button>
+            <button onClick={handleSignout} style={{ marginLeft: 10 }}>Logout</button>
           </>
         )}
       </div>
