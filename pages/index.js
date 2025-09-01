@@ -67,7 +67,8 @@ export default function Home() {
           <p>Connecté en tant que : {session.user.email}</p>
           <button onClick={handleSignout}>Se déconnecter</button>
           <p>
-            Tu peux maintenant <a href="/clients/add">ajouter un client</a>
+            <a href="/clients/add">Ajouter un client</a> |{" "}
+            <a href="/clients">Voir mes clients</a>
           </p>
         </>
       )}
