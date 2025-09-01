@@ -35,8 +35,8 @@ export default function AddQuote() {
       `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/clients?select=id,name`,
       {
         headers: {
-          "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${session.access_token}`,
+          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${session.access_token}`,
         },
       }
     );
@@ -46,7 +46,6 @@ export default function AddQuote() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!session) {
       setMessage("Vous devez être connecté pour créer un devis.");
       return;
@@ -59,8 +58,8 @@ export default function AddQuote() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${session.access_token}`,
+            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${session.access_token}`,
           },
           body: JSON.stringify({
             description,
@@ -76,7 +75,7 @@ export default function AddQuote() {
       if (!res.ok) {
         setMessage(`Erreur : ${JSON.stringify(data)}`);
       } else {
-        setMessage("Devis créé avec succès !");
+        setMessage("✅ Devis créé avec succès !");
         setTimeout(() => router.push("/quotes"), 1500);
       }
     } catch (err) {
