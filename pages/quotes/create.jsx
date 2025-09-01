@@ -58,7 +58,7 @@ export default function CreateQuote() {
             "Content-Type": "application/json",
             apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
             Authorization: `Bearer ${session.access_token}`,
-            Prefer: "return=representation", // ⚡ garantit que Supabase renvoie les données
+            Prefer: "return=representation",
           },
           body: JSON.stringify({
             client_id: clientId,
@@ -74,16 +74,21 @@ export default function CreateQuote() {
         throw new Error(errorText || "Erreur lors de l'insertion");
       }
 
-      const data = await response.json();
-      setMessage("Devis créé avec succès !");
-      console.log("✅ Devis créé :", data);
+      // 🔑 Vérifier si la réponse a du contenu avant de parser en JSON
+      let data = null;
+      const text = await response.text();
+      if (text) {
+        data = JSON.parse(text);
+      }
 
-      // Reset form
+      setMessage("✅ Devis créé avec succès !");
+      console.log("Devis créé :", data);
+
       setClientId("");
       setDescription("");
       setAmount("");
 
-      // Rediriger vers la liste des devis
+      // Rediriger vers la liste
       router.push("/quotes");
     } catch (error) {
       setMessage(`Erreur : ${error.message}`);
