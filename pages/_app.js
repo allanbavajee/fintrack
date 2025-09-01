@@ -1,14 +1,12 @@
-/* fintrack/pages/_app.js */
-import "../styles/globals.css";
+/* pages/_app.jsx */
 import Navbar from "../components/Navbar";
+import "../styles/globals.css";
 
-function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }) {
   return (
-    <div>
+    <>
       <Navbar />
       <Component {...pageProps} />
-    </div>
+    </>
   );
 }
-
-export default MyApp;
