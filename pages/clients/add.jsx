@@ -1,77 +1,66 @@
 /* fintrack/pages/clients/add.jsx */
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { supabase } from "../../lib/supabaseClient";
 
 export default function AddClient() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg("");
-    setLoading(true);
+    setMessage("");
 
     try {
-      const { data, error } = await supabase
-        .from("clients")
-        .insert([{ name, email }]);
+      // Récupère la session actuelle
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !session) {
+        setMessage("You must be logged in to create a client.");
+        return;
+      }
 
-      if (error) throw error;
+      const token = session.access_token;
 
-      alert("Client ajouté avec succès ✅");
-      router.push("/clients"); // retour vers la liste
+      // Requête POST vers Supabase REST
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/clients`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${token}`,
+            "Prefer": "return=representation" // pour retourner la ligne insérée
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            user_id: session.user.id  // obligatoire pour RLS
+          })
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("Client created ✅");
+        setName("");
+        setEmail("");
+      } else {
+        setMessage("Error: " + (data.message || JSON.stringify(data)));
+      }
     } catch (err) {
-      console.error("Erreur ajout client:", err.message);
-      setErrorMsg(err.message);
-    } finally {
-      setLoading(false);
+      console.error("Fetch error:", err);
+      setMessage("Error connecting to server");
     }
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
-      <h1>➕ Ajouter un client</h1>
-      <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Nom :</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", marginTop: "4px" }}
-          />
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Email :</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", marginTop: "4px" }}
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#0070f3",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          {loading ? "Ajout..." : "Ajouter le client"}
-        </button>
-      </form>
-      {errorMsg && <p style={{ color: "red" }}>⚠ {errorMsg}</p>}
-    </div>
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
+      <input placeholder="Client Name" value={name} onChange={e => setName(e.target.value)} required />
+      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+      <button type="submit">Add Client</button>
+      {message && <p>{message}</p>}
+    </form>
   );
 }
