@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import Navbar from "../../components/Navbar";
+import Link from "next/link";
 
 export default function ListQuotes() {
   const [session, setSession] = useState(null);
@@ -55,6 +56,9 @@ export default function ListQuotes() {
       <Navbar />
       <div style={{ maxWidth: "600px", margin: "0 auto" }}>
         <h2>Liste des devis</h2>
+        <Link href="/quotes/add">
+          <button style={{ marginBottom: "10px" }}>Créer nouveau devis</button>
+        </Link>
         {message && <p>{message}</p>}
         {quotes.length === 0 ? (
           <p>Aucun devis trouvé.</p>
