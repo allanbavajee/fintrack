@@ -1,19 +1,17 @@
 /* pages/clients/add.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import { useRouter } from "next/router";
 
-export default function AddClientREST() {
+export default function AddClient() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [session, setSession] = useState(null);
   const [message, setMessage] = useState("");
-  const router = useRouter();
 
   useEffect(() => {
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
     };
     getSession();
 
@@ -26,6 +24,7 @@ export default function AddClientREST() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!session) {
       setMessage("Vous devez être connecté pour ajouter un client.");
       return;
@@ -40,6 +39,7 @@ export default function AddClientREST() {
             "Content-Type": "application/json",
             apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
             Authorization: `Bearer ${session.access_token}`,
+            Prefer: "return=representation",
           },
           body: JSON.stringify({
             name,
@@ -49,14 +49,15 @@ export default function AddClientREST() {
         }
       );
 
-      const data = await response.json();
-
       if (!response.ok) {
-        setMessage(`Erreur : ${JSON.stringify(data)}`);
-      } else {
-        setMessage("✅ Client ajouté avec succès !");
-        setTimeout(() => router.push("/clients"), 1500);
+        const errorText = await response.text();
+        throw new Error(errorText || "Erreur lors de l'ajout du client");
       }
+
+      await response.text(); // 🔑 pas de JSON.parse
+      setMessage("✅ Client ajouté avec succès !");
+      setName("");
+      setEmail("");
     } catch (error) {
       setMessage(`Erreur : ${error.message}`);
     }
@@ -90,3 +91,4 @@ export default function AddClientREST() {
     </div>
   );
 }
+
