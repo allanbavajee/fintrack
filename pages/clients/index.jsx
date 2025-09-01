@@ -1,6 +1,7 @@
 /* pages/clients/index.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import Navbar from "../../components/Navbar";
 
 export default function ListClients() {
   const [session, setSession] = useState(null);
