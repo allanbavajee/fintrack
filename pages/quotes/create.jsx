@@ -18,14 +18,21 @@ export default function CreateQuote() {
       setSession(session);
 
       if (session) {
-        const { data: clientsData } = await supabase
+        const { data, error } = await supabase
           .from("clients")
           .select("id, name")
-          .eq("user_id", session.user.id);
-        setClients(clientsData || []);
+          .eq("user_id", session.user.id)
+          .order("name", { ascending: true });
+
+        if (!error) setClients(data || []);
       }
     };
     load();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, s) => setSession(s)
+    );
+    return () => listener.subscription.unsubscribe();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -37,7 +44,7 @@ export default function CreateQuote() {
     }
 
     try {
-      const response = await fetch(
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/quotes`,
         {
           method: "POST",
@@ -45,7 +52,7 @@ export default function CreateQuote() {
             "Content-Type": "application/json",
             apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
             Authorization: `Bearer ${session.access_token}`,
-            Prefer: "return=representation",
+            Prefer: "return=representation", // si possible, renvoie la ligne
           },
           body: JSON.stringify({
             client_id: clientId,
@@ -56,26 +63,31 @@ export default function CreateQuote() {
         }
       );
 
-      if (!response.ok) {
-        const errorText = await response.text();
+      if (!res.ok) {
+        const errorText = await res.text();
         throw new Error(errorText || "Erreur lors de la création du devis");
       }
 
-      await response.text(); // 🔑 pas de JSON.parse
+      // ⚠️ NE PAS parser en JSON pour éviter "Unexpected end of JSON input"
+      await res.text();
+
       setMessage("✅ Devis créé avec succès !");
       setClientId("");
       setDescription("");
       setAmount("");
       router.push("/quotes");
-    } catch (error) {
-      setMessage(`Erreur : ${error.message}`);
+    } catch (err) {
+      setMessage(`Erreur : ${err.message}`);
     }
   };
 
+  if (!session) return <p>Vous devez être connecté.</p>;
+
   return (
-    <div style={{ maxWidth: "500px", margin: "0 auto" }}>
+    <div style={{ maxWidth: 600, margin: "0 auto" }}>
       <h2>Créer un devis</h2>
       {message && <p>{message}</p>}
+
       <form onSubmit={handleSubmit}>
         <div>
           <label>Client :</label>
@@ -86,12 +98,11 @@ export default function CreateQuote() {
           >
             <option value="">-- Choisir un client --</option>
             {clients.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
+              <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
         </div>
+
         <div>
           <label>Description :</label>
           <input
@@ -101,8 +112,9 @@ export default function CreateQuote() {
             required
           />
         </div>
+
         <div>
-          <label>Montant :</label>
+          <label>Montant (€) :</label>
           <input
             type="number"
             value={amount}
@@ -110,6 +122,7 @@ export default function CreateQuote() {
             required
           />
         </div>
+
         <button type="submit">Créer</button>
       </form>
     </div>
