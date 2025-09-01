@@ -1,18 +1,17 @@
 /* pages/clients/add.jsx */
-
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
 export default function AddClientREST() {
+  const [session, setSession] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [session, setSession] = useState(null);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
     };
     getSession();
 
@@ -25,7 +24,6 @@ export default function AddClientREST() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!session) {
       setMessage("Vous devez être connecté pour ajouter un client.");
       return;
@@ -40,6 +38,7 @@ export default function AddClientREST() {
             "Content-Type": "application/json",
             "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
             "Authorization": `Bearer ${session.access_token}`,
+            "Prefer": "return=representation" // ← très important
           },
           body: JSON.stringify({
             name,
@@ -49,11 +48,11 @@ export default function AddClientREST() {
         }
       );
 
-      const data = await response.json();
+      let data;
+      try { data = await response.json(); } catch { data = null; }
 
-      if (!response.ok) {
-        setMessage(`Erreur : ${JSON.stringify(data)}`);
-      } else {
+      if (!response.ok) setMessage(`Erreur : ${JSON.stringify(data) || response.statusText}`);
+      else {
         setMessage("Client ajouté avec succès !");
         setName("");
         setEmail("");
@@ -65,27 +64,11 @@ export default function AddClientREST() {
 
   return (
     <div style={{ maxWidth: "500px", margin: "0 auto" }}>
-      <h2>Ajouter un client (REST)</h2>
+      <h2>Ajouter un client</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nom :</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Email :</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+        <input type="text" placeholder="Nom" value={name} onChange={e => setName(e.target.value)} required />
+        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
         <button type="submit">Ajouter</button>
       </form>
     </div>
