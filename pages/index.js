@@ -1,77 +1,74 @@
 /* pages/index.js */
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
+import Link from "next/link";
 
-export default function Home() {
+export default function Dashboard() {
   const [session, setSession] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [stats, setStats] = useState({ clients: 0, quotes: 0, invoices: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getSession = async () => {
+    const loadData = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
+
+      if (!session) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Récupération des counts avec RLS
+        const [{ count: clients }, { count: quotes }, { count: invoices }] = await Promise.all([
+          supabase.from("clients").select("*", { count: "exact" }).eq("user_id", session.user.id),
+          supabase.from("quotes").select("*", { count: "exact" }).eq("user_id", session.user.id),
+          supabase.from("invoices").select("*", { count: "exact" }).eq("user_id", session.user.id),
+        ]);
+
+        setStats({ clients, quotes, invoices });
+      } catch (error) {
+        console.error("Erreur chargement dashboard :", error);
+      }
+      setLoading(false);
     };
-    getSession();
 
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => setSession(session)
-    );
-
-    return () => listener.subscription.unsubscribe();
+    loadData();
   }, []);
 
-  const handleSignup = async () => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) setMessage(error.message);
-    else setMessage("Inscription réussie ! Vérifie ton email.");
-  };
-
-  const handleSignin = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setMessage(error.message);
-    else setMessage("Connexion réussie !");
-  };
-
-  const handleSignout = async () => {
-    await supabase.auth.signOut();
-    setSession(null);
-    setMessage("Déconnecté avec succès.");
-  };
+  if (loading) return <p>Chargement du dashboard...</p>;
+  if (!session) return <p>Veuillez vous connecter pour voir votre dashboard.</p>;
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+    <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
       <h1>Bienvenue sur Fintrack 🚀</h1>
-      {message && <p>{message}</p>}
 
-      {!session ? (
-        <>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button onClick={handleSignup}>S'inscrire</button>
-          <button onClick={handleSignin}>Se connecter</button>
-        </>
-      ) : (
-        <>
-          <p>Connecté en tant que : {session.user.email}</p>
-          <button onClick={handleSignout}>Se déconnecter</button>
-          <p>
-            <a href="/clients/add">Ajouter un client</a> |{" "}
-            <a href="/clients">Voir mes clients</a>
-          </p>
-        </>
-      )}
+      <div style={{ display: "flex", justifyContent: "space-around", marginTop: 40 }}>
+        <div style={{ border: "1px solid #ddd", padding: 20, borderRadius: 8 }}>
+          <h3>Clients</h3>
+          <p style={{ fontSize: 24 }}>{stats.clients}</p>
+          <Link href="/clients"><button>Voir les clients</button></Link>
+          <br />
+          <Link href="/clients/add"><button style={{ marginTop: 5 }}>➕ Ajouter Client</button></Link>
+        </div>
+
+        <div style={{ border: "1px solid #ddd", padding: 20, borderRadius: 8 }}>
+          <h3>Devis</h3>
+          <p style={{ fontSize: 24 }}>{stats.quotes}</p>
+          <Link href="/quotes"><button>Voir les devis</button></Link>
+          <br />
+          <Link href="/quotes/create"><button style={{ marginTop: 5 }}>➕ Créer Devis</button></Link>
+        </div>
+
+        <div style={{ border: "1px solid #ddd", padding: 20, borderRadius: 8 }}>
+          <h3>Factures</h3>
+          <p style={{ fontSize: 24 }}>{stats.invoices}</p>
+          <Link href="/invoices"><button>Voir les factures</button></Link>
+          <br />
+          <Link href="/invoices/create"><button style={{ marginTop: 5 }}>➕ Créer Facture</button></Link>
+        </div>
+      </div>
     </div>
   );
 }
+
