@@ -38,7 +38,7 @@ export default function AddClientREST() {
             "Content-Type": "application/json",
             "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
             "Authorization": `Bearer ${session.access_token}`,
-            "Prefer": "return=representation" // ← très important
+            "Prefer": "return=representation"
           },
           body: JSON.stringify({
             name,
