@@ -1,6 +1,7 @@
 /* pages/quotes/index.jsx */
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import Navbar from "../../components/Navbar";
 
 export default function ListQuotes() {
   const [session, setSession] = useState(null);
@@ -42,23 +43,31 @@ export default function ListQuotes() {
     }
   };
 
-  if (!session) return <p>Vous devez être connecté pour voir vos devis.</p>;
+  if (!session) return (
+    <>
+      <Navbar />
+      <p>Vous devez être connecté pour voir vos devis.</p>
+    </>
+  );
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Liste des devis</h2>
-      {message && <p>{message}</p>}
-      {quotes.length === 0 ? (
-        <p>Aucun devis trouvé.</p>
-      ) : (
-        <ul>
-          {quotes.map((quote) => (
-            <li key={quote.id}>
-              {quote.description} - {quote.amount} €
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+        <h2>Liste des devis</h2>
+        {message && <p>{message}</p>}
+        {quotes.length === 0 ? (
+          <p>Aucun devis trouvé.</p>
+        ) : (
+          <ul>
+            {quotes.map((quote) => (
+              <li key={quote.id}>
+                {quote.description} - {quote.amount} €
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
   );
 }
