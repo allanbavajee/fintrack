@@ -1,17 +1,4 @@
 /* pages/clients/add.jsx */
-import Navbar from "../components/Navbar";
-
-export default function Home() {
-  return (
-    <>
-      <Navbar />
-      <div>
-        {/* Contenu de la page */}
-      </div>
-    </>
-  );
-}
-
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
