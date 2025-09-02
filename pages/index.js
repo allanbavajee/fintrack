@@ -42,21 +42,25 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", padding: 24, background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif", position: "relative" }}>
+      
       {/* Header */}
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
-          <p style={{ fontSize: "1rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</p>
+      <header style={{ display: "flex", flexDirection: "column", marginBottom: 32 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Image src="images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
+          <nav style={{ display: "flex", gap: 20, fontWeight: 500 }}>
+            <Link href="/">Accueil</Link>
+            <Link href="/clients">Clients</Link>
+            <Link href="/invoices">Invoices</Link>
+            <Link href="/quotes">Quotes</Link>
+            <Link href="/create">Créer</Link>
+          </nav>
         </div>
-        <nav style={{ display: "flex", gap: 20, fontWeight: 500 }}>
-          <Link href="/clients">Clients</Link>
-          <Link href="/invoices">Invoices</Link>
-          <Link href="/quotes">Quotes</Link>
-        </nav>
+        <p style={{ fontSize: "1rem", color: "#555", marginTop: 8 }}>Your Finances, Your Way.</p>
       </header>
 
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
+        
         {/* Personal Flow (Left) */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
@@ -94,9 +98,9 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Dashboard image pour remplir le vide */}
+          {/* Dashboard image */}
           <div style={{ marginTop: 16 }}>
-            <Image src="/images/dashboard.example.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+            <Image src="images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
         </div>
 
