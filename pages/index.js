@@ -59,11 +59,10 @@ export default function Home() {
   }, []);
 
   const cardStyle = {
-    backgroundColor: "#fff", // fond blanc complet
     borderRadius: 16,
     padding: "20px",
     marginBottom: 24,
-    boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
     maxWidth: 220,
     textAlign: "center",
     position: "relative",
@@ -71,6 +70,7 @@ export default function Home() {
     transform: animate ? "translateY(0)" : "translateY(20px)",
     transition: "opacity 0.6s ease, transform 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease",
     cursor: "pointer",
+    backgroundColor: "transparent", // suppression du fond blanc
   };
 
   const arrowSVG = (
@@ -95,17 +95,17 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", padding: 24, background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
       {/* Header */}
-      <div style={{ textAlign: "center", marginBottom: 48 }}>
+      <div style={{ textAlign: "center", marginBottom: 36 }}>
         <h1 style={{ fontSize: "3rem", marginBottom: 12 }}>Welcome to Fintrack 🚀</h1>
         <p style={{ fontSize: "1.15rem", color: "#555", maxWidth: 700, margin: "0 auto", lineHeight: 1.6 }}>
-          Manage your personal and professional finances easily. Keep track of your income, expenses, savings, and for business, create clients, generate quotations and invoices—all in one secure platform.
+          Manage your personal and professional finances easily. Keep track of your income, expenses, savings, and for business, create clients, generate quotations and invoices—all in one secure platform. Improve your financial habits with weekly tips and interactive dashboards.
         </p>
       </div>
 
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
         {/* Personal Flow (Left) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginLeft: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginLeft: 0 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div
@@ -113,11 +113,11 @@ export default function Home() {
               style={{ position: "relative" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.2)";
+                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.1)";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.08)";
               }}
             >
               <div style={{ ...cardStyle }}>
@@ -132,8 +132,8 @@ export default function Home() {
         </div>
 
         {/* Center - Buttons + Features */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400, marginTop: 100 }}>
-          <div style={{ display: "flex", gap: 16, marginBottom: 48 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
+          <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
             <Link href="/personal">
               <button style={{
                 padding: "14px 32px",
@@ -170,9 +170,9 @@ export default function Home() {
             </Link>
           </div>
 
-          <div style={{ textAlign: "center", color: "#444" }}>
+          <div style={{ textAlign: "center", color: "#444", marginBottom: 36 }}>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
-            <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.9, fontSize: "1.03rem" }}>
+            <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.7, fontSize: "1.03rem" }}>
               <li>💰 Track your personal income, expenses and savings</li>
               <li>📊 Visualize your financial health with charts</li>
               <li>📝 Create and manage clients, quotes and invoices</li>
@@ -183,7 +183,7 @@ export default function Home() {
         </div>
 
         {/* Pro Flow (Right) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginRight: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginRight: 0 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div
@@ -191,11 +191,11 @@ export default function Home() {
               style={{ position: "relative" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.2)";
+                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.1)";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.08)";
               }}
             >
               <div style={{ ...cardStyle }}>
