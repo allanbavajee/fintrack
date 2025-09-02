@@ -4,59 +4,20 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const personalSteps = [
-    {
-      step: 1,
-      title: "Income",
-      icon: "💼",
-      desc: "Track all your revenue sources like salary, freelance or passive income.",
-      extra: "💵 Salary | 🖥 Freelance | 📈 Investments",
-    },
-    {
-      step: 2,
-      title: "Expenses",
-      icon: "🛒",
-      desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.",
-      extra: "🏠 Rent | 🍔 Food | 🎮 Leisure | 🎟 Subscriptions",
-    },
-    {
-      step: 3,
-      title: "Savings",
-      icon: "🏦",
-      desc: "Set aside a percentage of your income for savings and emergency funds.",
-      extra: "💰 Bank | 🏠 Emergency Fund | 🎯 Goals",
-    },
+    { step: 1, title: "Income", icon: "💼", desc: "Track all your revenue sources like salary, freelance or passive income.", extra: "💵 Salary | 🖥 Freelance | 📈 Investments" },
+    { step: 2, title: "Expenses", icon: "🛒", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.", extra: "🏠 Rent | 🍔 Food | 🎮 Leisure | 🎟 Subscriptions" },
+    { step: 3, title: "Savings", icon: "🏦", desc: "Set aside a percentage of your income for savings and emergency funds.", extra: "💰 Bank | 🏠 Emergency Fund | 🎯 Goals" },
   ];
 
   const proSteps = [
-    {
-      step: 1,
-      title: "Clients",
-      icon: "👤",
-      desc: "Create and manage client profiles including contacts, company info, and notes.",
-      extra: "📝 Details | 📞 Contact | 🏢 Company",
-    },
-    {
-      step: 2,
-      title: "Quotation",
-      icon: "📝",
-      desc: "Generate professional quotations for clients quickly and easily.",
-      extra: "📊 Price | 🗓 Validity | ✏️ Notes",
-    },
-    {
-      step: 3,
-      title: "Invoice",
-      icon: "📄",
-      desc: "Convert quotes into invoices, track payments, and manage billing efficiently.",
-      extra: "💳 Payment | 📅 Due Date | 🧾 Status",
-    },
+    { step: 1, title: "Clients", icon: "👤", desc: "Create and manage client profiles including contacts, company info, and notes.", extra: "📝 Details | 📞 Contact | 🏢 Company" },
+    { step: 2, title: "Quotation", icon: "📝", desc: "Generate professional quotations for clients quickly and easily.", extra: "📊 Price | 🗓 Validity | ✏️ Notes" },
+    { step: 3, title: "Invoice", icon: "📄", desc: "Convert quotes into invoices, track payments, and manage billing efficiently.", extra: "💳 Payment | 📅 Due Date | 🧾 Status" },
   ];
 
   const [animate, setAnimate] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setAnimate(true), 200);
-    return () => clearTimeout(timer);
-  }, []);
+  useEffect(() => { const timer = setTimeout(() => setAnimate(true), 200); return () => clearTimeout(timer); }, []);
 
   const cardStyle = {
     borderRadius: 16,
@@ -70,30 +31,36 @@ export default function Home() {
     transform: animate ? "translateY(0)" : "translateY(20px)",
     transition: "opacity 0.6s ease, transform 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease",
     cursor: "pointer",
-    backgroundColor: "transparent", // suppression du fond blanc
+    backgroundColor: "transparent",
+  };
+
+  const flowBackgroundStyle = {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderRadius: 20,
+    background: "linear-gradient(135deg, rgba(31,111,235,0.08), rgba(14,165,160,0.08))",
+    filter: "blur(20px)",
+    zIndex: -1,
   };
 
   const arrowSVG = (
-    <svg
-      width="20"
-      height="40"
-      viewBox="0 0 20 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ margin: "0 auto", display: "block", animation: animate ? "arrowAnim 1s infinite alternate" : "none" }}
-    >
+    <svg width="20" height="40" viewBox="0 0 20 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: "0 auto", display: "block", animation: animate ? "arrowAnim 1s infinite alternate" : "none" }}>
       <path d="M10 0 V30 M10 30 L5 25 M10 30 L15 25" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <style>{`
-        @keyframes arrowAnim {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(6px); }
-        }
-      `}</style>
+      <style>{`@keyframes arrowAnim { 0% { transform: translateY(0); } 100% { transform: translateY(6px); } }`}</style>
     </svg>
   );
 
   return (
-    <div style={{ minHeight: "100vh", padding: 24, background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
+    <div style={{ minHeight: "100vh", padding: 24, background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif", position: "relative" }}>
+      {/* Background flows effect */}
+      <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0, zIndex: -2 }}>
+        <div style={{ position: "absolute", top: "5%", left: "5%", width: "40%", height: "90%", ...flowBackgroundStyle }} />
+        <div style={{ position: "absolute", top: "5%", right: "5%", width: "40%", height: "90%", ...flowBackgroundStyle }} />
+      </div>
+
       {/* Header */}
       <div style={{ textAlign: "center", marginBottom: 36 }}>
         <h1 style={{ fontSize: "3rem", marginBottom: 12 }}>Welcome to Fintrack 🚀</h1>
@@ -108,18 +75,7 @@ export default function Home() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginLeft: 0 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
-            <div
-              key={item.step}
-              style={{ position: "relative" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.08)";
-              }}
-            >
+            <div key={item.step} style={{ position: "relative" }}>
               <div style={{ ...cardStyle }}>
                 <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
                 <h3 style={{ marginBottom: 6 }}>{item.title}</h3>
@@ -136,41 +92,21 @@ export default function Home() {
           <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
             <Link href="/personal">
               <button style={{
-                padding: "14px 32px",
-                borderRadius: 12,
-                border: "none",
-                cursor: "pointer",
-                background: "linear-gradient(45deg, #1f6feb, #0ea5a0)",
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: "1.05rem",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease"
-              }}
-              onMouseEnter={(e)=>{ e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.3)"; }}
-              onMouseLeave={(e)=>{ e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.2)"; }}
-              >Personal Mode</button>
+                padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer",
+                background: "linear-gradient(45deg, #1f6feb, #0ea5a0)", color: "#fff", fontWeight: 700, fontSize: "1.05rem",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.2)", transition: "transform 0.2s ease, box-shadow 0.2s ease"
+              }}>Personal Mode</button>
             </Link>
             <Link href="/pro">
               <button style={{
-                padding: "14px 32px",
-                borderRadius: 12,
-                border: "none",
-                cursor: "pointer",
-                background: "linear-gradient(45deg, #0ea5a0, #1f6feb)",
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: "1.05rem",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease"
-              }}
-              onMouseEnter={(e)=>{ e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.3)"; }}
-              onMouseLeave={(e)=>{ e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.2)"; }}
-              >Pro Mode</button>
+                padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer",
+                background: "linear-gradient(45deg, #0ea5a0, #1f6feb)", color: "#fff", fontWeight: 700, fontSize: "1.05rem",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.2)", transition: "transform 0.2s ease, box-shadow 0.2s ease"
+              }}>Pro Mode</button>
             </Link>
           </div>
 
-          <div style={{ textAlign: "center", color: "#444", marginBottom: 36 }}>
+          <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
             <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.7, fontSize: "1.03rem" }}>
               <li>💰 Track your personal income, expenses and savings</li>
@@ -186,18 +122,7 @@ export default function Home() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginRight: 0 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
-            <div
-              key={item.step}
-              style={{ position: "relative" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.08)";
-              }}
-            >
+            <div key={item.step} style={{ position: "relative" }}>
               <div style={{ ...cardStyle }}>
                 <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
                 <h3 style={{ marginBottom: 6 }}>{item.title}</h3>
