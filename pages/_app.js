@@ -1,4 +1,3 @@
-/* pages/_app.jsx */
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 
