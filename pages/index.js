@@ -8,21 +8,21 @@ export default function Home() {
       step: 1,
       title: "Income",
       icon: "💼",
-      desc: "Track all your revenue sources like salary or freelance work.",
+      desc: "Track all your revenue sources like salary, freelance or passive income.",
       extra: "💵 Salary | 🖥 Freelance | 📈 Investments",
     },
     {
       step: 2,
       title: "Expenses",
       icon: "🛒",
-      desc: "Record all monthly expenses: rent, groceries, leisure.",
-      extra: "🏠 Rent | 🍔 Food | 🎮 Leisure",
+      desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.",
+      extra: "🏠 Rent | 🍔 Food | 🎮 Leisure | 🎟 Subscriptions",
     },
     {
       step: 3,
       title: "Savings",
       icon: "🏦",
-      desc: "Set aside a percentage of your income for savings.",
+      desc: "Set aside a percentage of your income for savings and emergency funds.",
       extra: "💰 Bank | 🏠 Emergency Fund | 🎯 Goals",
     },
   ];
@@ -32,21 +32,21 @@ export default function Home() {
       step: 1,
       title: "Clients",
       icon: "👤",
-      desc: "Create and manage client profiles with full info.",
+      desc: "Create and manage client profiles including contacts, company info, and notes.",
       extra: "📝 Details | 📞 Contact | 🏢 Company",
     },
     {
       step: 2,
       title: "Quotation",
       icon: "📝",
-      desc: "Generate quotes for clients easily and quickly.",
+      desc: "Generate professional quotations for clients quickly and easily.",
       extra: "📊 Price | 🗓 Validity | ✏️ Notes",
     },
     {
       step: 3,
       title: "Invoice",
       icon: "📄",
-      desc: "Convert quotes into invoices and track payments.",
+      desc: "Convert quotes into invoices, track payments, and manage billing efficiently.",
       extra: "💳 Payment | 📅 Due Date | 🧾 Status",
     },
   ];
@@ -59,11 +59,12 @@ export default function Home() {
   }, []);
 
   const cardStyle = {
+    backgroundColor: "#fff", // fond blanc complet
     borderRadius: 16,
-    padding: "16px",
+    padding: "20px",
     marginBottom: 24,
-    boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
-    maxWidth: 200,
+    boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
+    maxWidth: 220,
     textAlign: "center",
     position: "relative",
     opacity: animate ? 1 : 0,
@@ -92,19 +93,19 @@ export default function Home() {
   );
 
   return (
-    <div style={{ minHeight: "100vh", padding: 24, background: "#f9f9f9", fontFamily: "Inter, Arial, sans-serif" }}>
+    <div style={{ minHeight: "100vh", padding: 24, background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
       {/* Header */}
-      <div style={{ textAlign: "center", marginBottom: 36 }}>
+      <div style={{ textAlign: "center", marginBottom: 48 }}>
         <h1 style={{ fontSize: "3rem", marginBottom: 12 }}>Welcome to Fintrack 🚀</h1>
-        <p style={{ fontSize: "1.1rem", color: "#555" }}>
-          Manage your personal and professional finances easily. Choose your mode below:
+        <p style={{ fontSize: "1.15rem", color: "#555", maxWidth: 700, margin: "0 auto", lineHeight: 1.6 }}>
+          Manage your personal and professional finances easily. Keep track of your income, expenses, savings, and for business, create clients, generate quotations and invoices—all in one secure platform.
         </p>
       </div>
 
       {/* Main Layout */}
-      <div style={{ display: "flex", justifyContent: "center", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
         {/* Personal Flow (Left) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginLeft: 16 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div
@@ -112,11 +113,11 @@ export default function Home() {
               style={{ position: "relative" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.2)";
+                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.2)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 6px 18px rgba(0,0,0,0.08)";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.1)";
               }}
             >
               <div style={{ ...cardStyle }}>
@@ -131,13 +132,41 @@ export default function Home() {
         </div>
 
         {/* Center - Buttons + Features */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 360 }}>
-          <div style={{ display: "flex", gap: 16, marginBottom: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400, marginTop: 100 }}>
+          <div style={{ display: "flex", gap: 16, marginBottom: 48 }}>
             <Link href="/personal">
-              <button style={{ padding: "12px 28px", borderRadius: 10, border: "none", cursor: "pointer", backgroundColor: "#1f6feb", color: "#fff", fontWeight: 700 }}>Personal Mode</button>
+              <button style={{
+                padding: "14px 32px",
+                borderRadius: 12,
+                border: "none",
+                cursor: "pointer",
+                background: "linear-gradient(45deg, #1f6feb, #0ea5a0)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "1.05rem",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease"
+              }}
+              onMouseEnter={(e)=>{ e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.3)"; }}
+              onMouseLeave={(e)=>{ e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.2)"; }}
+              >Personal Mode</button>
             </Link>
             <Link href="/pro">
-              <button style={{ padding: "12px 28px", borderRadius: 10, border: "none", cursor: "pointer", backgroundColor: "#0ea5a0", color: "#fff", fontWeight: 700 }}>Pro Mode</button>
+              <button style={{
+                padding: "14px 32px",
+                borderRadius: 12,
+                border: "none",
+                cursor: "pointer",
+                background: "linear-gradient(45deg, #0ea5a0, #1f6feb)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "1.05rem",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease"
+              }}
+              onMouseEnter={(e)=>{ e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.3)"; }}
+              onMouseLeave={(e)=>{ e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.2)"; }}
+              >Pro Mode</button>
             </Link>
           </div>
 
@@ -154,7 +183,7 @@ export default function Home() {
         </div>
 
         {/* Pro Flow (Right) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginLeft: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginRight: 16 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div
@@ -162,11 +191,11 @@ export default function Home() {
               style={{ position: "relative" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.2)";
+                e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.2)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 6px 18px rgba(0,0,0,0.08)";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.1)";
               }}
             >
               <div style={{ ...cardStyle }}>
