@@ -100,7 +100,7 @@ export default function Home() {
 
           {/* Dashboard image */}
           <div style={{ marginTop: 16 }}>
-            <Image src="images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+            <Image src="/images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
         </div>
 
