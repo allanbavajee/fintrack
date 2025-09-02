@@ -1,155 +1,96 @@
 /* pages/index.jsx */
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [showFlows, setShowFlows] = useState(false);
-
-  // Animation fade-in
-  useEffect(() => {
-    setTimeout(() => setShowFlows(true), 300);
-  }, []);
-
-  const flowStyle = {
-    transition: "all 0.8s ease",
-    opacity: showFlows ? 1 : 0,
-    transform: showFlows ? "translateY(0)" : "translateY(30px)",
-  };
-
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        background: "#ffffff",
-        fontFamily: "Inter, Arial, sans-serif",
-        color: "#222",
-        padding: "24px",
-      }}
-    >
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#fff", padding: "32px", fontFamily: "Inter, Arial, sans-serif" }}>
       {/* Header */}
-      <h1 style={{ fontSize: "3rem", marginBottom: "12px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "3rem", fontWeight: "700", textAlign: "center", marginBottom: "12px" }}>
         Welcome to <span style={{ color: "#1f6feb" }}>Fintrack 🚀</span>
       </h1>
-      <p style={{ fontSize: "1.08rem", color: "#444", maxWidth: 680, marginBottom: "26px", textAlign: "center" }}>
+      <p style={{ fontSize: "1.1rem", textAlign: "center", color: "#444", maxWidth: 720, marginBottom: "28px" }}>
         Manage your personal and professional finances easily. Choose your mode below:
       </p>
 
       {/* Buttons */}
-      <div style={{ display: "flex", gap: 18, marginBottom: 34 }}>
+      <div style={{ display: "flex", gap: "20px", marginBottom: "40px" }}>
         <Link href="/personal">
-          <button
-            style={{
-              padding: "12px 28px",
-              fontSize: "1rem",
-              borderRadius: 10,
-              border: "none",
-              cursor: "pointer",
-              backgroundColor: "#dbeafe",
-              color: "#1f6feb",
-              fontWeight: 700,
-              boxShadow: "0 6px 18px rgba(31,111,235,0.08)",
-              transition: "transform .12s ease",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = "translateY(-3px)")}
-            onMouseOut={(e) => (e.currentTarget.style.transform = "translateY(0)")}
-          >
+          <button style={{ padding: "12px 28px", fontSize: "1rem", borderRadius: 12, border: "none", backgroundColor: "#1f6feb", color: "#fff", fontWeight: 700, cursor: "pointer", boxShadow: "0 6px 18px rgba(31,111,235,0.2)" }}>
             Personal Mode
           </button>
         </Link>
-
         <Link href="/pro">
-          <button
-            style={{
-              padding: "12px 28px",
-              fontSize: "1rem",
-              borderRadius: 10,
-              border: "none",
-              cursor: "pointer",
-              backgroundColor: "#d1fae5",
-              color: "#0ea5a0",
-              fontWeight: 700,
-              boxShadow: "0 6px 18px rgba(14,165,160,0.08)",
-              transition: "transform .12s ease",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = "translateY(-3px)")}
-            onMouseOut={(e) => (e.currentTarget.style.transform = "translateY(0)")}
-          >
+          <button style={{ padding: "12px 28px", fontSize: "1rem", borderRadius: 12, border: "none", backgroundColor: "#0ea5a0", color: "#fff", fontWeight: 700, cursor: "pointer", boxShadow: "0 6px 18px rgba(14,165,160,0.2)" }}>
             Pro Mode
           </button>
         </Link>
       </div>
 
-      {/* Main layout: flows left/right + features center */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          width: "100%",
-          maxWidth: 1000,
-          marginTop: 40,
-        }}
-      >
-        {/* Personal Flow - Left */}
-        <div style={{ flex: 1, ...flowStyle }}>
-          <h3 style={{ textAlign: "center", fontWeight: 700, color: "#1f6feb", marginBottom: 20 }}>
-            📌 Personal Flow
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
-            <div style={{ background: "#bfdbfe", padding: 16, borderRadius: 50, width: 80, height: 80, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              💵
+      {/* Main Layout with Flows */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%", maxWidth: 1200 }}>
+        
+        {/* Personal Flow Left */}
+        <div style={{ flex: 1, marginRight: "20px" }}>
+          <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#1f6feb", marginBottom: "16px" }}>📌 Personal Flow</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div style={{ backgroundColor: "#e6f7ff", padding: "16px", borderRadius: "12px", boxShadow: "0 6px 16px rgba(31,111,235,0.1)" }}>
+              <div style={{ fontWeight: 700 }}>Income 💵</div>
+              <p style={{ marginTop: "4px", fontSize: "0.95rem", color: "#555" }}>
+                Add your salary, freelance earnings, or any other income source. Track everything easily.
+              </p>
             </div>
-            <span>Income</span>
-            <span style={{ fontSize: "1.5rem", color: "#60a5fa" }}>⬇️</span>
-            <div style={{ background: "#fecaca", padding: 16, borderRadius: 50, width: 80, height: 80, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              💸
+            <div style={{ backgroundColor: "#fef3f2", padding: "16px", borderRadius: "12px", boxShadow: "0 6px 16px rgba(239,68,68,0.1)" }}>
+              <div style={{ fontWeight: 700 }}>Expenses 📊</div>
+              <p style={{ marginTop: "4px", fontSize: "0.95rem", color: "#555" }}>
+                Record your daily expenses and bills to understand where your money goes.
+              </p>
             </div>
-            <span>Expenses</span>
-            <span style={{ fontSize: "1.5rem", color: "#fca5a5" }}>⬇️</span>
-            <div style={{ background: "#fef08a", padding: 16, borderRadius: 50, width: 80, height: 80, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              🏦
+            <div style={{ backgroundColor: "#fef9c3", padding: "16px", borderRadius: "12px", boxShadow: "0 6px 16px rgba(234,179,8,0.1)" }}>
+              <div style={{ fontWeight: 700 }}>Savings 🏦</div>
+              <p style={{ marginTop: "4px", fontSize: "0.95rem", color: "#555" }}>
+                See how much you saved and plan your future goals efficiently.
+              </p>
             </div>
-            <span>Savings</span>
           </div>
         </div>
 
         {/* Features Center */}
-        <div style={{ flex: 1, textAlign: "center", padding: "0 24px" }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: 12 }}>✨ Features</h2>
-          <ul style={{ listStyle: "none", padding: 0, lineHeight: 1.9, fontSize: "1rem" }}>
-            <li>💰 Track your personal income, expenses and savings</li>
+        <div style={{ flex: 1.2, textAlign: "center", padding: "0 20px" }}>
+          <h2 style={{ fontSize: "1.6rem", fontWeight: 700, marginBottom: "18px" }}>✨ Features</h2>
+          <ul style={{ textAlign: "left", listStyle: "none", paddingLeft: 0, fontSize: "1rem", color: "#444", lineHeight: 1.8 }}>
+            <li>💰 Track income, expenses and savings</li>
             <li>📊 Visualize your financial health with charts</li>
             <li>📝 Create and manage clients, quotes and invoices</li>
-            <li>🔔 Receive weekly tips to improve your finances</li>
+            <li>🔔 Receive weekly tips to improve finances</li>
             <li>🔒 Secure and personalized experience with login</li>
           </ul>
         </div>
 
-        {/* Pro Flow - Right */}
-        <div style={{ flex: 1, ...flowStyle }}>
-          <h3 style={{ textAlign: "center", fontWeight: 700, color: "#0ea5a0", marginBottom: 20 }}>
-            📌 Pro Flow
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
-            <div style={{ background: "#d1fae5", padding: 16, borderRadius: 50, width: 80, height: 80, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              👥
+        {/* Pro Flow Right */}
+        <div style={{ flex: 1, marginLeft: "20px" }}>
+          <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0ea5a0", marginBottom: "16px" }}>📌 Pro Flow</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div style={{ backgroundColor: "#d1fae5", padding: "16px", borderRadius: "12px", boxShadow: "0 6px 16px rgba(5,150,105,0.1)" }}>
+              <div style={{ fontWeight: 700 }}>Create Client 👥</div>
+              <p style={{ marginTop: "4px", fontSize: "0.95rem", color: "#555" }}>
+                Add your clients with full details to manage your business relationships easily.
+              </p>
             </div>
-            <span>Create Client</span>
-            <span style={{ fontSize: "1.5rem", color: "#34d399" }}>⬇️</span>
-            <div style={{ background: "#fed7aa", padding: 16, borderRadius: 50, width: 80, height: 80, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              📝
+            <div style={{ backgroundColor: "#fef3c7", padding: "16px", borderRadius: "12px", boxShadow: "0 6px 16px rgba(202,138,4,0.1)" }}>
+              <div style={{ fontWeight: 700 }}>Quotation 📝</div>
+              <p style={{ marginTop: "4px", fontSize: "0.95rem", color: "#555" }}>
+                Generate professional quotes quickly for your clients and track them efficiently.
+              </p>
             </div>
-            <span>Quotation</span>
-            <span style={{ fontSize: "1.5rem", color: "#fb923c" }}>⬇️</span>
-            <div style={{ background: "#ddd6fe", padding: 16, borderRadius: 50, width: 80, height: 80, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              🧾
+            <div style={{ backgroundColor: "#ede9fe", padding: "16px", borderRadius: "12px", boxShadow: "0 6px 16px rgba(124,58,237,0.1)" }}>
+              <div style={{ fontWeight: 700 }}>Invoice 🧾</div>
+              <p style={{ marginTop: "4px", fontSize: "0.95rem", color: "#555" }}>
+                Convert quotations to invoices and track payments to stay on top of your business finances.
+              </p>
             </div>
-            <span>Invoice</span>
           </div>
         </div>
+
       </div>
     </div>
   );
