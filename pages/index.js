@@ -17,7 +17,10 @@ export default function Home() {
   ];
 
   const [animate, setAnimate] = useState(false);
-  useEffect(() => { const timer = setTimeout(() => setAnimate(true), 200); return () => clearTimeout(timer); }, []);
+  useEffect(() => { 
+    const timer = setTimeout(() => setAnimate(true), 200); 
+    return () => clearTimeout(timer); 
+  }, []);
 
   const cardStyle = {
     borderRadius: 16,
@@ -28,7 +31,7 @@ export default function Home() {
     position: "relative",
     opacity: animate ? 1 : 0,
     transform: animate ? "translateY(0)" : "translateY(20px)",
-    transition: "opacity 0.6s ease, transform 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease",
+    transition: "opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease",
     cursor: "pointer",
     backgroundColor: "transparent",
   };
@@ -45,21 +48,21 @@ export default function Home() {
       
       {/* Header */}
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
-  {/* Logo + slogan */}
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-    <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
-    <p style={{ fontSize: "1rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</p>
-  </div>
+        {/* Logo + slogan */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
+          <p style={{ fontSize: "1rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</p>
+        </div>
 
-  {/* Menu */}
-  <nav style={{ display: "flex", gap: 24, fontWeight: 500, alignItems: "center" }}>
-    <Link href="/">Accueil</Link>
-    <Link href="/clients">Clients</Link>
-    <Link href="/invoices">Invoices</Link>
-    <Link href="/quotes">Quotes</Link>
-    <Link href="/create">Créer Quotation</Link>
-  </nav>
-</header>
+        {/* Menu */}
+        <nav style={{ display: "flex", gap: 24, fontWeight: 500, alignItems: "center" }}>
+          <Link href="/">Accueil</Link>
+          <Link href="/clients">Clients</Link>
+          <Link href="/invoices">Invoices</Link>
+          <Link href="/quotes">Quotes</Link>
+          <Link href="/create">Créer Quotation</Link>
+        </nav>
+      </header>
 
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
@@ -83,7 +86,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center - Buttons + Features + dashboard image */}
+        {/* Center - Buttons + Features + dashboard */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
           <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
             <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700, fontSize:"1.05rem", boxShadow:"0 6px 16px rgba(0,0,0,0.2)", transition:"transform 0.2s ease, box-shadow 0.2s ease" }}>Personal Mode</button></Link>
