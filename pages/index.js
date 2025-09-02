@@ -47,7 +47,7 @@ export default function Home() {
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
         {/* Logo + slogan */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
+          <Image src="images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
           <p style={{ fontSize: "1rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</p>
         </div>
 
