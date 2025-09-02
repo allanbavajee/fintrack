@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
 
 export default function Home() {
   const personalSteps = [
