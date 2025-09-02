@@ -60,7 +60,7 @@ export default function Home() {
       </header>
 
       {/* Main Layout */}
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48, alignItems: "flex-start" }}>
         {/* Personal Flow (Left) */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
@@ -69,9 +69,9 @@ export default function Home() {
               <div style={cardStyle} onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
+                <h3 style={{ textAlign: "center" }}>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555", textAlign: "center" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4, textAlign: "center" }}>{item.extra}</p>
               </div>
               {index < personalSteps.length - 1 && arrowSVG}
             </div>
@@ -96,6 +96,7 @@ export default function Home() {
             </ul>
           </div>
 
+          {/* Dashboard image */}
           <div style={{ marginTop: 16 }}>
             <Image src="/images/dashboard.example.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
@@ -109,9 +110,9 @@ export default function Home() {
               <div style={cardStyle} onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
+                <h3 style={{ textAlign: "center" }}>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555", textAlign: "center" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4, textAlign: "center" }}>{item.extra}</p>
               </div>
               {index < proSteps.length - 1 && arrowSVG}
             </div>
