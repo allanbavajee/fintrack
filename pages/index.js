@@ -51,10 +51,11 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
+      
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
         
-        {/* Personal Flow (Left) */}
+        {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
@@ -74,11 +75,19 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center - Buttons + Features + Dashboard */}
+        {/* Center */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
           <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
-            <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button></Link>
-            <Link href="/pro"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button></Link>
+            <Link href="/personal">
+              <button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>
+                Personal Mode
+              </button>
+            </Link>
+            <Link href="/pro">
+              <button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>
+                Pro Mode
+              </button>
+            </Link>
           </div>
 
           <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
@@ -97,7 +106,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pro Flow (Right) */}
+        {/* Pro Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
