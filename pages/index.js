@@ -1,4 +1,5 @@
 /* pages/index.jsx */
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -43,22 +44,21 @@ export default function Home() {
     <div style={{ minHeight: "100vh", padding: 24, background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif", position: "relative" }}>
       {/* Header */}
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
-        <div>
-          <h1 style={{ fontSize: "2rem", margin: 0 }}>💹 Fintrack</h1>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
           <p style={{ fontSize: "1rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</p>
         </div>
-        <nav style={{ display: "flex", gap: 20 }}>
-          <Link href="/">Home</Link>
-          <Link href="/personal">Personal</Link>
-          <Link href="/pro">Pro</Link>
-          <Link href="/login">Login</Link>
+        <nav style={{ display: "flex", gap: 20, fontWeight: 500 }}>
+          <Link href="/clients">Clients</Link>
+          <Link href="/invoices">Invoices</Link>
+          <Link href="/quotes">Quotes</Link>
         </nav>
       </header>
 
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
         {/* Personal Flow (Left) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={item.step} style={{ position: "relative" }}>
@@ -76,7 +76,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center - Buttons + Features + mini dashboard */}
+        {/* Center - Buttons + Features + dashboard image */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
           <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
             <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700, fontSize:"1.05rem", boxShadow:"0 6px 16px rgba(0,0,0,0.2)", transition:"transform 0.2s ease, box-shadow 0.2s ease" }}>Personal Mode</button></Link>
@@ -94,15 +94,14 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Mini dashboard illustration pour remplir le vide */}
-          <div style={{ marginTop: 16, width: "100%", padding: 16, background: "#e0f7fa", borderRadius: 16 }}>
-            <h3 style={{ marginBottom: 12 }}>Example Dashboard</h3>
-            <p style={{ fontSize: 13, color: "#333" }}>See how your personal income, expenses, savings, or business clients, quotes, and invoices will be displayed here for a quick overview.</p>
+          {/* Dashboard image pour remplir le vide */}
+          <div style={{ marginTop: 16 }}>
+            <Image src="/images/dashboard.example.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
         </div>
 
         {/* Pro Flow (Right) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={item.step} style={{ position: "relative" }}>
