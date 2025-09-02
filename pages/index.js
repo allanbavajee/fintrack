@@ -45,21 +45,21 @@ export default function Home() {
       
       {/* Header */}
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
-        {/* Logo + slogan */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Image src="images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
-          <p style={{ fontSize: "1rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</p>
-        </div>
+  {/* Logo + slogan */}
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+    <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
+    <p style={{ fontSize: "1rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</p>
+  </div>
 
-        {/* Menu */}
-        <nav style={{ display: "flex", gap: 20, fontWeight: 500 }}>
-          <Link href="/">Accueil</Link>
-          <Link href="/clients">Clients</Link>
-          <Link href="/invoices">Invoices</Link>
-          <Link href="/quotes">Quotes</Link>
-          <Link href="/create">Créer Quotation</Link>
-        </nav>
-      </header>
+  {/* Menu */}
+  <nav style={{ display: "flex", gap: 24, fontWeight: 500, alignItems: "center" }}>
+    <Link href="/">Accueil</Link>
+    <Link href="/clients">Clients</Link>
+    <Link href="/invoices">Invoices</Link>
+    <Link href="/quotes">Quotes</Link>
+    <Link href="/create">Créer Quotation</Link>
+  </nav>
+</header>
 
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
