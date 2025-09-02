@@ -10,7 +10,6 @@ export default function Home() {
       icon: "💼",
       desc: "Track all your revenue sources like salary or freelance work.",
       extra: "💵 Salary | 🖥 Freelance | 📈 Investments",
-      color: "#cce5ff",
     },
     {
       step: 2,
@@ -18,7 +17,6 @@ export default function Home() {
       icon: "🛒",
       desc: "Record all monthly expenses: rent, groceries, leisure.",
       extra: "🏠 Rent | 🍔 Food | 🎮 Leisure",
-      color: "#b3ffd9",
     },
     {
       step: 3,
@@ -26,7 +24,6 @@ export default function Home() {
       icon: "🏦",
       desc: "Set aside a percentage of your income for savings.",
       extra: "💰 Bank | 🏠 Emergency Fund | 🎯 Goals",
-      color: "#fff3b3",
     },
   ];
 
@@ -37,7 +34,6 @@ export default function Home() {
       icon: "👤",
       desc: "Create and manage client profiles with full info.",
       extra: "📝 Details | 📞 Contact | 🏢 Company",
-      color: "#ffe0b3",
     },
     {
       step: 2,
@@ -45,7 +41,6 @@ export default function Home() {
       icon: "📝",
       desc: "Generate quotes for clients easily and quickly.",
       extra: "📊 Price | 🗓 Validity | ✏️ Notes",
-      color: "#d9b3ff",
     },
     {
       step: 3,
@@ -53,7 +48,6 @@ export default function Home() {
       icon: "📄",
       desc: "Convert quotes into invoices and track payments.",
       extra: "💳 Payment | 📅 Due Date | 🧾 Status",
-      color: "#ffb3b3",
     },
   ];
 
@@ -64,8 +58,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const cardStyle = (bg) => ({
-    background: bg,
+  const cardStyle = {
     borderRadius: 16,
     padding: "16px",
     marginBottom: 24,
@@ -75,8 +68,9 @@ export default function Home() {
     position: "relative",
     opacity: animate ? 1 : 0,
     transform: animate ? "translateY(0)" : "translateY(20px)",
-    transition: "opacity 0.6s ease, transform 0.6s ease",
-  });
+    transition: "opacity 0.6s ease, transform 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease",
+    cursor: "pointer",
+  };
 
   const arrowSVG = (
     <svg
@@ -108,13 +102,24 @@ export default function Home() {
       </div>
 
       {/* Main Layout */}
-      <div style={{ display: "flex", justifyContent: "center", maxWidth: 1200, margin: "0 auto", gap: 48 }}>
+      <div style={{ display: "flex", justifyContent: "center", maxWidth: 1300, margin: "0 auto", gap: 48 }}>
         {/* Personal Flow (Left) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: 32 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
-            <div key={item.step} style={{ position: "relative" }}>
-              <div style={cardStyle(item.color)}>
+            <div
+              key={item.step}
+              style={{ position: "relative" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "0 6px 18px rgba(0,0,0,0.08)";
+              }}
+            >
+              <div style={{ ...cardStyle }}>
                 <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
                 <h3 style={{ marginBottom: 6 }}>{item.title}</h3>
                 <p style={{ fontSize: 14, color: "#555" }}>{item.desc}</p>
@@ -149,11 +154,22 @@ export default function Home() {
         </div>
 
         {/* Pro Flow (Right) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginLeft: 32 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
-            <div key={item.step} style={{ position: "relative" }}>
-              <div style={cardStyle(item.color)}>
+            <div
+              key={item.step}
+              style={{ position: "relative" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "0 6px 18px rgba(0,0,0,0.08)";
+              }}
+            >
+              <div style={{ ...cardStyle }}>
                 <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
                 <h3 style={{ marginBottom: 6 }}>{item.title}</h3>
                 <p style={{ fontSize: 14, color: "#555" }}>{item.desc}</p>
