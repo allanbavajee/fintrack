@@ -27,7 +27,7 @@ export default function Header() {
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <Image
-            src="/images/fintrack.logo.png"
+            src="pages/images/fintrack.logo.png"
             alt="Fintrack Logo"
             width={40}
             height={40}
