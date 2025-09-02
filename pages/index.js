@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Header from "../components/Header";
 
 export default function Home() {
   const personalSteps = [
@@ -43,49 +44,40 @@ export default function Home() {
   );
 
   return (
-    <div style={{ minHeight: "100vh", padding: 24, background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
-      {/* Header */}
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 24px", marginBottom: 32 }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
-          <span style={{ fontSize: "0.9rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</span>
-        </div>
-        <nav style={{ display: "flex", gap: 24, fontWeight: 500, alignItems: "center" }}>
-          <Link href="/">Accueil</Link>
-          <Link href="/clients">Clients</Link>
-          <Link href="/invoices">Invoices</Link>
-          <Link href="/quotes">Quotes</Link>
-          <Link href="/create">Créer Quotation</Link>
-        </nav>
-      </header>
+    <div style={{ minHeight: "100vh", background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
+      <Header />
 
       {/* Main Layout */}
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", gap: 48, alignItems: "flex-start" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
+
         {/* Personal Flow (Left) */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
+          <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
-              <div style={cardStyle} onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
+              <div
+                style={cardStyle}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
-                <h3 style={{ textAlign: "center" }}>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555", textAlign: "center" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 4, textAlign: "center" }}>{item.extra}</p>
+                <h3>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
               </div>
               {index < personalSteps.length - 1 && arrowSVG}
             </div>
           ))}
         </div>
 
-        {/* Center */}
+        {/* Center - Buttons + Features + Dashboard */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
           <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
             <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button></Link>
             <Link href="/pro"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button></Link>
           </div>
 
-          <div style={{ textAlign: "center", color: "#444", marginBottom: 16 }}>
+          <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
             <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
               <li>💰 Track your personal income, expenses and savings</li>
@@ -96,7 +88,6 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Dashboard image */}
           <div style={{ marginTop: 16 }}>
             <Image src="/images/dashboard.example.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
@@ -104,15 +95,18 @@ export default function Home() {
 
         {/* Pro Flow (Right) */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
+          <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
-              <div style={cardStyle} onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
+              <div
+                style={cardStyle}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
-                <h3 style={{ textAlign: "center" }}>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555", textAlign: "center" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 4, textAlign: "center" }}>{item.extra}</p>
+                <h3>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
               </div>
               {index < proSteps.length - 1 && arrowSVG}
             </div>
