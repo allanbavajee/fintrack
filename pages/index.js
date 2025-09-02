@@ -1,79 +1,139 @@
 /* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const personalSteps = [
-    { title: "Income", desc: "Track all your personal revenue sources like salary, freelance, or passive income." },
-    { title: "Expenses", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure." },
-    { title: "Savings", desc: "Set aside a percentage of your income for savings and emergency funds." },
+    { title: "Income", icon: "💼", desc: "Track all your revenue sources like salary, freelance or passive income.", extra: "💵 Salary | 🖥 Freelance | 📈 Investments" },
+    { title: "Expenses", icon: "🛒", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.", extra: "🏠 Rent | 🍔 Food | 🎮 Leisure | 🎟 Subscriptions" },
+    { title: "Savings", icon: "🏦", desc: "Set aside a percentage of your income for savings and emergency funds.", extra: "💰 Bank | 🏠 Emergency Fund | 🎯 Goals" },
   ];
 
   const proSteps = [
-    { title: "Clients", desc: "Create and manage client profiles including contacts and company info." },
-    { title: "Quotations", desc: "Generate professional quotations quickly and easily." },
-    { title: "Invoices", desc: "Convert quotes into invoices, track payments, and manage billing." },
+    { title: "Clients", icon: "👤", desc: "Create and manage client profiles including contacts, company info, and notes.", extra: "📝 Details | 📞 Contact | 🏢 Company" },
+    { title: "Quotation", icon: "📝", desc: "Generate professional quotations for clients quickly and easily.", extra: "📊 Price | 🗓 Validity | ✏️ Notes" },
+    { title: "Invoice", icon: "📄", desc: "Convert quotes into invoices, track payments, and manage billing efficiently.", extra: "💳 Payment | 📅 Due Date | 🧾 Status" },
   ];
 
+  const [animate, setAnimate] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setAnimate(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const cardStyle = {
+    borderRadius: 16,
+    padding: "16px",
+    marginBottom: 16,
+    maxWidth: 220,
+    textAlign: "center",
+    opacity: animate ? 1 : 0,
+    transform: animate ? "translateY(0)" : "translateY(20px)",
+    transition: "opacity 0.6s ease, transform 0.6s ease, boxShadow 0.3s ease",
+    cursor: "pointer",
+    backgroundColor: "transparent",
+  };
+
+  const arrowSVG = (
+    <svg
+      width="20"
+      height="40"
+      viewBox="0 0 20 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ margin: "0 auto", display: "block", animation: animate ? "arrowAnim 1s infinite alternate" : "none" }}
+    >
+      <path d="M10 0 V30 M10 30 L5 25 M10 30 L15 25" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <style>{`@keyframes arrowAnim { 0% { transform: translateY(0); } 100% { transform: translateY(6px); } }`}</style>
+    </svg>
+  );
+
   return (
-    <main style={{ fontFamily: "Inter, Arial, sans-serif" }}>
-      {/* Hero Section */}
-      <section style={{ textAlign: "center", padding: "80px 24px", background: "#f2f5f8" }}>
+    <div style={{ minHeight: "100vh", background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
+
+      {/* ---------------- HEADER ---------------- */}
+      <section style={{ textAlign: "center", padding: "60px 24px" }}>
         <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>WELCOME TO FINTRACK</h1>
         <p style={{ fontSize: "1.1rem", color: "#555", marginBottom: 32 }}>
           Manage your personal and professional finances with simplicity and clarity.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
           <Link href="/personal">
-            <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", background: "#1f6feb", color: "#fff", cursor: "pointer" }}>
-              Personal Mode
-            </button>
+            <button style={{ padding:"14px 32px", borderRadius:12, border:"none", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button>
           </Link>
           <Link href="/pro">
-            <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", background: "#0ea5a0", color: "#fff", cursor: "pointer" }}>
-              Pro Mode
-            </button>
+            <button style={{ padding:"14px 32px", borderRadius:12, border:"none", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button>
           </Link>
         </div>
       </section>
 
-      {/* Flows Section */}
-      <section style={{ display: "flex", justifyContent: "space-around", padding: "60px 24px", maxWidth: 1200, margin: "0 auto" }}>
+      {/* ---------------- MAIN LAYOUT ---------------- */}
+      <section style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto 48px", gap: 48 }}>
         
-        {/* Personal Flow */}
-        <div style={{ width: "30%", textAlign: "center" }}>
+        {/* Personal Flow (Left) */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
-          {personalSteps.map((step, i) => (
-            <div key={i} style={{ marginBottom: 24, padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
-              <h3>{step.title}</h3>
-              <p style={{ color: "#555" }}>{step.desc}</p>
+          {personalSteps.map((item, index) => (
+            <div key={index} style={{ position: "relative" }}>
+              <div
+                style={cardStyle}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
+                <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
+                <h3>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
+              </div>
+              {index < personalSteps.length - 1 && arrowSVG}
             </div>
           ))}
         </div>
 
-        {/* Central Illustration */}
-        <div style={{ width: "30%", textAlign: "center" }}>
-          <Image src="/dash.png" alt="Dashboard" width={300} height={200} style={{ borderRadius: 16 }} />
+        {/* Center (Features + Dashboard) */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
+          <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
+            <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
+            <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
+              <li>💰 Track your personal income, expenses and savings</li>
+              <li>📊 Visualize your financial health with charts</li>
+              <li>📝 Create and manage clients, quotes and invoices</li>
+              <li>🔔 Receive weekly tips to improve your finances</li>
+              <li>🔒 Secure and personalized experience with login</li>
+            </ul>
+          </div>
+          <div style={{ marginTop: 16 }}>
+            <Image src="/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+          </div>
         </div>
 
-        {/* Pro Flow */}
-        <div style={{ width: "30%", textAlign: "center" }}>
+        {/* Pro Flow (Right) */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
-          {proSteps.map((step, i) => (
-            <div key={i} style={{ marginBottom: 24, padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
-              <h3>{step.title}</h3>
-              <p style={{ color: "#555" }}>{step.desc}</p>
+          {proSteps.map((item, index) => (
+            <div key={index} style={{ position: "relative" }}>
+              <div
+                style={cardStyle}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
+                <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
+                <h3>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
+              </div>
+              {index < proSteps.length - 1 && arrowSVG}
             </div>
           ))}
         </div>
-
       </section>
 
-      {/* Footer */}
-      <footer style={{ textAlign: "center", padding: "32px 24px", background: "#f9fafb", borderTop: "1px solid #ddd", color: "#555" }}>
-        © 2025 Fintrack. All rights reserved.
+      {/* ---------------- FOOTER ---------------- */}
+      <footer style={{ textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
+        © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/contact">Contact</Link>
       </footer>
-    </main>
+    </div>
   );
 }
 
