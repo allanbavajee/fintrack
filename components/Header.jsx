@@ -45,24 +45,6 @@ export default function Header() {
           <Link href="/quotes">Quotes</Link>
           <Link href="/create-quote">Créer Quotation</Link>
         </nav>
-
-        {/* Login / Signup */}
-        <div>
-          <Link href="/login">Login</Link> | <Link href="/signup">Signup</Link>
-        </div>
-      </div>
-
-      {/* Slogan */}
-      <p
-        style={{
-          marginTop: 8,
-          fontSize: "0.95rem",
-          color: "#555",
-          fontStyle: "italic",
-        }}
-      >
-        Gérez vos finances personnelles et professionnelles en toute simplicité.
-      </p>
-    </header>
+       
   );
 }
