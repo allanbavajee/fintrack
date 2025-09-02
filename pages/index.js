@@ -30,7 +30,7 @@ export default function Home() {
     textAlign: "center",
     opacity: animate ? 1 : 0,
     transform: animate ? "translateY(0)" : "translateY(20px)",
-    transition: "opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease",
+    transition: "opacity 0.6s ease, transform 0.6s ease, boxShadow 0.3s ease",
     cursor: "pointer",
     backgroundColor: "transparent",
   };
@@ -51,7 +51,6 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
-      
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
         
@@ -78,16 +77,8 @@ export default function Home() {
         {/* Center */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
           <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
-            <Link href="/personal">
-              <button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>
-                Personal Mode
-              </button>
-            </Link>
-            <Link href="/pro">
-              <button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>
-                Pro Mode
-              </button>
-            </Link>
+            <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button></Link>
+            <Link href="/pro"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button></Link>
           </div>
 
           <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
@@ -134,3 +125,4 @@ export default function Home() {
     </div>
   );
 }
+
