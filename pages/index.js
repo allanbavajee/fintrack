@@ -36,7 +36,14 @@ export default function Home() {
   };
 
   const arrowSVG = (
-    <svg width="20" height="40" viewBox="0 0 20 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: "0 auto", display: "block", animation: animate ? "arrowAnim 1s infinite alternate" : "none" }}>
+    <svg
+      width="20"
+      height="40"
+      viewBox="0 0 20 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ margin: "0 auto", display: "block", animation: animate ? "arrowAnim 1s infinite alternate" : "none" }}
+    >
       <path d="M10 0 V30 M10 30 L5 25 M10 30 L15 25" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       <style>{`@keyframes arrowAnim { 0% { transform: translateY(0); } 100% { transform: translateY(6px); } }`}</style>
     </svg>
@@ -44,11 +51,9 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
-      <Header />
-
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
-
+        
         {/* Personal Flow (Left) */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
@@ -88,7 +93,7 @@ export default function Home() {
           </div>
 
           <div style={{ marginTop: 16 }}>
-            <Image src="pages/images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+            <Image src="/images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
         </div>
 
