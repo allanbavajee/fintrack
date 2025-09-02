@@ -1,48 +1,35 @@
-/* components/Navbar.jsx */
+/* components/Header.jsx */
+import Image from "next/image";
 import Link from "next/link";
-import { supabase } from "../lib/supabaseClient";
-import { useState, useEffect } from "react";
 
-export default function Navbar() {
-  const [session, setSession] = useState(null);
-
-  useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-    };
-    getSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => setSession(session)
-    );
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  const handleSignout = async () => {
-    await supabase.auth.signOut();
-    setSession(null);
-  };
-
+export default function Header() {
   return (
-    <nav style={{ display: "flex", gap: 12, padding: 10, borderBottom: "1px solid #ddd" }}>
-      <Link href="/">Accueil</Link>
-      {session && <Link href="/clients">Clients</Link>}
-      {session && <Link href="/invoices">Invoices</Link>}
-      {session && <Link href="/quotes">Quotes</Link>}
-      {/* 🔁 lien unifié vers /quotes/create (plus /quotes/add) */}
-      {session && <Link href="/quotes/create">Créer Quotation</Link>}
-
-      <div style={{ marginLeft: "auto" }}>
-        {!session ? (
-          <Link href="/">Login / Signup</Link>
-        ) : (
-          <>
-            <span>{session.user.email}</span>
-            <button onClick={handleSignout} style={{ marginLeft: 10 }}>Logout</button>
-          </>
-        )}
+    <header style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "16px 48px",
+      backgroundColor: "#f2f5f8",
+      borderBottom: "1px solid #ddd",
+      position: "sticky",
+      top: 0,
+      zIndex: 1000
+    }}>
+      {/* Logo + Slogan */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={60} />
+        <span style={{ fontSize: "0.9rem", color: "#555", marginTop: 4 }}>Your Finances, Your Way.</span>
       </div>
-    </nav>
+
+      {/* Menu */}
+      <nav style={{ display: "flex", gap: 24, fontWeight: 500, alignItems: "center" }}>
+        <Link href="/">Accueil</Link>
+        <Link href="/clients">Clients</Link>
+        <Link href="/invoices">Invoices</Link>
+        <Link href="/quotes">Quotes</Link>
+        <Link href="/create">Créer Quotation</Link>
+        <Link href="/login">Login/Signup</Link>
+      </nav>
+    </header>
   );
 }
