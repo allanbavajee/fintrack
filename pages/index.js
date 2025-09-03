@@ -1,3 +1,4 @@
+/* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -51,25 +52,31 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 24 }}>
       
-      {/* Login / Signup en haut à droite */}
-      <div style={{ display: "flex", justifyContent: "flex-end", maxWidth: 1300, margin: "0 auto", paddingRight: 16 }}>
-        <Link href="/login"><button style={{ marginRight: 12, padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>Login</button></Link>
-        <Link href="/signup"><button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>Signup</button></Link>
+      {/* Header Menu + Login/Signup */}
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
+        {/* Menu à gauche */}
+        <nav style={{ display: "flex", gap: 24 }}>
+          <Link href="/">Home</Link>
+          <Link href="/about">About Us</Link>
+          <Link href="/contact">Contact</Link>
+        </nav>
+
+        {/* Login/Signup en haut à droite */}
+        <div style={{ display: "flex", gap: 12 }}>
+          <Link href="/login"><button style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>Login</button></Link>
+          <Link href="/signup"><button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>Signup</button></Link>
+        </div>
       </div>
 
-      {/* Layout principal: flows + welcome */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "32px auto" }}>
-        
+      {/* Layout principal */}
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", maxWidth: 1300, margin: "32px auto", gap: 48 }}>
+
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 120 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
-              <div
-                style={cardStyle}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
+              <div style={cardStyle}>
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
                 <h3>{item.title}</h3>
                 <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
@@ -80,27 +87,21 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Centre: Welcome + Description + Mode Buttons + Features + Dashboard + Socials */}
+        {/* Centre */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 600, textAlign: "center" }}>
-          
-          {/* Welcome & Description */}
           <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-          <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 32 }}>
             Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience that empowers you to take control of your money.
           </p>
 
-          {/* Boutons Personal / Pro */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 32 }}>
-            <Link href="/personal">
-              <button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#ff7f50", color: "#fff", fontWeight: 700, fontSize: "1.2rem" }}>Personal Mode</button>
-            </Link>
-            <Link href="/pro">
-              <button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.2rem" }}>Pro Mode</button>
-            </Link>
+          {/* Boutons Mode */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
+            <Link href="/personal"><button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#ff7f50", color: "#fff", fontWeight: 700, fontSize: "1.2rem" }}>Personal Mode</button></Link>
+            <Link href="/pro"><button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.2rem" }}>Pro Mode</button></Link>
           </div>
 
           {/* Features */}
-          <div style={{ marginTop: 32 }}>
+          <div>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
             <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
               <li>💰 Track your personal income, expenses and savings</li>
@@ -118,23 +119,19 @@ export default function Home() {
 
           {/* Réseaux sociaux */}
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
-            <Link href="https://www.facebook.com"><Image src="/images/facebook.png" alt="Facebook" width={32} height={32} /></Link>
-            <Link href="https://www.tiktok.com"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></Link>
-            <Link href="https://www.whatsapp.com"><Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} /></Link>
-            <Link href="https://www.linkedin.com"><Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} /></Link>
+            <Link href="#"><Image src="/images/facebook.png" alt="Facebook" width={32} height={32} /></Link>
+            <Link href="#"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></Link>
+            <Link href="#"><Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} /></Link>
+            <Link href="#"><Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} /></Link>
           </div>
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 120 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
-              <div
-                style={cardStyle}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
+              <div style={cardStyle}>
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
                 <h3>{item.title}</h3>
                 <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
