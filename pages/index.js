@@ -98,4 +98,47 @@ export default function Home() {
       </div>
 
       {/* Personal / Pro Flow */}
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
+        {/* Personal Flow */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
+          {personalSteps.map((item, index) => (
+            <div key={index} style={{ position: "relative" }}>
+              <div
+                style={cardStyle}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
+                <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
+                <h3>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
+              </div>
+              {index < personalSteps.length - 1 && arrowSVG}
+            </div>
+          ))}
+        </div>
+
+        {/* Pro Flow */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
+          {proSteps.map((item, index) => (
+            <div key={index} style={{ position: "relative" }}>
+              <div
+                style={cardStyle}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
+                <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
+                <h3>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
+              </div>
+              {index < proSteps.length - 1 && arrowSVG}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
