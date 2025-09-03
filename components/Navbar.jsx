@@ -16,7 +16,7 @@ export default function Navbar() {
     >
       {/* Logo */}
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={50} />
+        <img src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={50} />
         <span style={{ fontWeight: "bold", fontSize: "1.1rem" }}>Fintrack</span>
       </div>
 
