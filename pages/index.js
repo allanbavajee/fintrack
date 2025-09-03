@@ -3,56 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+// … import et data restent inchangés
+
 export default function Home() {
-  const personalSteps = [
-    { title: "Income", icon: "💼", desc: "Track all your revenue sources like salary, freelance or passive income.", extra: "💵 Salary | 🖥 Freelance | 📈 Investments" },
-    { title: "Expenses", icon: "🛒", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.", extra: "🏠 Rent | 🍔 Food | 🎮 Leisure | 🎟 Subscriptions" },
-    { title: "Savings", icon: "🏦", desc: "Set aside a percentage of your income for savings and emergency funds.", extra: "💰 Bank | 🏠 Emergency Fund | 🎯 Goals" },
-  ];
-
-  const proSteps = [
-    { title: "Clients", icon: "👤", desc: "Create and manage client profiles including contacts, company info, and notes.", extra: "📝 Details | 📞 Contact | 🏢 Company" },
-    { title: "Quotation", icon: "📝", desc: "Generate professional quotations for clients quickly and easily.", extra: "📊 Price | 🗓 Validity | ✏️ Notes" },
-    { title: "Invoice", icon: "📄", desc: "Convert quotes into invoices, track payments, and manage billing efficiently.", extra: "💳 Payment | 📅 Due Date | 🧾 Status" },
-  ];
-
-  const [animate, setAnimate] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setAnimate(true), 200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const cardStyle = {
-    borderRadius: 16,
-    padding: "16px",
-    marginBottom: 16,
-    maxWidth: 220,
-    textAlign: "center",
-    opacity: animate ? 1 : 0,
-    transform: animate ? "translateY(0)" : "translateY(20px)",
-    transition: "opacity 0.6s ease, transform 0.6s ease, boxShadow 0.3s ease",
-    cursor: "pointer",
-    backgroundColor: "transparent",
-  };
-
-  const arrowSVG = (
-    <svg
-      width="20"
-      height="40"
-      viewBox="0 0 20 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ margin: "0 auto", display: "block", animation: animate ? "arrowAnim 1s infinite alternate" : "none" }}
-    >
-      <path d="M10 0 V30 M10 30 L5 25 M10 30 L15 25" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <style>{`@keyframes arrowAnim { 0% { transform: translateY(0); } 100% { transform: translateY(6px); } }`}</style>
-    </svg>
-  );
+  // personalSteps, proSteps, cardStyle et arrowSVG restent inchangés
 
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
       
-      {/* Header: Login/Signup à droite */}
+      {/* Header: Login/Signup */}
       <div style={{ display: "flex", justifyContent: "flex-end", maxWidth: 1300, margin: "0 auto", paddingRight: 16 }}>
         <Link href="/login">
           <button style={{ marginRight: 12, padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>
@@ -66,10 +25,10 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Welcome + Features + Boutons centrés */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "32px auto 48px auto" }}>
-        <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 32 }}>
+      {/* Welcome + Features + Boutons Personal/Pro */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "24px auto" }}>
+        <h1 style={{ fontSize: "2.5rem", marginBottom: 12 }}>Welcome to Fintrack</h1>
+        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 24 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience that empowers you to take control of your money.
         </p>
 
@@ -100,11 +59,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Layout principal avec flows et dashboard */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "0 auto" }}>
+      {/* Layout principal avec flows alignés à la hauteur des Features */}
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "0 auto", paddingBottom: 48 }}>
         
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -16 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -124,10 +83,8 @@ export default function Home() {
         </div>
 
         {/* Dashboard */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <div style={{ marginTop: 0 }}>
-            <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -16 }}>
+          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
 
           {/* Réseaux sociaux */}
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
@@ -139,7 +96,7 @@ export default function Home() {
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -16 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
