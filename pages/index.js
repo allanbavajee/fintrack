@@ -49,38 +49,32 @@ export default function Home() {
   );
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
       
-      {/* ---------------- HEADER ---------------- */}
-      <section style={{ textAlign: "center", padding: "60px 24px" }}>
-        <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>WELCOME TO FINTRACK</h1>
-        <p style={{ fontSize: "1.1rem", color: "#555", marginBottom: 32 }}>
-          Manage your personal and professional finances with simplicity and clarity.
-        </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-          <Link href="/personal">
-            <button style={{ padding:"14px 32px", borderRadius:12, border:"none", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button>
-          </Link>
-          <Link href="/pro">
-            <button style={{ padding:"14px 32px", borderRadius:12, border:"none", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button>
-          </Link>
-        </div>
-      </section>
+      {/* Login / Signup top right */}
+      <div style={{ display: "flex", justifyContent: "flex-end", padding: "16px 32px" }}>
+        <Link href="/login"><button style={{ marginRight: 12, padding: "10px 20px", borderRadius: 12, border: "none", background: "#1f6feb", color: "#fff", cursor: "pointer" }}>Login</button></Link>
+        <Link href="/signup"><button style={{ padding: "10px 20px", borderRadius: 12, border: "none", background: "#0ea5a0", color: "#fff", cursor: "pointer" }}>Signup</button></Link>
+      </div>
 
-      {/* ---------------- MAIN LAYOUT ---------------- */}
-      <section
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          maxWidth: 1300,
-          margin: "0 auto 48px",
-          gap: 48,
-          flexWrap: "wrap", // permet d’empiler sur petit écran
-        }}
-      >
+      {/* Welcome Section */}
+      <div style={{ textAlign: "center", padding: "40px 16px" }}>
+        <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
+        <p style={{ fontSize: "1.1rem", color: "#555", maxWidth: 600, margin: "0 auto" }}>
+          Manage your personal and professional finances efficiently with our intuitive tools and dashboard.
+        </p>
+        <div style={{ marginTop: 24, display: "flex", justifyContent: "center", gap: 16 }}>
+          <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button></Link>
+          <Link href="/pro"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button></Link>
+        </div>
+      </div>
+
+      {/* Main Layout */}
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
+        
         {/* Personal Flow */}
-        <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
@@ -99,7 +93,7 @@ export default function Home() {
         </div>
 
         {/* Center Features */}
-        <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
           <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
             <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
@@ -111,13 +105,13 @@ export default function Home() {
             </ul>
           </div>
           <div style={{ marginTop: 16 }}>
-            <Image src="/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16, maxWidth: "100%", height: "auto" }} />
+            <Image src="/images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
         </div>
 
         {/* Pro Flow */}
-        <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
@@ -134,10 +128,10 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* ---------------- FOOTER ---------------- */}
-      <footer style={{ textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
+      {/* Footer */}
+      <footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
         © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/contact">Contact</Link>
       </footer>
     </div>
