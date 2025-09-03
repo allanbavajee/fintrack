@@ -1,18 +1,18 @@
 /* pages/personal.jsx */
 import { useState } from "react";
 
-export default function PersonalMode() {
+export default function PersonalCoach() {
   // Transactions
   const [transactions, setTransactions] = useState([]);
-  const [type, setType] = useState("expense"); // expense ou income
+  const [type, setType] = useState("expense");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [notes, setNotes] = useState("");
 
-  // Ratios
-  const [expenseRatio, setExpenseRatio] = useState(33);
-  const [savingsRatio, setSavingsRatio] = useState(33);
-  const [leisureRatio, setLeisureRatio] = useState(34);
+  // Ratios par défaut (50/30/20)
+  const [needsRatio, setNeedsRatio] = useState(50);
+  const [leisureRatio, setLeisureRatio] = useState(30);
+  const [savingsRatio, setSavingsRatio] = useState(20);
 
   // Ajouter transaction
   const addTransaction = () => {
@@ -24,21 +24,23 @@ export default function PersonalMode() {
   // Calculs
   const totalIncome = transactions.filter(t => t.type === "income").reduce((a,b)=>a+b.amount,0);
   const totalExpense = transactions.filter(t => t.type === "expense").reduce((a,b)=>a+b.amount,0);
-  const savingsGoal = totalIncome * (savingsRatio / 100);
+  const totalNeeds = totalExpense * (needsRatio/100);
+  const totalLeisure = totalExpense * (leisureRatio/100);
+  const totalSavings = totalIncome * (savingsRatio/100);
 
-  // Conseils
+  // Conseils dynamiques
   let advice = "";
-  if (totalExpense > totalIncome * (expenseRatio/100)) {
-    advice = "Attention : tes dépenses dépassent le ratio conseillé !";
-  } else if (totalExpense < totalIncome * (expenseRatio/100)) {
-    advice = "Bien joué ! Tes dépenses sont sous le ratio prévu.";
+  if (totalExpense > totalIncome * (needsRatio/100 + leisureRatio/100)) {
+    advice = "Attention : tes dépenses dépassent ton budget prévu !";
+  } else if (totalExpense < totalIncome * ((needsRatio+leisureRatio)/100)) {
+    advice = "Bien joué ! Tes dépenses respectent tes objectifs.";
   }
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", fontFamily: "Inter, Arial, sans-serif", padding: 16 }}>
       <h1 style={{ textAlign: "center", marginBottom: 24 }}>Personal Finance Coach</h1>
 
-      {/* Dashboard résumé */}
+      {/* Dashboard */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 32 }}>
         <div style={{ textAlign: "center" }}>
           <h3>Solde</h3>
@@ -54,14 +56,36 @@ export default function PersonalMode() {
         </div>
         <div style={{ textAlign: "center" }}>
           <h3>Épargne Objectif</h3>
-          <p style={{ fontSize: 24, fontWeight: 600 }}>{savingsGoal.toFixed(2)} €</p>
+          <p style={{ fontSize: 24, fontWeight: 600 }}>{totalSavings.toFixed(2)} €</p>
         </div>
       </div>
 
-      {/* Ajouter Transaction */}
+      {/* Ratios et conseils */}
+      <div style={{ marginBottom: 32, padding:16, border:"1px solid #ddd", borderRadius:8, background:"#f9f9f9" }}>
+        <h2>Ratios budgétaires</h2>
+        <div style={{ display:"flex", gap:16, flexWrap:"wrap" }}>
+          <div>
+            <label>Besoins essentiels (%)</label><br/>
+            <input type="number" value={needsRatio} onChange={e=>setNeedsRatio(parseInt(e.target.value))} />
+          </div>
+          <div>
+            <label>Loisirs (%)</label><br/>
+            <input type="number" value={leisureRatio} onChange={e=>setLeisureRatio(parseInt(e.target.value))} />
+          </div>
+          <div>
+            <label>Épargne (%)</label><br/>
+            <input type="number" value={savingsRatio} onChange={e=>setSavingsRatio(parseInt(e.target.value))} />
+          </div>
+        </div>
+        <div style={{ marginTop:16, padding:16, background:"#e0f7fa", borderRadius:8 }}>
+          <strong>Conseil du coach : </strong>{advice || "Gérez vos finances pour respecter vos objectifs."}
+        </div>
+      </div>
+
+      {/* Ajouter transaction */}
       <div style={{ marginBottom: 32 }}>
         <h2>Ajouter une transaction</h2>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
           <select value={type} onChange={e=>setType(e.target.value)}>
             <option value="expense">Dépense</option>
             <option value="income">Revenu</option>
@@ -77,9 +101,9 @@ export default function PersonalMode() {
       <div style={{ marginBottom: 32 }}>
         <h2>Historique des transactions</h2>
         {transactions.length === 0 ? <p>Aucune transaction</p> :
-          <table style={{ width: "100%", borderCollapse:"collapse" }}>
+          <table style={{ width:"100%", borderCollapse:"collapse" }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid #ccc" }}>
+              <tr style={{ borderBottom:"1px solid #ccc" }}>
                 <th style={{ textAlign:"left" }}>Date</th>
                 <th style={{ textAlign:"left" }}>Type</th>
                 <th style={{ textAlign:"left" }}>Montant</th>
@@ -89,7 +113,7 @@ export default function PersonalMode() {
             </thead>
             <tbody>
               {transactions.map((t,i)=>(
-                <tr key={i} style={{ borderBottom: "1px solid #eee" }}>
+                <tr key={i} style={{ borderBottom:"1px solid #eee" }}>
                   <td>{t.date.toLocaleDateString()}</td>
                   <td>{t.type}</td>
                   <td>{t.amount.toFixed(2)} €</td>
@@ -102,16 +126,6 @@ export default function PersonalMode() {
         }
       </div>
 
-      {/* Ratios et Conseils */}
-      <div style={{ marginBottom: 32 }}>
-        <h2>Ratios financiers</h2>
-        <p>Dépenses : <input type="number" value={expenseRatio} onChange={e=>setExpenseRatio(parseInt(e.target.value))} /> %</p>
-        <p>Épargne : <input type="number" value={savingsRatio} onChange={e=>setSavingsRatio(parseInt(e.target.value))} /> %</p>
-        <p>Loisirs : <input type="number" value={leisureRatio} onChange={e=>setLeisureRatio(parseInt(e.target.value))} /> %</p>
-        <div style={{ marginTop:16, padding:16, background:"#f0f8ff", borderRadius:8 }}>
-          <strong>Conseil : </strong> {advice || "Gérez vos finances pour respecter vos objectifs."}
-        </div>
-      </div>
     </div>
   )
 }
