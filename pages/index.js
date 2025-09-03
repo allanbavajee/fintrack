@@ -50,57 +50,11 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 24 }}>
-      {/* Welcome */}
-      <div style={{ textAlign: "center", marginTop: 64, maxWidth: 800, marginLeft: "auto", marginRight: "auto" }}>
-        <h1 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
-          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack.
-        </p>
-      </div>
+      {/* Section principale en grille */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 48, maxWidth: 1300, margin: "0 auto" }}>
 
-      {/* Boutons Personal / Pro */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 32 }}>
-        <Link href="/personal">
-          <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer", background: "linear-gradient(45deg, #1f6feb, #0ea5a0)", color: "#fff", fontWeight: 700 }}>
-            Personal Mode
-          </button>
-        </Link>
-        <Link href="/pro">
-          <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer", background: "linear-gradient(45deg, #0ea5a0, #1f6feb)", color: "#fff", fontWeight: 700 }}>
-            Pro Mode
-          </button>
-        </Link>
-      </div>
-
-      {/* Features */}
-      <div style={{ textAlign: "center", marginTop: 48 }}>
-        <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
-        <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
-          <li>💰 Track your personal income, expenses and savings</li>
-          <li>📊 Visualize your financial health with charts</li>
-          <li>📝 Create and manage clients, quotes and invoices</li>
-          <li>🔔 Receive weekly tips to improve your finances</li>
-          <li>🔒 Secure and personalized experience with login</li>
-        </ul>
-      </div>
-
-      {/* Dashboard Image */}
-      <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
-        <Image src="/images/fintrack.logo.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
-      </div>
-
-      {/* Réseaux sociaux */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
-        <Image src="/images/facebook.png" alt="Facebook" width={32} height={32} />
-        <Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} />
-        <Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} />
-        <Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} />
-      </div>
-
-      {/* Personal / Pro Flow */}
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
-        {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        {/* Personal Flow à gauche */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 32 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -119,8 +73,55 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        {/* Centre: Welcome, description, boutons, features, dashboard, réseaux */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 600, textAlign: "center" }}>
+          <h1 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
+          <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 32 }}>
+            Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack.
+          </p>
+
+          {/* Boutons Personal / Pro */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
+            <Link href="/personal">
+              <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer", background: "linear-gradient(45deg, #1f6feb, #0ea5a0)", color: "#fff", fontWeight: 700 }}>
+                Personal Mode
+              </button>
+            </Link>
+            <Link href="/pro">
+              <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer", background: "linear-gradient(45deg, #0ea5a0, #1f6feb)", color: "#fff", fontWeight: 700 }}>
+                Pro Mode
+              </button>
+            </Link>
+          </div>
+
+          {/* Features */}
+          <div>
+            <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
+            <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
+              <li>💰 Track your personal income, expenses and savings</li>
+              <li>📊 Visualize your financial health with charts</li>
+              <li>📝 Create and manage clients, quotes and invoices</li>
+              <li>🔔 Receive weekly tips to improve your finances</li>
+              <li>🔒 Secure and personalized experience with login</li>
+            </ul>
+          </div>
+
+          {/* Dashboard */}
+          <div style={{ marginTop: 32 }}>
+            <Image src="/images/fintrack.logo.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+          </div>
+
+          {/* Réseaux sociaux */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
+            <Image src="/images/facebook.png" alt="Facebook" width={32} height={32} />
+            <Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} />
+            <Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} />
+            <Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} />
+          </div>
+        </div>
+
+        {/* Pro Flow à droite */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 32 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
