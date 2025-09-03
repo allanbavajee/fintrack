@@ -50,36 +50,30 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
-      
-      {/* Login / Signup top right */}
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "16px 32px" }}>
-        <Link href="/login"><button style={{ marginRight: 12, padding: "10px 20px", borderRadius: 12, border: "none", background: "#1f6feb", color: "#fff", cursor: "pointer" }}>Login</button></Link>
-        <Link href="/signup"><button style={{ padding: "10px 20px", borderRadius: 12, border: "none", background: "#0ea5a0", color: "#fff", cursor: "pointer" }}>Signup</button></Link>
+      {/* Boutons Personal / Pro */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 32 }}>
+        <Link href="/personal">
+          <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer", background: "linear-gradient(45deg, #1f6feb, #0ea5a0)", color: "#fff", fontWeight: 700 }}>
+            Personal Mode
+          </button>
+        </Link>
+        <Link href="/pro">
+          <button style={{ padding: "14px 32px", borderRadius: 12, border: "none", cursor: "pointer", background: "linear-gradient(45deg, #0ea5a0, #1f6feb)", color: "#fff", fontWeight: 700 }}>
+            Pro Mode
+          </button>
+        </Link>
       </div>
 
-      {/* Welcome Section */}
-      <div style={{ textAlign: "left", padding: "40px 32px" }}>
-        <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-        <p style={{ fontSize: "1.1rem", color: "#555", maxWidth: "100%" }}>
-          Manage your personal and professional finances effortlessly. Keep track of your income, expenses, and savings, create quotes and invoices for your clients, visualize charts of your financial health, and get weekly tips to improve your money habits. Everything you need is centralized in one easy-to-use dashboard to help you make smarter financial decisions.
+      {/* Welcome + description */}
+      <div style={{ textAlign: "center", marginTop: 32, maxWidth: 800, marginLeft: "auto", marginRight: "auto" }}>
+        <h1 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
+        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
+          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life and make smarter decisions every day.
         </p>
-        <div style={{ marginTop: 24, display: "flex", justifyContent: "flex-start", gap: 16 }}>
-          <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button></Link>
-          <Link href="/pro"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button></Link>
-        </div>
-      </div>
-
-      {/* Social Media */}
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 16, padding: "0 32px", marginBottom: 24 }}>
-        <Image src="/images/facebook.png" width={32} height={32} alt="Facebook" />
-        <Image src="/images/tiktok.png" width={32} height={32} alt="TikTok" />
-        <Image src="/images/whatsapp.png" width={32} height={32} alt="WhatsApp" />
-        <Image src="/images/linkedin.png" width={32} height={32} alt="LinkedIn" />
       </div>
 
       {/* Main Layout */}
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
-        
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
@@ -100,8 +94,10 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center Features */}
+        {/* Center Image / Features */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
+          <Image src="/images/dash.logo.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16, marginBottom: 32 }} />
+
           <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
             <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
@@ -112,8 +108,13 @@ export default function Home() {
               <li>🔒 Secure and personalized experience with login</li>
             </ul>
           </div>
-          <div style={{ marginTop: 16 }}>
-            <Image src="/images/fintrack.logo.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+
+          {/* Réseaux sociaux */}
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 32 }}>
+            <Image src="/images/facebook.png" alt="Facebook" width={32} height={32} />
+            <Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} />
+            <Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} />
+            <Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} />
           </div>
         </div>
 
