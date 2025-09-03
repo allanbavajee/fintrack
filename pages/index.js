@@ -49,7 +49,15 @@ export default function Home() {
   );
 
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 24 }}>
+      {/* Welcome */}
+      <div style={{ textAlign: "center", marginTop: 64, maxWidth: 800, marginLeft: "auto", marginRight: "auto" }}>
+        <h1 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
+        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
+          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack.
+        </p>
+      </div>
+
       {/* Boutons Personal / Pro */}
       <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 32 }}>
         <Link href="/personal">
@@ -64,85 +72,30 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Welcome + description */}
-      <div style={{ textAlign: "center", marginTop: 32, maxWidth: 800, marginLeft: "auto", marginRight: "auto" }}>
-        <h1 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
-          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life and make smarter decisions every day.
-        </p>
+      {/* Features */}
+      <div style={{ textAlign: "center", marginTop: 48 }}>
+        <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
+        <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
+          <li>💰 Track your personal income, expenses and savings</li>
+          <li>📊 Visualize your financial health with charts</li>
+          <li>📝 Create and manage clients, quotes and invoices</li>
+          <li>🔔 Receive weekly tips to improve your finances</li>
+          <li>🔒 Secure and personalized experience with login</li>
+        </ul>
       </div>
 
-      {/* Main Layout */}
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px auto", gap: 48 }}>
-        {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
-          {personalSteps.map((item, index) => (
-            <div key={index} style={{ position: "relative" }}>
-              <div
-                style={cardStyle}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
-                <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
-              </div>
-              {index < personalSteps.length - 1 && arrowSVG}
-            </div>
-          ))}
-        </div>
-
-        {/* Center Image / Features */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
-          <Image src="/images/dash.logo.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16, marginBottom: 32 }} />
-
-          <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
-            <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
-            <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
-              <li>💰 Track your personal income, expenses and savings</li>
-              <li>📊 Visualize your financial health with charts</li>
-              <li>📝 Create and manage clients, quotes and invoices</li>
-              <li>🔔 Receive weekly tips to improve your finances</li>
-              <li>🔒 Secure and personalized experience with login</li>
-            </ul>
-          </div>
-
-          {/* Réseaux sociaux */}
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 32 }}>
-            <Image src="/images/facebook.png" alt="Facebook" width={32} height={32} />
-            <Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} />
-            <Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} />
-            <Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} />
-          </div>
-        </div>
-
-        {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
-          {proSteps.map((item, index) => (
-            <div key={index} style={{ position: "relative" }}>
-              <div
-                style={cardStyle}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
-                <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 4 }}>{item.extra}</p>
-              </div>
-              {index < proSteps.length - 1 && arrowSVG}
-            </div>
-          ))}
-        </div>
+      {/* Dashboard Image */}
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
+        <Image src="/images/fintrack.logo.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
       </div>
 
-      {/* Footer */}
-      <footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
-        © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/contact">Contact</Link>
-      </footer>
-    </div>
-  );
-}
+      {/* Réseaux sociaux */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
+        <Image src="/images/facebook.png" alt="Facebook" width={32} height={32} />
+        <Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} />
+        <Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} />
+        <Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} />
+      </div>
+
+      {/* Personal / Pro Flow */}
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "48px
