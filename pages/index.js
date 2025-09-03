@@ -1,4 +1,5 @@
 /* pages/index.jsx */
+/* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -52,25 +53,9 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 24 }}>
       
-      {/* Header Menu + Login/Signup */}
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
-        {/* Menu à gauche */}
-        <nav style={{ display: "flex", gap: 24 }}>
-          <Link href="/">Home</Link>
-          <Link href="/about">About Us</Link>
-          <Link href="/contact">Contact</Link>
-        </nav>
-
-        {/* Login/Signup en haut à droite */}
-        <div style={{ display: "flex", gap: 12 }}>
-          <Link href="/login"><button style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>Login</button></Link>
-          <Link href="/signup"><button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>Signup</button></Link>
-        </div>
-      </div>
-
-      {/* Layout principal */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", maxWidth: 1300, margin: "32px auto", gap: 48 }}>
-
+      {/* Layout principal : Welcome + Login/Signup */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 1300, margin: "32px auto", gap: 48 }}>
+        
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 120 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
@@ -87,10 +72,18 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Centre */}
+        {/* Centre : Welcome + description + boutons */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 600, textAlign: "center" }}>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-          <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 32 }}>
+          {/* Ligne Welcome + Login */}
+          <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+            <h1 style={{ fontSize: "2.5rem", margin: 0 }}>Welcome to Fintrack</h1>
+            <div style={{ display: "flex", gap: 12 }}>
+              <Link href="/login"><button style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>Login</button></Link>
+              <Link href="/signup"><button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>Signup</button></Link>
+            </div>
+          </div>
+
+          <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, margin: "32px 0" }}>
             Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience that empowers you to take control of your money.
           </p>
 
@@ -114,7 +107,7 @@ export default function Home() {
 
           {/* Dashboard */}
           <div style={{ marginTop: 32 }}>
-            <Image src="/images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+            <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
 
           {/* Réseaux sociaux */}
@@ -150,3 +143,4 @@ export default function Home() {
     </div>
   );
 }
+
