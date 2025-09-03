@@ -1,7 +1,6 @@
 /* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 // === DATA ===
 const personalSteps = [
@@ -38,11 +37,11 @@ const arrowSVG = (
 
 export default function Home() {
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
-
-      {/* Header: Login/Signup */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
-        <h1 style={{ fontSize: "2rem", margin: 0, textAlign: "center", flexGrow: 1 }}>Welcome to Fintrack</h1>
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
+      
+      {/* Header */}
+      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "16px" }}>
+        <h1 style={{ fontSize: "2rem", margin: 0 }}>Fintrack</h1>
         <div>
           <Link href="/login">
             <button style={{ marginRight: 12, padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>
@@ -55,19 +54,20 @@ export default function Home() {
             </button>
           </Link>
         </div>
-      </div>
+      </header>
 
-      {/* Description */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "32px auto" }}>
-        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 24 }}>
+      {/* Welcome Section */}
+      <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "40px auto" }}>
+        <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
+        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
           Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience
           that empowers you to take control of your money.
         </p>
-      </div>
+      </section>
 
       {/* Features */}
-      <div style={{ textAlign: "center", marginBottom: 32 }}>
+      <section style={{ textAlign: "center", marginBottom: 32 }}>
         <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
         <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
           <li>💰 Track your personal income, expenses and savings</li>
@@ -76,10 +76,10 @@ export default function Home() {
           <li>🔔 Receive weekly tips to improve your finances</li>
           <li>🔒 Secure and personalized experience with login</li>
         </ul>
-      </div>
+      </section>
 
-      {/* Boutons Personal / Pro */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
+      {/* Personal / Pro Buttons */}
+      <section style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
         <Link href="/personal">
           <button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#ff7f50", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>
             Personal Mode
@@ -90,14 +90,14 @@ export default function Home() {
             Pro Mode
           </button>
         </Link>
-      </div>
+      </section>
 
-      {/* Layout principal avec flows alignés */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "0 auto", paddingBottom: 48 }}>
-
+      {/* Flows Section */}
+      <section style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "0 auto", paddingBottom: 48 }}>
+        
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
+          <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
@@ -115,10 +115,9 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Dashboard + Réseaux sociaux */}
+        {/* Dashboard + Socials */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
-
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Image src="/images/facebook.png" alt="Facebook" width={32} height={32} /></a>
             <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></a>
@@ -129,7 +128,7 @@ export default function Home() {
 
         {/* Pro Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
+          <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
@@ -146,24 +145,13 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </div>
 
-           {/* Footer */}
-      <footer
-        style={{
-          marginTop: 48,
-          textAlign: "center",
-          padding: 16,
-          borderTop: "1px solid #ccc",
-          fontSize: 13,
-          color: "#555",
-        }}
-      >
-        © 2025 Fintrack. All rights reserved. |{" "}
-        <Link href="/privacy">Privacy Policy</Link> |{" "}
-        <Link href="/terms">Terms of Service</Link>
+      </section>
+
+      {/* Footer */}
+      <footer style={{ textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
+        © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/terms">Terms of Service</Link>
       </footer>
     </div>
   );
 }
-
