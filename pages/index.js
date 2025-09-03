@@ -65,48 +65,6 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Buttons Personal / Pro Mode */}
-      <section style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
-        <Link href="/personal">
-          <button
-            style={{
-              padding: "16px 40px",
-              borderRadius: 14,
-              border: "none",
-              cursor: "pointer",
-              background: "#ff7f50",
-              color: "#fff",
-              fontWeight: 700,
-              fontSize: "1.1rem",
-              transition: "0.3s",
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = "#ff6333"}
-            onMouseLeave={e => e.currentTarget.style.background = "#ff7f50"}
-          >
-            Personal Mode
-          </button>
-        </Link>
-        <Link href="/pro">
-          <button
-            style={{
-              padding: "16px 40px",
-              borderRadius: 14,
-              border: "none",
-              cursor: "pointer",
-              background: "#1f6feb",
-              color: "#fff",
-              fontWeight: 700,
-              fontSize: "1.1rem",
-              transition: "0.3s",
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = "#155ccc"}
-            onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}
-          >
-            Pro Mode
-          </button>
-        </Link>
-      </section>
-
       {/* Layout 3 colonnes : Personal Flow | Features | Pro Flow */}
       <section style={{
         display: "flex",
@@ -114,11 +72,11 @@ export default function Home() {
         alignItems: "flex-start",
         maxWidth: 1300,
         margin: "0 auto",
-        padding: "0 24px 48px",
+        padding: "0 24px",
       }}>
 
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "30%" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -137,7 +95,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Features */}
+        {/* Features au centre */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%" }}>
           <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
           <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
@@ -147,7 +105,52 @@ export default function Home() {
             <li>🔔 Receive weekly tips to improve your finances</li>
             <li>🔒 Secure and personalized experience with login</li>
           </ul>
-          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
+
+          {/* Boutons Personal / Pro Mode sous Features */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 24, margin: "24px 0" }}>
+            <Link href="/personal">
+              <button
+                style={{
+                  padding: "16px 40px",
+                  borderRadius: 14,
+                  border: "none",
+                  cursor: "pointer",
+                  background: "#ff7f50",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "1.1rem",
+                  transition: "0.3s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = "#ff6333"}
+                onMouseLeave={e => e.currentTarget.style.background = "#ff7f50"}
+              >
+                Personal Mode
+              </button>
+            </Link>
+            <Link href="/pro">
+              <button
+                style={{
+                  padding: "16px 40px",
+                  borderRadius: 14,
+                  border: "none",
+                  cursor: "pointer",
+                  background: "#1f6feb",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "1.1rem",
+                  transition: "0.3s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"}
+                onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}
+              >
+                Pro Mode
+              </button>
+            </Link>
+          </div>
+
+          {/* Dashboard centré */}
+          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Image src="/images/facebook.png" alt="Facebook" width={32} height={32} /></a>
             <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></a>
             <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer"><Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} /></a>
@@ -156,7 +159,7 @@ export default function Home() {
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", width: "30%" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
