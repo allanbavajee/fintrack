@@ -1,37 +1,72 @@
 /* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// … imports et data (personalSteps, proSteps, cardStyle, arrowSVG) restent inchangés
+// === DATA ===
+const personalSteps = [
+  { title: "Income", icon: "💼", desc: "Track all your revenue sources like salary, freelance or passive income.", extra: "💵 Salary | 🖥 Freelance | 📈 Investments" },
+  { title: "Expenses", icon: "🛒", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.", extra: "🏠 Rent | 🍔 Food | 🎮 Leisure | 🎟 Subscriptions" },
+  { title: "Savings", icon: "🏦", desc: "Set aside a percentage of your income for savings and emergency funds.", extra: "💰 Bank | 🏠 Emergency Fund | 🎯 Goals" },
+];
+
+const proSteps = [
+  { title: "Clients", icon: "👤", desc: "Create and manage client profiles including contacts, company info, and notes.", extra: "📝 Details | 📞 Contact | 🏢 Company" },
+  { title: "Quotation", icon: "📝", desc: "Generate professional quotations for clients quickly and easily.", extra: "📊 Price | 🗓 Validity | ✏️ Notes" },
+  { title: "Invoice", icon: "📄", desc: "Convert quotes into invoices, track payments, and manage billing efficiently.", extra: "💳 Payment | 📅 Due Date | 🧾 Status" },
+];
+
+// === STYLES ===
+const cardStyle = {
+  borderRadius: 16,
+  padding: "16px",
+  marginBottom: 16,
+  maxWidth: 220,
+  textAlign: "center",
+  cursor: "pointer",
+  backgroundColor: "transparent",
+  transition: "all 0.3s ease",
+};
+
+const arrowSVG = (
+  <svg width="20" height="40" viewBox="0 0 20 40" fill="none" xmlns="http://www.w3.org/2000/svg"
+    style={{ margin: "0 auto", display: "block" }}>
+    <path d="M10 0 V30 M10 30 L5 25 M10 30 L15 25"
+      stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 export default function Home() {
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
-      
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
+
       {/* Header: Login/Signup */}
-      <div style={{ display: "flex", justifyContent: "flex-end", maxWidth: 1300, margin: "0 auto", padding: "16px" }}>
-        <Link href="/login">
-          <button style={{ marginRight: 12, padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>
-            Login
-          </button>
-        </Link>
-        <Link href="/signup">
-          <button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>
-            Signup
-          </button>
-        </Link>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
+        <h1 style={{ fontSize: "2rem", margin: 0, textAlign: "center", flexGrow: 1 }}>Welcome to Fintrack</h1>
+        <div>
+          <Link href="/login">
+            <button style={{ marginRight: 12, padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>
+              Login
+            </button>
+          </Link>
+          <Link href="/signup">
+            <button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>
+              Signup
+            </button>
+          </Link>
+        </div>
       </div>
 
-      {/* Welcome Section */}
-      <div style={{ textAlign: "center", margin: "40px auto", maxWidth: 900 }}>
-        <h1 style={{ fontSize: "2.5rem", marginBottom: 12 }}>Welcome to Fintrack</h1>
+      {/* Description */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "32px auto" }}>
         <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 24 }}>
-          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. 
-          Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience that empowers you to take control of your money.
+          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
+          Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience
+          that empowers you to take control of your money.
         </p>
       </div>
 
-      {/* Features Section */}
+      {/* Features */}
       <div style={{ textAlign: "center", marginBottom: 32 }}>
         <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
         <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
@@ -57,9 +92,9 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Layout principal : flows alignés au niveau des features */}
+      {/* Layout principal avec flows alignés */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "0 auto", paddingBottom: 48 }}>
-        
+
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
@@ -80,11 +115,10 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Dashboard au centre */}
+        {/* Dashboard + Réseaux sociaux */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
 
-          {/* Réseaux sociaux */}
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Image src="/images/facebook.png" alt="Facebook" width={32} height={32} /></a>
             <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></a>
@@ -115,14 +149,5 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      {/* Footer */}
-<footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
-  © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/contact">Contact</Link>
-  <div style={{ marginTop: 8, fontSize: 11, color: "#999" }}>
-    ⚡ Build optimized by Next.js on Vercel — SWC warning can be safely ignored
-  </div>
-</footer>
-
-    </div>
-  );
-}
+      <footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
+        © 2025 Fintrack. All rights reserved. |
