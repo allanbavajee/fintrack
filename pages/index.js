@@ -1,3 +1,4 @@
+/*pages/index.jsx*/
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -50,11 +51,18 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 24 }}>
+      
+      {/* Login / Signup en haut à droite */}
+      <div style={{ display: "flex", justifyContent: "flex-end", maxWidth: 1300, margin: "0 auto", paddingRight: 16 }}>
+        <Link href="/login"><button style={{ marginRight: 12, padding: "8px 20px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>Login</button></Link>
+        <Link href="/signup"><button style={{ padding: "8px 20px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>Signup</button></Link>
+      </div>
+
       {/* Section principale en grille */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 48, maxWidth: 1300, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: 48, maxWidth: 1300, margin: "32px auto" }}>
 
         {/* Personal Flow à gauche */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -73,11 +81,11 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Centre: Welcome, description, boutons, features, dashboard, réseaux */}
+        {/* Centre */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 600, textAlign: "center" }}>
           <h1 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
           <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 32 }}>
-            Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack.
+            Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience that empowers you to take control of your money.
           </p>
 
           {/* Boutons Personal / Pro */}
@@ -121,7 +129,7 @@ export default function Home() {
         </div>
 
         {/* Pro Flow à droite */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -140,6 +148,11 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* Footer */}
+      <footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
+        © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/contact">Contact</Link>
+      </footer>
     </div>
   );
 }
