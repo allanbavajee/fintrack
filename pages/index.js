@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
       
-      {/* Header (inchangé, sans titre) */}
+      {/* Header (sans titre) */}
       <header style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "16px" }}>
         <div>
           <Link href="/login">
@@ -55,7 +55,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Welcome Section (remonté plus haut) */}
+      {/* Welcome Section (très haut) */}
       <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "10px auto" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
@@ -66,7 +66,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section style={{ textAlign: "center", marginBottom: 32 }}>
+      <section id="features" style={{ textAlign: "center", marginBottom: 32 }}>
         <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
         <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
           <li>💰 Track your personal income, expenses and savings</li>
@@ -77,7 +77,7 @@ export default function Home() {
         </ul>
       </section>
 
-      {/* Personal / Pro Buttons (avec hover) */}
+      {/* Personal / Pro Buttons (hover) */}
       <section style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
         <Link href="/personal">
           <button
@@ -119,7 +119,7 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Flows Section (remontés au même niveau que Features, coins) */}
+      {/* Flows Section (commence au niveau Features) */}
       <section style={{
         display: "flex",
         justifyContent: "space-between",
@@ -129,8 +129,8 @@ export default function Home() {
         padding: "0 24px 48px",
       }}>
 
-        {/* Personal Flow (à gauche) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "-80px" }}>
+        {/* Personal Flow (à gauche, aligné avec Features) */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: 0 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -160,8 +160,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pro Flow (à droite) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginTop: "-80px" }}>
+        {/* Pro Flow (à droite, aligné avec Features) */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginTop: 0 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -181,7 +181,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer (inchangé) */}
+      {/* Footer */}
       <footer style={{ textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
         © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/terms">Terms of Service</Link>
       </footer>
