@@ -58,15 +58,23 @@ export default function Home() {
       </div>
 
       {/* Welcome Section */}
-      <div style={{ textAlign: "center", padding: "40px 16px" }}>
+      <div style={{ textAlign: "left", padding: "40px 32px" }}>
         <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-        <p style={{ fontSize: "1.1rem", color: "#555", maxWidth: 600, margin: "0 auto" }}>
-          Manage your personal and professional finances efficiently with our intuitive tools and dashboard.
+        <p style={{ fontSize: "1.1rem", color: "#555", maxWidth: "100%" }}>
+          Manage your personal and professional finances effortlessly. Keep track of your income, expenses, and savings, create quotes and invoices for your clients, visualize charts of your financial health, and get weekly tips to improve your money habits. Everything you need is centralized in one easy-to-use dashboard to help you make smarter financial decisions.
         </p>
-        <div style={{ marginTop: 24, display: "flex", justifyContent: "center", gap: 16 }}>
+        <div style={{ marginTop: 24, display: "flex", justifyContent: "flex-start", gap: 16 }}>
           <Link href="/personal"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button></Link>
           <Link href="/pro"><button style={{ padding:"14px 32px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(45deg, #0ea5a0, #1f6feb)", color:"#fff", fontWeight:700 }}>Pro Mode</button></Link>
         </div>
+      </div>
+
+      {/* Social Media */}
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 16, padding: "0 32px", marginBottom: 24 }}>
+        <Image src="/images/facebook.png" width={32} height={32} alt="Facebook" />
+        <Image src="/images/tiktok.png" width={32} height={32} alt="TikTok" />
+        <Image src="/images/whatsapp.png" width={32} height={32} alt="WhatsApp" />
+        <Image src="/images/linkedin.png" width={32} height={32} alt="LinkedIn" />
       </div>
 
       {/* Main Layout */}
@@ -105,7 +113,7 @@ export default function Home() {
             </ul>
           </div>
           <div style={{ marginTop: 16 }}>
-            <Image src="/images/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+            <Image src="/images/fintrack.logo.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           </div>
         </div>
 
