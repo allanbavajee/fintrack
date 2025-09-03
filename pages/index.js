@@ -1,4 +1,3 @@
-/* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -51,14 +50,14 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f2f5f8", fontFamily: "Inter, Arial, sans-serif" }}>
-
+      
       {/* ---------------- HEADER ---------------- */}
       <section style={{ textAlign: "center", padding: "60px 24px" }}>
         <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>WELCOME TO FINTRACK</h1>
         <p style={{ fontSize: "1.1rem", color: "#555", marginBottom: 32 }}>
           Manage your personal and professional finances with simplicity and clarity.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
           <Link href="/personal">
             <button style={{ padding:"14px 32px", borderRadius:12, border:"none", background:"linear-gradient(45deg, #1f6feb, #0ea5a0)", color:"#fff", fontWeight:700 }}>Personal Mode</button>
           </Link>
@@ -69,10 +68,18 @@ export default function Home() {
       </section>
 
       {/* ---------------- MAIN LAYOUT ---------------- */}
-      <section style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto 48px", gap: 48 }}>
-        
-        {/* Personal Flow (Left) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <section
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          maxWidth: 1300,
+          margin: "0 auto 48px",
+          gap: 48,
+          flexWrap: "wrap", // permet d’empiler sur petit écran
+        }}
+      >
+        {/* Personal Flow */}
+        <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -91,8 +98,8 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center (Features + Dashboard) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 400 }}>
+        {/* Center Features */}
+        <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{ textAlign: "center", color: "#444", marginBottom: 24 }}>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
             <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
@@ -104,12 +111,12 @@ export default function Home() {
             </ul>
           </div>
           <div style={{ marginTop: 16 }}>
-            <Image src="/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+            <Image src="/dash.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16, maxWidth: "100%", height: "auto" }} />
           </div>
         </div>
 
-        {/* Pro Flow (Right) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        {/* Pro Flow */}
+        <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -136,4 +143,3 @@ export default function Home() {
     </div>
   );
 }
-
