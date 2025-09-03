@@ -26,8 +26,8 @@ export default function Navbar() {
         <span style={{ fontSize: 14, color: "#555" }}>Your Money, Your Way.</span>
       </div>
 
-      {/* Menu */}
-      <nav style={{ display: "flex", gap: 24 }}>
+      {/* Menu à gauche */}
+      <nav style={{ display: "flex", gap: 24, marginLeft: 32 }}>
         <Link href="/">Home</Link>
         <Link href="/about">About Us</Link>
         <Link href="/contact">Contact Us</Link>
