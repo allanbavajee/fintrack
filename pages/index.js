@@ -38,8 +38,8 @@ const arrowSVG = (
 export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
-      
-      {/* Header (sans titre) */}
+
+      {/* Header */}
       <header style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "16px" }}>
         <div>
           <Link href="/login">
@@ -55,7 +55,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Welcome Section (très haut) */}
+      {/* Welcome Section */}
       <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "10px auto" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
@@ -65,19 +65,7 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Features */}
-      <section id="features" style={{ textAlign: "center", marginBottom: 32 }}>
-        <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
-        <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
-          <li>💰 Track your personal income, expenses and savings</li>
-          <li>📊 Visualize your financial health with charts</li>
-          <li>📝 Create and manage clients, quotes and invoices</li>
-          <li>🔔 Receive weekly tips to improve your finances</li>
-          <li>🔒 Secure and personalized experience with login</li>
-        </ul>
-      </section>
-
-      {/* Personal / Pro Buttons (hover) */}
+      {/* Buttons Personal / Pro Mode */}
       <section style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
         <Link href="/personal">
           <button
@@ -119,7 +107,7 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Flows Section (commence au niveau Features) */}
+      {/* Layout 3 colonnes : Personal Flow | Features | Pro Flow */}
       <section style={{
         display: "flex",
         justifyContent: "space-between",
@@ -129,8 +117,8 @@ export default function Home() {
         padding: "0 24px 48px",
       }}>
 
-        {/* Personal Flow (à gauche, aligné avec Features) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: 0 }}>
+        {/* Personal Flow */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "30%" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -149,9 +137,16 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Dashboard (centré) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
+        {/* Features */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%" }}>
+          <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
+          <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
+            <li>💰 Track your personal income, expenses and savings</li>
+            <li>📊 Visualize your financial health with charts</li>
+            <li>📝 Create and manage clients, quotes and invoices</li>
+            <li>🔔 Receive weekly tips to improve your finances</li>
+            <li>🔒 Secure and personalized experience with login</li>
+          </ul>
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Image src="/images/facebook.png" alt="Facebook" width={32} height={32} /></a>
             <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></a>
@@ -160,8 +155,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pro Flow (à droite, aligné avec Features) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginTop: 0 }}>
+        {/* Pro Flow */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", width: "30%" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -179,6 +174,7 @@ export default function Home() {
             </div>
           ))}
         </div>
+
       </section>
 
       {/* Footer */}
