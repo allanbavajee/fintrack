@@ -57,12 +57,12 @@ export default function Home() {
         <Link href="/signup"><button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>Signup</button></Link>
       </div>
 
-      {/* Layout principal */}
+      {/* Layout principal: flows + welcome */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "32px auto" }}>
         
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
+          <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
@@ -80,29 +80,27 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Centre */}
+        {/* Centre: Welcome + Description + Mode Buttons + Features + Dashboard + Socials */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: 600, textAlign: "center" }}>
+          
+          {/* Welcome & Description */}
           <h1 style={{ fontSize: "2.5rem", marginBottom: 16 }}>Welcome to Fintrack</h1>
-          <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6, marginBottom: 32 }}>
+          <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
             Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place. Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience that empowers you to take control of your money.
           </p>
 
           {/* Boutons Personal / Pro */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 48 }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 32 }}>
             <Link href="/personal">
-              <button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#ff7f50", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>
-                Personal Mode
-              </button>
+              <button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#ff7f50", color: "#fff", fontWeight: 700, fontSize: "1.2rem" }}>Personal Mode</button>
             </Link>
             <Link href="/pro">
-              <button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>
-                Pro Mode
-              </button>
+              <button style={{ padding: "16px 40px", borderRadius: 14, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.2rem" }}>Pro Mode</button>
             </Link>
           </div>
 
           {/* Features */}
-          <div>
+          <div style={{ marginTop: 32 }}>
             <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
             <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
               <li>💰 Track your personal income, expenses and savings</li>
@@ -120,16 +118,16 @@ export default function Home() {
 
           {/* Réseaux sociaux */}
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 32 }}>
-            <Image src="/images/facebook.png" alt="Facebook" width={32} height={32} />
-            <Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} />
-            <Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} />
-            <Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} />
+            <Link href="https://www.facebook.com"><Image src="/images/facebook.png" alt="Facebook" width={32} height={32} /></Link>
+            <Link href="https://www.tiktok.com"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></Link>
+            <Link href="https://www.whatsapp.com"><Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} /></Link>
+            <Link href="https://www.linkedin.com"><Image src="/images/linkedin.png" alt="LinkedIn" width={32} height={32} /></Link>
           </div>
         </div>
 
         {/* Pro Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
-          <h2 style={{ color: "#0ea5a0", marginBottom: 16, textAlign: "center" }}>Pro Flow</h2>
+          <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
