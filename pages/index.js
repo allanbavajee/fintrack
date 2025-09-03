@@ -148,6 +148,22 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
-        © 2025 Fintrack. All rights reserved. |
+           {/* Footer */}
+      <footer
+        style={{
+          marginTop: 48,
+          textAlign: "center",
+          padding: 16,
+          borderTop: "1px solid #ccc",
+          fontSize: 13,
+          color: "#555",
+        }}
+      >
+        © 2025 Fintrack. All rights reserved. |{" "}
+        <Link href="/privacy">Privacy Policy</Link> |{" "}
+        <Link href="/terms">Terms of Service</Link>
+      </footer>
+    </div>
+  );
+}
+
