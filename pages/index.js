@@ -37,11 +37,10 @@ const arrowSVG = (
 
 export default function Home() {
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
       
-      {/* Header (inchangé) */}
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "16px" }}>
-        <h1 style={{ fontSize: "2rem", margin: 0 }}>Fintrack</h1>
+      {/* Header (inchangé, sans titre) */}
+      <header style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "16px" }}>
         <div>
           <Link href="/login">
             <button style={{ marginRight: 12, padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>
@@ -56,8 +55,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Welcome Section (remonté) */}
-      <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "20px auto" }}>
+      {/* Welcome Section (remonté plus haut) */}
+      <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "10px auto" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
@@ -120,7 +119,7 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Flows Section (remontés et écartés) */}
+      {/* Flows Section (remontés au même niveau que Features, coins) */}
       <section style={{
         display: "flex",
         justifyContent: "space-between",
@@ -131,7 +130,7 @@ export default function Home() {
       }}>
 
         {/* Personal Flow (à gauche) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "-80px" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -162,7 +161,7 @@ export default function Home() {
         </div>
 
         {/* Pro Flow (à droite) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginTop: "-80px" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
