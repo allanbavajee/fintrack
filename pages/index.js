@@ -115,9 +115,14 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
-        © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/contact">Contact</Link>
-      </footer>
+      {/* Footer */}
+<footer style={{ marginTop: 48, textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
+  © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/contact">Contact</Link>
+  <div style={{ marginTop: 8, fontSize: 11, color: "#999" }}>
+    ⚡ Build optimized by Next.js on Vercel — SWC warning can be safely ignored
+  </div>
+</footer>
+
     </div>
   );
 }
