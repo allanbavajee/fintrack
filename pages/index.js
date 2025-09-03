@@ -62,7 +62,7 @@ export default function Home() {
       <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, maxWidth: 1300, margin: "32px auto" }}>
         
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 20 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16, textAlign: "center" }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
