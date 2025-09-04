@@ -151,9 +151,9 @@ export default function Home() {
           {/* Dashboard centré */}
           <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Image src="/images/fB.png" alt="Facebook" width={32} height={32} /></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Image src="/images/fa.png" alt="Facebook" width={32} height={32} /></a>
             <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></a>
-            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer"><Image src="/images/wA.png" alt="WhatsApp" width={32} height={32} /></a>
+            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer"><Image src="/images/wa.png" alt="WhatsApp" width={32} height={32} /></a>
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><Image src="/images/in.png" alt="LinkedIn" width={32} height={32} /></a>
             <a href="https://Mail.com" target="_blank" rel="noopener noreferrer"><Image src="/images/mail.png" alt="Mail" width={32} height={32} /></a>
 
