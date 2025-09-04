@@ -14,7 +14,7 @@ export default function LoginPage() {
     if (error) setMessage(error.message);
     else {
       setMessage("✅ Connexion réussie !");
-      setTimeout(() => router.push("/personal"), 1500); // redirige après 1.5s
+      setTimeout(() => router.push("/personal"), 1500);
     }
   };
 
@@ -22,26 +22,10 @@ export default function LoginPage() {
     <div style={{ maxWidth: 400, margin: "50px auto", textAlign: "center" }}>
       <h2>Se connecter</h2>
       {message && <p>{message}</p>}
-      <input 
-        type="email" 
-        placeholder="Email" 
-        value={email} 
-        onChange={e => setEmail(e.target.value)} 
-        style={{ display:"block", width:"100%", margin:"8px 0", padding:"8px" }}
-      />
-      <input 
-        type="password" 
-        placeholder="Mot de passe" 
-        value={password} 
-        onChange={e => setPassword(e.target.value)} 
-        style={{ display:"block", width:"100%", margin:"8px 0", padding:"8px" }}
-      />
-      <button onClick={handleSignin} style={{ padding:"10px 20px", marginTop:10 }}>
-        Se connecter
-      </button>
-      <p style={{ marginTop:16 }}>
-        Pas encore de compte ? <a href="/signup">Créer un compte</a>
-      </p>
+      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} />
+      <button onClick={handleSignin}>Se connecter</button>
+      <p>Pas encore de compte ? <a href="/signup">Créer un compte</a></p>
     </div>
   );
 }
