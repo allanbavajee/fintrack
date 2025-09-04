@@ -9,11 +9,11 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setMessage(error.message);
     else {
       setMessage("Connexion réussie !");
-      router.push("/personal"); // redirection vers la page personal
+      router.push("/personal");
     }
   };
 
