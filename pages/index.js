@@ -69,12 +69,12 @@ export default function Home() {
         <div style={{ position: "absolute", top: -10, right: 0, display: "flex", gap: 8 }}>
           {!session ? (
             <>
-              <Link href="/auth?mode=login">
+              <Link href="/login">
                 <button style={{ background: "#1f6feb", color: "#fff", border: "none", padding: "8px 16px", borderRadius: 6, cursor: "pointer" }}>
                   Login
                 </button>
               </Link>
-              <Link href="/auth?mode=signup">
+              <Link href="/signup">
                 <button style={{ background: "#ff7f50", color: "#fff", border: "none", padding: "8px 16px", borderRadius: 6, cursor: "pointer" }}>
                   Signup
                 </button>
