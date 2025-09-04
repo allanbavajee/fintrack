@@ -3,8 +3,16 @@ import Image from "next/image";
 
 export default function Navbar() {
   return (
-    <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 32px", background: "#fff", borderBottom: "1px solid #ddd" }}>
-      
+    <header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "16px 32px",
+        background: "#fff",
+        borderBottom: "1px solid #ddd",
+      }}
+    >
       {/* Logo + slogan */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
         <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={50} />
@@ -13,7 +21,7 @@ export default function Navbar() {
         </span>
       </div>
 
-      {/* Menu simple */}
+      {/* Menu */}
       <nav style={{ display: "flex", gap: 24, alignItems: "center" }}>
         <Link href="/">Home</Link>
         <Link href="/about-us">About Us</Link>
