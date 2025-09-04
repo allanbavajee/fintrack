@@ -11,16 +11,14 @@ export default function SignupPage() {
   const router = useRouter();
 
   const handleSignup = async () => {
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { prenom, nom },
-      },
+      options: { data: { prenom, nom } },
     });
     if (error) setMessage(error.message);
     else {
-      setMessage("Inscription réussie ! Vérifie ton email pour confirmer.");
+      setMessage("Inscription réussie ! Vérifie ton email.");
       router.push("/personal");
     }
   };
