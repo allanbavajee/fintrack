@@ -1,7 +1,7 @@
 /* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "../components/Navbar";  // <-- tu le mets en haut avec les autres
+import Navbar from "../components/Navbar";  // Header global
 
 // === DATA ===
 const personalSteps = [
@@ -39,31 +39,30 @@ const arrowSVG = (
 export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
-      <Navbar />   {/* ton header global */}
+      {/* Header Global */}
+      <Navbar />
 
       {/* Welcome Section */}
-      <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "10px auto" }}>
+      <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "20px auto" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
-          Manage your personal and professional finances effortlessly...
+          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
+          Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience
+          that empowers you to take control of your money.
         </p>
       </section>
 
-      {/* reste du code (flows, features, footer) */}
-    </div>
-  );
-}
-
       {/* Layout 3 colonnes : Personal Flow | Features | Pro Flow */}
-      <section style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        maxWidth: 1300,
-        margin: "0 auto",
-        padding: "0 24px",
-      }}>
-
+      <section
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          maxWidth: 1300,
+          margin: "0 auto",
+          padding: "0 24px",
+        }}
+      >
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
@@ -71,8 +70,14 @@ export default function Home() {
             <div key={index} style={{ position: "relative" }}>
               <div
                 style={cardStyle}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
               >
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
                 <h3>{item.title}</h3>
@@ -110,8 +115,8 @@ export default function Home() {
                   fontSize: "1.1rem",
                   transition: "0.3s",
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = "#ff6333"}
-                onMouseLeave={e => e.currentTarget.style.background = "#ff7f50"}
+                onMouseEnter={e => (e.currentTarget.style.background = "#ff6333")}
+                onMouseLeave={e => (e.currentTarget.style.background = "#ff7f50")}
               >
                 Personal Mode
               </button>
@@ -129,8 +134,8 @@ export default function Home() {
                   fontSize: "1.1rem",
                   transition: "0.3s",
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"}
-                onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}
+                onMouseEnter={e => (e.currentTarget.style.background = "#155ccc")}
+                onMouseLeave={e => (e.currentTarget.style.background = "#1f6feb")}
               >
                 Pro Mode
               </button>
@@ -140,12 +145,21 @@ export default function Home() {
           {/* Dashboard centré */}
           <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Image src="/images/fb.png" alt="Facebook" width={32} height={32} /></a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"><Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} /></a>
-            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer"><Image src="/images/wa.png" alt="WhatsApp" width={32} height={32} /></a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><Image src="/images/in.png" alt="LinkedIn" width={32} height={32} /></a>
-            <a href="https://Mail.com" target="_blank" rel="noopener noreferrer"><Image src="/images/mail.png" alt="Mail" width={32} height={32} /></a>
-
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+              <Image src="/images/fb.png" alt="Facebook" width={32} height={32} />
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
+              <Image src="/images/tiktok.png" alt="TikTok" width={32} height={32} />
+            </a>
+            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer">
+              <Image src="/images/wa.png" alt="WhatsApp" width={32} height={32} />
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+              <Image src="/images/in.png" alt="LinkedIn" width={32} height={32} />
+            </a>
+            <a href="https://Mail.com" target="_blank" rel="noopener noreferrer">
+              <Image src="/images/mail.png" alt="Mail" width={32} height={32} />
+            </a>
           </div>
         </div>
 
@@ -156,8 +170,14 @@ export default function Home() {
             <div key={index} style={{ position: "relative" }}>
               <div
                 style={cardStyle}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
               >
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
                 <h3>{item.title}</h3>
@@ -168,12 +188,12 @@ export default function Home() {
             </div>
           ))}
         </div>
-
       </section>
 
       {/* Footer */}
       <footer style={{ textAlign: "center", padding: 16, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
-        © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/terms">Terms of Service</Link>
+        © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> |{" "}
+        <Link href="/terms">Terms of Service</Link>
       </footer>
     </div>
   );
