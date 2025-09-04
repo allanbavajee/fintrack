@@ -1,6 +1,7 @@
 /* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
+import Navbar from "../components/Navbar";  // <-- tu le mets en haut avec les autres
 
 // === DATA ===
 const personalSteps = [
@@ -37,27 +38,21 @@ const arrowSVG = (
 
 export default function Home() {
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
-
-      import Navbar from "../components/Navbar";
-
-export default function Home() {
-  return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
-      <Navbar />
-      {/* Welcome Section */}
-      ...
-
+      <Navbar />   {/* ton header global */}
 
       {/* Welcome Section */}
       <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "10px auto" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
-          Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
-          Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack. Enjoy a secure, seamless, and insightful experience
-          that empowers you to take control of your money.
+          Manage your personal and professional finances effortlessly...
         </p>
       </section>
+
+      {/* reste du code (flows, features, footer) */}
+    </div>
+  );
+}
 
       {/* Layout 3 colonnes : Personal Flow | Features | Pro Flow */}
       <section style={{
