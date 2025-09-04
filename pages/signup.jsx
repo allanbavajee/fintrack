@@ -1,16 +1,21 @@
 /* pages/signup.jsx */
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   const handleSignup = async () => {
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) setMessage(error.message);
-    else setMessage("✅ Inscription réussie ! Vérifie ton email pour confirmer.");
+    else {
+      setMessage("✅ Inscription réussie ! Vérifie ton email pour confirmer.");
+      setTimeout(() => router.push("/personal"), 2000); // redirige après 2s
+    }
   };
 
   return (
