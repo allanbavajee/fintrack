@@ -1,7 +1,6 @@
-/* pages/login.jsx */
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
+import { useRouter } from "next/router";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,23 +8,24 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const router = useRouter();
 
-  const handleSignin = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const handleLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setMessage(error.message);
     else {
-      setMessage("✅ Connexion réussie !");
-      setTimeout(() => router.push("/personal"), 1500);
+      setMessage("Connexion réussie !");
+      router.push("/personal"); // redirection vers la page personal
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "50px auto", textAlign: "center" }}>
-      <h2>Se connecter</h2>
+    <div style={{ maxWidth: "400px", margin: "100px auto", textAlign: "center" }}>
+      <h2>Login</h2>
       {message && <p>{message}</p>}
-      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={handleSignin}>Se connecter</button>
-      <p>Pas encore de compte ? <a href="/signup">Créer un compte</a></p>
+      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} style={{ display: "block", margin: "10px auto", padding: "8px", width: "100%" }} />
+      <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} style={{ display: "block", margin: "10px auto", padding: "8px", width: "100%" }} />
+      <button onClick={handleLogin} style={{ padding: "10px 20px", marginTop: 12, background: "#1f6feb", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer" }}>
+        Login
+      </button>
     </div>
   );
 }
