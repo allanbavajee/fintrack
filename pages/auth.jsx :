@@ -1,14 +1,22 @@
-/* pages/auth.jsx */
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 
 export default function AuthPage() {
+  const router = useRouter();
+  const [mode, setMode] = useState("login"); // login ou signup
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSignup = async () => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { prenom, nom } }
+    });
     if (error) setMessage(error.message);
     else setMessage("Inscription réussie ! Vérifie ton email pour confirmer.");
   };
@@ -16,17 +24,70 @@ export default function AuthPage() {
   const handleSignin = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setMessage(error.message);
-    else setMessage("Connexion réussie !");
+    else router.push("/personal");
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-      <h2>Connexion / Inscription</h2>
-      {message && <p>{message}</p>}
-      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={handleSignup}>S'inscrire</button>
-      <button onClick={handleSignin}>Se connecter</button>
+    <div style={{ maxWidth: 400, margin: "50px auto", textAlign: "center", padding: 24, border: "1px solid #ccc", borderRadius: 12 }}>
+      
+      {/* Toggle Login / Signup */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 24 }}>
+        <button
+          onClick={() => setMode("login")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: 6,
+            border: mode === "login" ? "2px solid #1f6feb" : "1px solid #ccc",
+            background: mode === "login" ? "#1f6feb" : "#fff",
+            color: mode === "login" ? "#fff" : "#000",
+            cursor: "pointer",
+            transition: "0.3s"
+          }}
+        >
+          Login
+        </button>
+        <button
+          onClick={() => setMode("signup")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: 6,
+            border: mode === "signup" ? "2px solid #ff7f50" : "1px solid #ccc",
+            background: mode === "signup" ? "#ff7f50" : "#fff",
+            color: mode === "signup" ? "#fff" : "#000",
+            cursor: "pointer",
+            transition: "0.3s"
+          }}
+        >
+          Signup
+        </button>
+      </div>
+
+      <h2>{mode === "login" ? "Connexion" : "Inscription"}</h2>
+      {message && <p style={{ color: "red" }}>{message}</p>}
+
+      {/* Signup fields */}
+      {mode === "signup" && (
+        <>
+          <input type="text" placeholder="Prénom" value={prenom} onChange={e => setPrenom(e.target.value)}
+            style={{ display: "block", margin: "10px auto", padding: 8, width: "80%" }} />
+          <input type="text" placeholder="Nom" value={nom} onChange={e => setNom(e.target.value)}
+            style={{ display: "block", margin: "10px auto", padding: 8, width: "80%" }} />
+        </>
+      )}
+
+      {/* Email / Password */}
+      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)}
+        style={{ display: "block", margin: "10px auto", padding: 8, width: "80%" }} />
+      <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)}
+        style={{ display: "block", margin: "10px auto", padding: 8, width: "80%" }} />
+
+      {/* Action button */}
+      <button
+        onClick={mode === "login" ? handleSignin : handleSignup}
+        style={{ marginTop: 12, padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", cursor: "pointer" }}
+      >
+        {mode === "login" ? "Se connecter" : "S'inscrire"}
+      </button>
     </div>
   );
 }
