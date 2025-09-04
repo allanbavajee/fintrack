@@ -39,21 +39,15 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif", paddingTop: 16 }}>
 
-      {/* Header */}
-      <header style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", maxWidth: 1300, margin: "0 auto", padding: "16px" }}>
-        <div>
-          <Link href="/login">
-            <button style={{ marginRight: 12, padding: "10px 24px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600 }}>
-              Login
-            </button>
-          </Link>
-          <Link href="/signup">
-            <button style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600 }}>
-              Signup
-            </button>
-          </Link>
-        </div>
-      </header>
+      import Navbar from "../components/Navbar";
+
+export default function Home() {
+  return (
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
+      <Navbar />
+      {/* Welcome Section */}
+      ...
+
 
       {/* Welcome Section */}
       <section style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 900, margin: "10px auto" }}>
