@@ -1,16 +1,21 @@
 /* pages/login.jsx */
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   const handleSignin = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setMessage(error.message);
-    else setMessage("✅ Connexion réussie !");
+    else {
+      setMessage("✅ Connexion réussie !");
+      setTimeout(() => router.push("/personal"), 1500); // redirige après 1.5s
+    }
   };
 
   return (
