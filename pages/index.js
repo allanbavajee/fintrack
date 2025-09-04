@@ -1,10 +1,10 @@
-/* pages/index.jsx */
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+import Navbar from "../components/Navbar";
 
-// === DATA ===
+// DATA
 const personalSteps = [
   { title: "Income", icon: "💼", desc: "Track all your revenue sources like salary, freelance or passive income.", extra: "💵 Salary | 🖥 Freelance | 📈 Investments" },
   { title: "Expenses", icon: "🛒", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.", extra: "🏠 Rent | 🍔 Food | 🎮 Leisure | 🎟 Subscriptions" },
@@ -17,7 +17,7 @@ const proSteps = [
   { title: "Invoice", icon: "📄", desc: "Convert quotes into invoices, track payments, and manage billing efficiently.", extra: "💳 Payment | 📅 Due Date | 🧾 Status" },
 ];
 
-// === STYLES ===
+// STYLES
 const cardStyle = {
   borderRadius: 16,
   padding: "16px",
@@ -38,35 +38,70 @@ const arrowSVG = (
 );
 
 export default function Home() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+    };
+    getSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => authListener.subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
       <Navbar />
 
       {/* Welcome Section */}
-      <section style={{ maxWidth: 1100, margin: "20px auto", padding: "0 24px", textAlign: "center", position: "relative" }}>
+      <section style={{ maxWidth: 1000, margin: "20px auto", textAlign: "center", position: "relative" }}>
         
-        {/* Login/Signup en haut à droite */}
-        <div style={{ position: "absolute", top: -10, right: 0 }}>
-          <Link href="/login">
-            <button style={{ marginRight: 12, padding: "8px 20px", borderRadius: 8, border: "1px solid #1f6feb", background: "#fff", color: "#1f6feb", fontWeight: 600, cursor: "pointer" }}>
-              Login
-            </button>
-          </Link>
-          <Link href="/signup">
-            <button style={{ padding: "8px 20px", borderRadius: 8, border: "none", background: "#1f6feb", color: "#fff", fontWeight: 600, cursor: "pointer" }}>
-              Signup
-            </button>
-          </Link>
+        {/* Login/Signup ou Logout */}
+        <div style={{ position: "absolute", top: -10, right: 0, display: "flex", gap: 8 }}>
+          {!session ? (
+            <>
+              <Link href="/auth?mode=login">
+                <button style={{ background: "#1f6feb", color: "#fff", border: "none", padding: "8px 16px", borderRadius: 6, cursor: "pointer" }}>
+                  Login
+                </button>
+              </Link>
+              <Link href="/auth?mode=signup">
+                <button style={{ background: "#ff7f50", color: "#fff", border: "none", padding: "8px 16px", borderRadius: 6, cursor: "pointer" }}>
+                  Signup
+                </button>
+              </Link>
+            </>
+          ) : (
+            <div>
+              <span style={{ marginRight: 8, fontWeight: 600 }}>
+                👋 Bienvenue {session.user.user_metadata?.prenom || session.user.email}
+              </span>
+              <button
+                onClick={handleLogout}
+                style={{ background: "#ff4d4d", color: "#fff", border: "none", padding: "6px 12px", borderRadius: 6, cursor: "pointer" }}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
 
         <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
-          Simplify your financial life, gain clarity, and make smarter decisions every day with Fintrack.
         </p>
       </section>
 
-      {/* Layout 3 colonnes */}
+      {/* Layout flows et features */}
       <section style={{
         display: "flex",
         justifyContent: "space-between",
@@ -95,7 +130,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Features au centre */}
+        {/* Features */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%" }}>
           <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
           <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
@@ -106,21 +141,19 @@ export default function Home() {
             <li>🔒 Secure and personalized experience with login</li>
           </ul>
 
-          {/* Boutons Mode */}
           <div style={{ display: "flex", justifyContent: "center", gap: 24, margin: "24px 0" }}>
             <Link href="/personal">
-              <button
-                style={{
-                  padding: "16px 40px",
-                  borderRadius: 14,
-                  border: "none",
-                  cursor: "pointer",
-                  background: "#ff7f50",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
-                  transition: "0.3s",
-                }}
+              <button style={{
+                padding: "16px 40px",
+                borderRadius: 14,
+                border: "none",
+                cursor: "pointer",
+                background: "#ff7f50",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                transition: "0.3s",
+              }}
                 onMouseEnter={e => e.currentTarget.style.background = "#ff6333"}
                 onMouseLeave={e => e.currentTarget.style.background = "#ff7f50"}
               >
@@ -128,18 +161,17 @@ export default function Home() {
               </button>
             </Link>
             <Link href="/pro">
-              <button
-                style={{
-                  padding: "16px 40px",
-                  borderRadius: 14,
-                  border: "none",
-                  cursor: "pointer",
-                  background: "#1f6feb",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
-                  transition: "0.3s",
-                }}
+              <button style={{
+                padding: "16px 40px",
+                borderRadius: 14,
+                border: "none",
+                cursor: "pointer",
+                background: "#1f6feb",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                transition: "0.3s",
+              }}
                 onMouseEnter={e => e.currentTarget.style.background = "#155ccc"}
                 onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}
               >
@@ -148,16 +180,15 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Dashboard + Réseaux */}
           <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={200} style={{ borderRadius: 16 }} />
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
-            {["facebook", "tiktok", "whatsapp", "linkedin", "mail"].map((icon, i) => (
-              <a key={i} href={`https://${icon}.com`} target="_blank" rel="noopener noreferrer"
-                style={{ transition: "0.3s" }}
-                onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
-                onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-              >
-                <Image src={`/images/${icon}.png`} alt={icon} width={32} height={32} />
+            {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
+              <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
+                <Image src={`/images/${icon}.png`} alt={icon} width={32} height={32}
+                  style={{ cursor: "pointer", transition: "0.3s" }}
+                  onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
+                  onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                />
               </a>
             ))}
           </div>
