@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import Navbar from "../components/Navbar";
 
 // DATA
 const personalSteps = [
@@ -49,14 +48,15 @@ const proSteps = [
 
 // STYLES
 const cardStyle = {
-  borderRadius: 16,
+  borderRadius: 20,
   padding: "16px",
   marginBottom: 16,
-  maxWidth: 220,
+  maxWidth: 240,
   textAlign: "center",
   cursor: "pointer",
-  backgroundColor: "transparent",
+  backgroundColor: "#fff",
   transition: "all 0.3s ease",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
 };
 
 const arrowSVG = (
@@ -106,28 +106,30 @@ export default function Home() {
     <div
       style={{
         minHeight: "100vh",
-        background: "#fff",
+        background: "#f9fafb",
         fontFamily: "Inter, Arial, sans-serif",
       }}
     >
-      
       {/* Welcome Section */}
       <section
         style={{
           maxWidth: 1000,
-          margin: "20px auto",
+          margin: "40px auto",
           textAlign: "center",
           position: "relative",
+          padding: "40px 20px",
+          borderRadius: 20,
+          background: "linear-gradient(135deg, #2563eb10, #f9731610)",
         }}
       >
         {/* Login/Signup ou Logout */}
         <div
           style={{
             position: "absolute",
-            top: -40,
-            right: 0,
+            top: 20,
+            right: 20,
             display: "flex",
-            gap: 8,
+            gap: 12,
           }}
         >
           {!session ? (
@@ -135,13 +137,21 @@ export default function Home() {
               <Link href="/login">
                 <button
                   style={{
-                    background: "#1f6feb",
+                    background: "#2563eb",
                     color: "#fff",
                     border: "none",
-                    padding: "8px 16px",
-                    borderRadius: 6,
+                    padding: "10px 20px",
+                    borderRadius: 20,
                     cursor: "pointer",
+                    boxShadow: "0 4px 12px rgba(37,99,235,0.4)",
+                    transition: "all 0.3s ease",
                   }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "#1d4ed8")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "#2563eb")
+                  }
                 >
                   Login
                 </button>
@@ -149,13 +159,21 @@ export default function Home() {
               <Link href="/signup">
                 <button
                   style={{
-                    background: "#ff7f50",
+                    background: "#f97316",
                     color: "#fff",
                     border: "none",
-                    padding: "8px 16px",
-                    borderRadius: 6,
+                    padding: "10px 20px",
+                    borderRadius: 20,
                     cursor: "pointer",
+                    boxShadow: "0 4px 12px rgba(249,115,22,0.4)",
+                    transition: "all 0.3s ease",
                   }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "#ea580c")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "#f97316")
+                  }
                 >
                   Signup
                 </button>
@@ -163,18 +181,18 @@ export default function Home() {
             </>
           ) : (
             <div>
-              <span style={{ marginRight: 8,margintop: 10, fontWeight: 600 }}>
+              <span style={{ marginRight: 8, fontWeight: 600 }}>
                 👋 Bienvenue{" "}
                 {session.user.user_metadata?.prenom || session.user.email}
               </span>
               <button
                 onClick={handleLogout}
                 style={{
-                  background: "#ff4d4d",
+                  background: "#ef4444",
                   color: "#fff",
                   border: "none",
-                  padding: "6px 12px",
-                  borderRadius: 6,
+                  padding: "8px 16px",
+                  borderRadius: 20,
                   cursor: "pointer",
                 }}
               >
@@ -184,8 +202,10 @@ export default function Home() {
           )}
         </div>
 
-        <h2 style={{ fontSize: "2rem", marginBottom: 16 }}>Welcome to Fintrack</h2>
-        <p style={{ fontSize: "1rem", color: "#444", lineHeight: 1.6 }}>
+        <h2 style={{ fontSize: "2.2rem", marginBottom: 16, color: "#111827" }}>
+          Welcome to <span style={{ color: "#2563eb" }}>Fintrack</span>
+        </h2>
+        <p style={{ fontSize: "1.1rem", color: "#374151", lineHeight: 1.8 }}>
           Manage your personal and professional finances effortlessly. Track your
           income, expenses, savings, clients, quotations, and invoices all in one
           place.
@@ -212,7 +232,7 @@ export default function Home() {
             width: "30%",
           }}
         >
-          <h2 style={{ color: "#1f6feb", marginBottom: 16 }}>Personal Flow</h2>
+          <h2 style={{ color: "#2563eb", marginBottom: 16 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
@@ -224,7 +244,7 @@ export default function Home() {
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.boxShadow = cardStyle.boxShadow;
                 }}
               >
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
@@ -248,13 +268,15 @@ export default function Home() {
             width: "35%",
           }}
         >
-          <h2 style={{ fontSize: "1.25rem", marginBottom: 12 }}>✨ Features</h2>
-          <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 1.6 }}>
-            <li>💰 Track your personal income, expenses and savings</li>
-            <li>📊 Visualize your financial health with charts</li>
-            <li>📝 Create and manage clients, quotes and invoices</li>
-            <li>🔔 Receive weekly tips to improve your finances</li>
-            <li>🔒 Secure and personalized experience with login</li>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#111827" }}>
+            ✨ Features
+          </h2>
+          <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 2.0 }}>
+            <li style={{ marginBottom: 12 }}>💰 Track your personal income, expenses and savings</li>
+            <li style={{ marginBottom: 12 }}>📊 Visualize your financial health with charts</li>
+            <li style={{ marginBottom: 12 }}>📝 Create and manage clients, quotes and invoices</li>
+            <li style={{ marginBottom: 12 }}>🔔 Receive weekly tips to improve your finances</li>
+            <li style={{ marginBottom: 12 }}>🔒 Secure and personalized experience with login</li>
           </ul>
 
           <div
@@ -262,27 +284,28 @@ export default function Home() {
               display: "flex",
               justifyContent: "center",
               gap: 24,
-              margin: "24px 0",
+              margin: "32px 0",
             }}
           >
             <Link href="/personal">
               <button
                 style={{
                   padding: "16px 40px",
-                  borderRadius: 14,
+                  borderRadius: 20,
                   border: "none",
                   cursor: "pointer",
-                  background: "#ff7f50",
+                  background: "#f97316",
                   color: "#fff",
                   fontWeight: 700,
                   fontSize: "1.1rem",
+                  boxShadow: "0 4px 12px rgba(249,115,22,0.4)",
                   transition: "0.3s",
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#ff6333")
+                  (e.currentTarget.style.background = "#ea580c")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#ff7f50")
+                  (e.currentTarget.style.background = "#f97316")
                 }
               >
                 Personal Mode
@@ -293,20 +316,21 @@ export default function Home() {
               <button
                 style={{
                   padding: "16px 40px",
-                  borderRadius: 14,
+                  borderRadius: 20,
                   border: "none",
                   cursor: "pointer",
-                  background: "#1f6feb",
+                  background: "#2563eb",
                   color: "#fff",
                   fontWeight: 700,
                   fontSize: "1.1rem",
+                  boxShadow: "0 4px 12px rgba(37,99,235,0.4)",
                   transition: "0.3s",
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#155ccc")
+                  (e.currentTarget.style.background = "#1d4ed8")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#1f6feb")
+                  (e.currentTarget.style.background = "#2563eb")
                 }
               >
                 Pro Mode
@@ -317,9 +341,9 @@ export default function Home() {
           <Image
             src="/images/dashboard.png"
             alt="Dashboard Example"
-            width={350}
-            height={200}
-            style={{ borderRadius: 16 }}
+            width={380}
+            height={220}
+            style={{ borderRadius: 20, marginTop: 32 }}
           />
 
           {/* Réseaux sociaux avec hover */}
@@ -328,7 +352,7 @@ export default function Home() {
               display: "flex",
               justifyContent: "center",
               gap: 16,
-              marginTop: 16,
+              marginTop: 24,
             }}
           >
             {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
@@ -340,14 +364,16 @@ export default function Home() {
                   height={32}
                   style={{
                     cursor: "pointer",
-                    transition: "transform 0.3s",
+                    transition: "transform 0.3s, filter 0.3s",
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = "scale(1.2)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = "scale(1)")
-                  }
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "scale(1.2)";
+                    e.currentTarget.style.filter = "drop-shadow(0 0 6px #2563eb)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    e.currentTarget.style.filter = "none";
+                  }}
                 />
               </a>
             ))}
@@ -363,7 +389,7 @@ export default function Home() {
             width: "30%",
           }}
         >
-          <h2 style={{ color: "#0ea5a0", marginBottom: 16 }}>Pro Flow</h2>
+          <h2 style={{ color: "#10b981", marginBottom: 16 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div
@@ -375,7 +401,7 @@ export default function Home() {
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.boxShadow = cardStyle.boxShadow;
                 }}
               >
                 <div style={{ fontSize: 36, marginBottom: 6 }}>{item.icon}</div>
@@ -396,9 +422,9 @@ export default function Home() {
         style={{
           textAlign: "center",
           padding: 16,
-          borderTop: "1px solid #ccc",
           fontSize: 13,
           color: "#555",
+          marginTop: 40,
         }}
       >
         © 2025 Fintrack. All rights reserved. |{" "}
