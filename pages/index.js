@@ -72,25 +72,7 @@ export default function Home() {
           <span style={{ fontSize: 14, color: "#555" }}>Your money, your way.</span>
         </div>
         {/* Menu */}
-        <nav style={{ display: "flex", gap: 20, alignItems: "center", fontWeight: 500, color: "#0d1f4c" }}>
-          {menuItems.map((item, idx) => (
-            <Link
-              key={idx}
-              href={item.href}
-              style={{
-                textDecoration: "none",
-                cursor: "pointer",
-                transition: "color 0.2s",
-                padding: "4px 8px"
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
-              onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}
-            >
-              {item.title}
-            </Link>
-          ))}
-        </nav>
-      </header>
+              </header>
 
       {/* Welcome Section */}
       <section style={{ maxWidth: 1000, margin: "60px auto 40px", textAlign: "center" }}>
