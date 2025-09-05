@@ -1,9 +1,10 @@
+/* pages/index.js */
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import Navbar from "../components/Navbar";
 
+/* DATA */
 const personalSteps = [
   { title: "Income", icon: "💼", desc: "Track all your revenue sources like salary, freelance or passive income.", extra: "Salary | Freelance | Investments" },
   { title: "Expenses", icon: "🛒", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.", extra: "Rent | Food | Leisure | Subscriptions" },
@@ -16,6 +17,7 @@ const proSteps = [
   { title: "Invoice", icon: "📄", desc: "Convert quotes into invoices, track payments, and manage billing efficiently.", extra: "Payment | Due Date | Status" },
 ];
 
+/* Styles */
 const cardStyle = {
   borderRadius: 16,
   padding: "16px",
@@ -49,35 +51,61 @@ export default function Home() {
 
   const handleLogout = async () => { await supabase.auth.signOut(); setSession(null); };
 
+  /* Menu hover style */
+  const menuItems = [
+    { title: "Home", href: "/" },
+    { title: "About Us", href: "/about-us" },
+    { title: "Contact Us", href: "/contact" },
+    { title: "Services", href: "/services" },
+    { title: "Login", href: "/auth" },
+    { title: "Signup", href: "/auth" },
+  ];
+
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "Inter, Arial, sans-serif" }}>
-      <Navbar />
+      
+      {/* Header */}
+      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 32px", background: "#fff" }}>
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={140} height={50} />
+          <span style={{ fontSize: 14, color: "#555" }}>Your money, your way.</span>
+        </div>
+        {/* Menu */}
+        <nav style={{ display: "flex", gap: 20, alignItems: "center", fontWeight: 500, color: "#0d1f4c" }}>
+          {menuItems.map((item, idx) => (
+            <Link
+              key={idx}
+              href={item.href}
+              style={{
+                textDecoration: "none",
+                cursor: "pointer",
+                transition: "color 0.2s",
+                padding: "4px 8px"
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+              onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}
+            >
+              {item.title}
+            </Link>
+          ))}
+        </nav>
+      </header>
 
       {/* Welcome Section */}
-      <section style={{ maxWidth: 1000, margin: "80px auto 40px", textAlign: "center" }}>
+      <section style={{ maxWidth: 1000, margin: "60px auto 40px", textAlign: "center" }}>
         <h2 style={{ fontSize: "2.2rem", marginBottom: 16, color: "#0d1f4c" }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1.1rem", color: "#555", lineHeight: 1.8 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
         </p>
       </section>
 
-      {/* Features */}
-      <section style={{ textAlign: "center", marginBottom: 40 }}>
-        <h2 style={{ fontSize: "1.5rem", color: "#0d1f4c" }}>✨ Features</h2>
-        <ul style={{ listStyle: "none", padding: 0, marginTop: 20, lineHeight: 2, textAlign: "center", fontSize: 16, color: "#555" }}>
-          <li>💰 Track your personal income, expenses and savings</li>
-          <li>📊 Visualize your financial health with charts</li>
-          <li>📝 Create and manage clients, quotes and invoices</li>
-          <li>🔔 Receive weekly tips to improve your finances</li>
-          <li>🔒 Secure and personalized experience with login</li>
-        </ul>
-      </section>
-
-      {/* Flows */}
-      <section style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
+      {/* Features + Flows */}
+      <section style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", padding: "0 16px", alignItems: "flex-start" }}>
+        
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 10 }}>Personal Flow</h2>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 20 }}>
+          <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div style={cardStyle} onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
@@ -92,14 +120,50 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center Track / Dashboard */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%" }}>
-          <p style={{ marginBottom: 24, fontSize: 16, color: "#555", textAlign: "center" }}>Track your income, expenses and savings</p>
-          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16 }} />
+        {/* Features */}
+        <div style={{ width: "35%", textAlign: "center", marginTop: 0 }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
+          <ul style={{ listStyle: "none", padding: 0, lineHeight: 2, textAlign: "left" }}>
+            <li>💰 Track your personal income, expenses and savings</li>
+            <li>📊 Visualize your financial health with charts</li>
+            <li>📝 Create and manage clients, quotes and invoices</li>
+            <li>🔔 Receive weekly tips to improve your finances</li>
+            <li>🔒 Secure and personalized experience with login</li>
+          </ul>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: 20, margin: "32px 0" }}>
+            <Link href="/personal">
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
+            </Link>
+            <Link href="/pro">
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
+            </Link>
+          </div>
+
+          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16, marginTop: 20 }} />
+
+          {/* Réseaux sociaux */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
+            {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
+              <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={`/images/${icon}.png`}
+                  alt={icon}
+                  width={32}
+                  height={32}
+                  style={{ cursor: "pointer", transition: "transform 0.3s" }}
+                  onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
+                  onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                />
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 20 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
