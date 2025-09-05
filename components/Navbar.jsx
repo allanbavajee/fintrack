@@ -1,32 +1,53 @@
+// components/Navbar.jsx
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Navbar() {
   return (
     <header
       style={{
+        width: "100%",
+        background: "#ffffff",
+        padding: "14px 32px",
         display: "flex",
-        alignItems: "center",
         justifyContent: "space-between",
-        padding: "16px 32px",
-        background: "#fff",
-        borderBottom: "1px solid #ddd",
+        alignItems: "center",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+        boxShadow: "0 2px 6px rgba(0,0,0,0.08)", // Ombre subtile au lieu de border
       }}
     >
-      {/* Logo + slogan */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-        <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={50} />
-        <span style={{ fontSize: 14, color: "#555", marginTop: 4 }}>
-          Your money, your way.
-        </span>
+      {/* Logo */}
+      <div
+        style={{
+          fontWeight: 700,
+          fontSize: "1.4rem",
+          color: "#2563eb",
+          cursor: "pointer",
+        }}
+      >
+        Fintrack
       </div>
 
-      {/* Menu */}
-      <nav style={{ display: "flex", gap: 24, alignItems: "center" }}>
-        <Link href="/">Home</Link>
-        <Link href="/about-us">About Us</Link>
-        <Link href="/contact">Contact Us</Link>
-        <Link href="/services">Services</Link>
+      {/* Navigation */}
+      <nav style={{ display: "flex", gap: "24px" }}>
+        {["Home", "About Us", "Services", "Contact Us"].map((item, index) => (
+          <Link
+            key={index}
+            href={item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "")}`}
+            style={{
+              color: "#374151",
+              fontWeight: 500,
+              fontSize: "1rem",
+              textDecoration: "none",
+              transition: "color 0.3s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#2563eb")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#374151")}
+          >
+            {item}
+          </Link>
+        ))}
       </nav>
     </header>
   );
