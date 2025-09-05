@@ -77,7 +77,7 @@ export default function Home() {
       <section style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
+          <h2 style={{ color: "#1f6feb", marginBottom: 10 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
               <div style={cardStyle} onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.15)"; }}
