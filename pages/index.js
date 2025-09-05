@@ -59,14 +59,7 @@ export default function Home() {
       <section style={{ maxWidth: 1000, margin: "60px auto 40px", textAlign: "center", position: "relative" }}>
         <div style={{ position: "absolute", top: 0, right: -20, display: "flex", gap: 12 }}>
           {!session ? (
-            <>
-              <Link href="/login">
-                <button style={{ background: "#1f6feb", color: "#fff", border: "none", padding: "10px 20px", borderRadius: 8, cursor: "pointer" }}>Login</button>
-              </Link>
-              <Link href="/signup">
-                <button style={{ background: "#ff6b61", color: "#fff", border: "none", padding: "10px 20px", borderRadius: 8, cursor: "pointer" }}>Signup</button>
-              </Link>
-            </>
+            
           ) : (
             <div>
               <span style={{ marginRight: 12, fontWeight: 600 }}>👋 {session.user.user_metadata?.prenom || session.user.email}</span>
