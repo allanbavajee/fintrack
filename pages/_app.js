@@ -1,13 +1,6 @@
 // pages/_app.js
-import "../styles/globals.css";
+import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }) {
-  return (
-    <div style={{ fontFamily: "Inter, Arial, sans-serif", background: "#fff" }}>
-      <Navbar />
-      <Component {...pageProps} />
-    </div>
-  );
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />
 }
-
-export default MyApp;
