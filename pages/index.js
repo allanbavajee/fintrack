@@ -1,5 +1,4 @@
 /*pages/index.js*/
-/* pages/index.js */
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -87,7 +86,7 @@ export default function Home() {
           )}
         </div>
 
-        <h2 style={{ fontSize: "2.2rem", marginBottom: 16, color: "#0d1f4c" }}>Welcome to Fintrack</h2>
+        <h2 style={{ fontSize: "2.2rem", marginBottom: 16, marginTop: 20, color: "#0d1f4c" }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1.1rem", color: "#555", lineHeight: 1.8 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
         </p>
