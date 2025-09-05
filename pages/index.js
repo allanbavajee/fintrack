@@ -87,7 +87,7 @@ export default function Home() {
           <Link href="/auth" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
             onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
             onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>
-            Login | Signup
+            Login|Signup
           </Link>
         </nav>
       </header>
@@ -116,54 +116,88 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Features */}
-        <div style={{ width: "40%", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
-          {featuresList.map((feat, idx) => (
-            <p key={idx} style={{ color: "#555", margin: "6px 0", whiteSpace: "nowrap" }}>{feat}</p> // 🔥 une seule ligne
-          ))}
+        {/* Features & Flows Section */}
+<section style={{ maxWidth: 1400, margin: "0 auto", padding: "0 16px" }}>
+  {/* Features title */}
+  <div style={{ textAlign: "center", marginBottom: 24 }}>
+    <h2 style={{ fontSize: "1.5rem", color: "#0d1f4c" }}>✨ Features</h2>
+  </div>
 
-          {/* Buttons juste sous features */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 20, marginBottom: 20 }}>
-            <Link href="/personal">
-              <button style={{ padding: "14px 36px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1rem" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
-            </Link>
-            <Link href="/pro">
-              <button style={{ padding: "14px 36px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1rem" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
-            </Link>
-          </div>
-
-          {/* Dashboard + logos bien rapprochés */}
-          <div style={{ textAlign: "center" }}>
-            <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16 }} />
-            <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 12 }}>
-              {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
-                <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
-                  <Image src={`/images/${icon}.png`} alt={icon} width={32} height={32} style={{ cursor: "pointer", transition: "transform 0.3s" }}
-                    onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
-                    onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                  />
-                </a>
-              ))}
-            </div>
-          </div>
+  {/* Flows et texte central */}
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
+    {/* Personal Flow */}
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
+      <h2 style={{ color: "#1f6feb" }}>Personal Flow</h2>
+      {personalSteps.map((item, index) => (
+        <div key={index} style={cardStyle}>
+          <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
+          <h3>{item.title}</h3>
+          <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+          <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
         </div>
+      ))}
+    </div>
 
-        {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
-          <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
-          {proSteps.map((item, index) => (
-            <div key={index} style={cardStyle}>
-              <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
-              <h3>{item.title}</h3>
-              <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-              <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
-            </div>
-          ))}
+    {/* Texte central avec features */}
+    <div style={{ flex: 1, textAlign: "center", padding: "0 16px", marginTop: 24 }}>
+      {featuresList.map((feat, idx) => (
+        <p key={idx} style={{ color: "#555", margin: "8px 0", whiteSpace: "nowrap" }}>
+          {feat}
+        </p>
+      ))}
+
+      {/* Boutons Flow sous le texte central */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 24 }}>
+        <Link href="/personal">
+          <button style={{
+            padding: "16px 40px",
+            borderRadius: 16,
+            border: "none",
+            cursor: "pointer",
+            background: "#ff6b61",
+            color: "#fff",
+            fontWeight: 700,
+            fontSize: "1.1rem",
+          }}
+          onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} 
+          onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>
+            Personal Mode
+          </button>
+        </Link>
+        <Link href="/pro">
+          <button style={{
+            padding: "16px 40px",
+            borderRadius: 16,
+            border: "none",
+            cursor: "pointer",
+            background: "#1f6feb",
+            color: "#fff",
+            fontWeight: 700,
+            fontSize: "1.1rem",
+          }}
+          onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} 
+          onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>
+            Pro Mode
+          </button>
+        </Link>
+      </div>
+    </div>
+
+    {/* Pro Flow */}
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
+      <h2 style={{ color: "#0ea5a0" }}>Pro Flow</h2>
+      {proSteps.map((item, index) => (
+        <div key={index} style={cardStyle}>
+          <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
+          <h3>{item.title}</h3>
+          <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+          <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Footer */}
       <footer style={{ textAlign: "center", padding: 24, borderTop: "1px solid #ccc", fontSize: 13, color: "#555", marginTop: 40 }}>
