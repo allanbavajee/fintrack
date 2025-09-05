@@ -51,42 +51,54 @@ export default function Home() {
 
   const handleLogout = async () => { await supabase.auth.signOut(); setSession(null); };
 
-  /* Menu hover style */
-  const menuItems = [
-    { title: "Home", href: "/" },
-    { title: "About Us", href: "/about-us" },
-    { title: "Contact Us", href: "/contact" },
-    { title: "Services", href: "/services" },
-    { title: "Login", href: "/auth" },
-    { title: "Signup", href: "/auth" },
-  ];
-
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "Inter, Arial, sans-serif" }}>
-      
+
       {/* Header */}
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 32px", background: "#fff" }}>
-        {/* Logo */}
+      <header style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "16px 32px",
+        background: "#fff",
+        borderBottom: "1px solid #eee",
+      }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={140} height={50} />
           <span style={{ fontSize: 14, color: "#555" }}>Your money, your way.</span>
         </div>
-        {/* Menu */}
-              </header>
+
+        {/* Menu top right */}
+        <nav style={{ display: "flex", gap: 20, alignItems: "center", fontWeight: 500 }}>
+          {["Home", "About Us", "Contact Us", "Services"].map((item, idx) => (
+            <Link key={idx} href={`/${item.toLowerCase().replace(/\s/g, '-')}`}
+              style={{
+                textDecoration: "none",
+                color: "#0d1f4c",
+                transition: "color 0.2s",
+                position: "relative",
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+              onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}
+            >
+              {item}
+            </Link>
+          ))}
+        </nav>
+      </header>
 
       {/* Welcome Section */}
-      <section style={{ maxWidth: 1000, margin: "60px auto 40px", textAlign: "center" }}>
+      <section style={{ maxWidth: 1000, margin: "40px auto 40px", textAlign: "center" }}>
         <h2 style={{ fontSize: "2.2rem", marginBottom: 16, color: "#0d1f4c" }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1.1rem", color: "#555", lineHeight: 1.8 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
         </p>
       </section>
 
-      {/* Features + Flows */}
-      <section style={{ display: "flex", justifyContent: "space-between", maxWidth: 1300, margin: "0 auto", padding: "0 16px", alignItems: "flex-start" }}>
-        
+      {/* Main Content */}
+      <section style={{ display: "flex", justifyContent: "center", maxWidth: 1300, margin: "0 auto", padding: "0 16px", gap: 40 }}>
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%", marginTop: 20 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -102,50 +114,20 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Features */}
-        <div style={{ width: "35%", textAlign: "center", marginTop: 0 }}>
+        {/* Features centered */}
+        <div style={{ width: "40%", textAlign: "center", marginTop: 60 }}>
           <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
-          <ul style={{ listStyle: "none", padding: 0, lineHeight: 2, textAlign: "left" }}>
+          <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 2, textAlign: "center", color: "#555" }}>
             <li>💰 Track your personal income, expenses and savings</li>
             <li>📊 Visualize your financial health with charts</li>
             <li>📝 Create and manage clients, quotes and invoices</li>
             <li>🔔 Receive weekly tips to improve your finances</li>
             <li>🔒 Secure and personalized experience with login</li>
           </ul>
-
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, margin: "32px 0" }}>
-            <Link href="/personal">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
-            </Link>
-            <Link href="/pro">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
-            </Link>
-          </div>
-
-          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16, marginTop: 20 }} />
-
-          {/* Réseaux sociaux */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
-            {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
-              <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={`/images/${icon}.png`}
-                  alt={icon}
-                  width={32}
-                  height={32}
-                  style={{ cursor: "pointer", transition: "transform 0.3s" }}
-                  onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
-                  onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                />
-              </a>
-            ))}
-          </div>
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%", marginTop: 20 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -162,10 +144,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Dashboard Image + Social */}
+      <section style={{ textAlign: "center", marginTop: 40 }}>
+        <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16 }} />
+        <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
+          {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
+            <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
+              <Image src={`/images/${icon}.png`} alt={icon} width={32} height={32} style={{ cursor: "pointer", transition: "transform 0.3s" }}
+                onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
+                onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+              />
+            </a>
+          ))}
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer style={{ textAlign: "center", padding: 24, borderTop: "1px solid #ccc", fontSize: 13, color: "#555" }}>
+      <footer style={{ textAlign: "center", padding: 24, borderTop: "1px solid #ccc", fontSize: 13, color: "#555", marginTop: 40 }}>
         © 2025 Fintrack. All rights reserved. | <Link href="/privacy">Privacy Policy</Link> | <Link href="/terms">Terms of Service</Link>
       </footer>
     </div>
   );
 }
+
