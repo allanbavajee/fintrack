@@ -1,11 +1,14 @@
+// pages/_app.js
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 
-export default function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
-    <>
+    <div style={{ fontFamily: "Inter, Arial, sans-serif", background: "#fff" }}>
       <Navbar />
       <Component {...pageProps} />
-    </>
+    </div>
   );
 }
+
+export default MyApp;
