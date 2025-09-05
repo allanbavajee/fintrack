@@ -54,18 +54,7 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "Inter, Arial, sans-serif" }}>
       {/* Navbar */}
-      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 32px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={50} />
-        </div>
-        <nav style={{ display: "flex", gap: 24, alignItems: "center" }}>
-          <Link href="/">Home</Link>
-          <Link href="/about-us">About Us</Link>
-          <Link href="/contact">Contact Us</Link>
-          <Link href="/services">Services</Link>
-        </nav>
-      </header>
-
+      
       {/* Welcome Section */}
       <section style={{ maxWidth: 1000, margin: "60px auto 40px", textAlign: "center", position: "relative" }}>
         <div style={{ position: "absolute", top: 0, right: -20, display: "flex", gap: 12 }}>
