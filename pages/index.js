@@ -61,12 +61,19 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Features en haut */}
+      {/* Features */}
       <section style={{ textAlign: "center", marginBottom: 40 }}>
         <h2 style={{ fontSize: "1.5rem", color: "#0d1f4c" }}>✨ Features</h2>
+        <ul style={{ listStyle: "none", padding: 0, marginTop: 20, lineHeight: 2, textAlign: "center", fontSize: 16, color: "#555" }}>
+          <li>💰 Track your personal income, expenses and savings</li>
+          <li>📊 Visualize your financial health with charts</li>
+          <li>📝 Create and manage clients, quotes and invoices</li>
+          <li>🔔 Receive weekly tips to improve your finances</li>
+          <li>🔒 Secure and personalized experience with login</li>
+        </ul>
       </section>
 
-      {/* Flows alignés avec Features */}
+      {/* Flows */}
       <section style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
@@ -89,23 +96,6 @@ export default function Home() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%" }}>
           <p style={{ marginBottom: 24, fontSize: 16, color: "#555", textAlign: "center" }}>Track your income, expenses and savings</p>
           <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16 }} />
-
-          {/* Social Icons */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
-            {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
-              <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={`/images/${icon}.png`}
-                  alt={icon}
-                  width={32}
-                  height={32}
-                  style={{ cursor: "pointer", transition: "transform 0.3s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                />
-              </a>
-            ))}
-          </div>
         </div>
 
         {/* Pro Flow */}
