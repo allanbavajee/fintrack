@@ -1,10 +1,10 @@
-/*pages/index.js*/
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import Navbar from "../components/Navbar";
 
-/* DATA */
+// DATA
 const personalSteps = [
   { title: "Income", icon: "💼", desc: "Track all your revenue sources like salary, freelance or passive income.", extra: "Salary | Freelance | Investments" },
   { title: "Expenses", icon: "🛒", desc: "Record all monthly expenses: rent, groceries, subscriptions, leisure activities.", extra: "Rent | Food | Leisure | Subscriptions" },
@@ -17,7 +17,7 @@ const proSteps = [
   { title: "Invoice", icon: "📄", desc: "Convert quotes into invoices, track payments, and manage billing efficiently.", extra: "Payment | Due Date | Status" },
 ];
 
-/* Styles */
+// STYLES
 const cardStyle = {
   borderRadius: 16,
   padding: "16px",
@@ -54,20 +54,10 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "Inter, Arial, sans-serif" }}>
       {/* Navbar */}
-     
-      {/* Welcome Section */}
-      <section style={{ maxWidth: 1000, margin: "60px auto 40px", textAlign: "center", position: "relative" }}>
-        <div style={{ position: "absolute", top: 0, right: -20, display: "flex", gap: 12 }}>
-          {!session ? (
-            
-          ) : (
-            <div>
-              <span style={{ marginRight: 12, fontWeight: 600 }}>👋 {session.user.user_metadata?.prenom || session.user.email}</span>
-              <button onClick={handleLogout} style={{ background: "#ff4d4d", color: "#fff", border: "none", padding: "6px 12px", borderRadius: 6, cursor: "pointer" }}>Logout</button>
-            </div>
-          )}
-        </div>
+      <Navbar />
 
+      {/* Welcome Section */}
+      <section style={{ maxWidth: 1000, margin: "80px auto 40px", textAlign: "center" }}>
         <h2 style={{ fontSize: "2.2rem", marginBottom: 16, marginTop: 20, color: "#0d1f4c" }}>Welcome to Fintrack</h2>
         <p style={{ fontSize: "1.1rem", color: "#555", lineHeight: 1.8 }}>
           Manage your personal and professional finances effortlessly. Track your income, expenses, savings, clients, quotations, and invoices all in one place.
@@ -77,7 +67,7 @@ export default function Home() {
       {/* Main Content */}
       <section style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 40 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 0 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -94,7 +84,7 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%", marginTop: 40 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%", marginTop: 0 }}>
           <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
           <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 2, textAlign: "left" }}>
             <li>💰 Track personal income, expenses and savings</li>
@@ -116,10 +106,27 @@ export default function Home() {
           </div>
 
           <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16, marginTop: 20 }} />
+
+          {/* Social Icons */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
+            {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
+              <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={`/images/${icon}.png`}
+                  alt={icon}
+                  width={32}
+                  height={32}
+                  style={{ cursor: "pointer", transition: "transform 0.3s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                />
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 40 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 0 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -143,4 +150,3 @@ export default function Home() {
     </div>
   );
 }
-
