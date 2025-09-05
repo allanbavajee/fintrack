@@ -164,7 +164,7 @@ export default function Home() {
             </>
           ) : (
             <div>
-              <span style={{ marginRight: 8, fontWeight: 600 }}>
+              <span style={{ marginRight: 8,margintop: 10, fontWeight: 600 }}>
                 👋 Bienvenue{" "}
                 {session.user.user_metadata?.prenom || session.user.email}
               </span>
