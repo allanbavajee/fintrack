@@ -110,8 +110,7 @@ export default function Home() {
         fontFamily: "Inter, Arial, sans-serif",
       }}
     >
-      <Navbar />
-
+      
       {/* Welcome Section */}
       <section
         style={{
