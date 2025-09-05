@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import Navbar from "../components/Navbar";
 
 /* DATA */
 const personalSteps = [
@@ -53,26 +54,7 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "Inter, Arial, sans-serif" }}>
-
-      {/* Navbar */}
-      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 32px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={120} height={50} />
-        </div>
-        <nav style={{ display: "flex", gap: 24, alignItems: "center" }}>
-          <Link href="/">Home</Link>
-          <Link href="/about-us">About Us</Link>
-          <Link href="/services">Services</Link>
-          <Link href="/contact">Contact</Link>
-          {!session && (
-            <>
-              <Link href="/login"><span style={{ padding: "6px 12px", borderRadius: 6, background: "#1f6feb", color: "#fff", cursor: "pointer" }}>Login</span></Link>
-              <Link href="/signup"><span style={{ padding: "6px 12px", borderRadius: 6, background: "#ff6b61", color: "#fff", cursor: "pointer" }}>Signup</span></Link>
-            </>
-          )}
-          {session && <button onClick={handleLogout} style={{ padding: "6px 12px", borderRadius: 6, background: "#ff4d4d", color: "#fff", cursor: "pointer" }}>Logout</button>}
-        </nav>
-      </header>
+      <Navbar session={session} />
 
       {/* Welcome Section */}
       <section style={{ maxWidth: 1000, margin: "60px auto 40px", textAlign: "center" }}>
@@ -86,7 +68,7 @@ export default function Home() {
       <section style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
         
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 60 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
@@ -103,8 +85,8 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%", marginTop: 20, background: "#f5f7fa", padding: 24, borderRadius: 16 }}>
-          <h2 style={{ fontSize: "1.7rem", marginBottom: 24, color: "#0d1f4c" }}>✨ Features</h2>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%", marginTop: 60 }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c", borderBottom: "2px solid #1f6feb", paddingBottom: 8, alignSelf: "stretch", textAlign: "center" }}>✨ Features</h2>
           <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 2, textAlign: "left" }}>
             <li>💰 Track personal income, expenses and savings</li>
             <li>📊 Visualize your financial health with charts</li>
@@ -115,10 +97,12 @@ export default function Home() {
 
           <div style={{ display: "flex", justifyContent: "center", gap: 20, margin: "32px 0" }}>
             <Link href="/personal">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>Personal Mode</button>
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
             </Link>
             <Link href="/pro">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>Pro Mode</button>
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
             </Link>
           </div>
 
@@ -126,18 +110,18 @@ export default function Home() {
 
           {/* Social Icons */}
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
-            {["fb","tiktok","wa","in","mail"].map((icon, idx) => (
+            {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
               <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
                 <Image src={`/images/${icon}.png`} alt={icon} width={32} height={32} style={{ cursor: "pointer", transition: "transform 0.3s" }}
-                  onMouseEnter={e => e.currentTarget.style.transform="scale(1.2)"} 
-                  onMouseLeave={e => e.currentTarget.style.transform="scale(1)"} />
+                  onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
+                  onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"} />
               </a>
             ))}
           </div>
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 60 }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
             <div key={index} style={{ position: "relative" }}>
