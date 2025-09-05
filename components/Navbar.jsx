@@ -32,7 +32,7 @@ export default function Navbar() {
       </div>
 
       {/* Menu */}
-      <nav style={{ display: "flex", gap: 24, alignItems: "center", fontWeight: 500 }}>
+      <nav style={{ display: "flex", gap: 16, alignItems: "center", fontWeight: 500 }}>
         {menuItems.map((item, idx) => (
           <Link
             key={idx}
@@ -41,6 +41,7 @@ export default function Navbar() {
               textDecoration: "none",
               color: "#0d1f4c",
               transition: "color 0.3s",
+              fontSize: "1rem",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#1f6feb")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "#0d1f4c")}
