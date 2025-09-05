@@ -37,12 +37,6 @@ const cardStyle = {
   boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
 };
 
-const arrowSVG = (
-  <svg width="20" height="40" viewBox="0 0 20 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: "0 auto", display: "block" }}>
-    <path d="M10 0 V30 M10 30 L5 25 M10 30 L15 25" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
 export default function Home() {
   const [session, setSession] = useState(null);
 
@@ -76,8 +70,8 @@ export default function Home() {
         </div>
 
         {/* Menu top right */}
-        <nav style={{ display: "flex", gap: 20, alignItems: "center", fontWeight: 500 }}>
-          {["Home", "About Us", "Contact Us", "Services", "Login", "Signup"].map((item, idx) => (
+        <nav style={{ display: "flex", gap: 16, alignItems: "center", fontWeight: 500 }}>
+          {["Home", "About Us", "Contact Us", "Services"].map((item, idx) => (
             <Link key={idx} href={`/${item.toLowerCase().replace(/\s/g, '-')}`}
               style={{
                 textDecoration: "none",
@@ -90,6 +84,11 @@ export default function Home() {
               {item}
             </Link>
           ))}
+          <Link href="/auth" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
+            onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+            onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>
+            Login | Signup
+          </Link>
         </nav>
       </header>
 
@@ -105,36 +104,27 @@ export default function Home() {
       <section style={{ display: "flex", justifyContent: "center", gap: 40, maxWidth: 1400, margin: "0 auto", padding: "0 16px" }}>
 
         {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%", marginTop: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
-            <div key={index} style={{ position: "relative" }}>
-              <div style={cardStyle}>
-                <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
-              </div>
-              {index < personalSteps.length - 1 && arrowSVG}
+            <div key={index} style={cardStyle}>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
+              <h3>{item.title}</h3>
+              <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+              <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
             </div>
           ))}
         </div>
 
         {/* Features */}
-        <div style={{ width: "40%", textAlign: "center", marginTop: 0 }}>
+        <div style={{ width: "40%", textAlign: "center" }}>
           <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {featuresList.map((feat, idx) => (
-              <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ width: "25%", textAlign: "left", color: "#1f6feb" }}>{idx === 0 ? " " : ""}</div>
-                <p style={{ width: "50%", margin: 0, color: "#555" }}>{feat}</p>
-                <div style={{ width: "25%", textAlign: "right", color: "#0ea5a0" }}>{idx === 0 ? " " : ""}</div>
-              </div>
-            ))}
-          </div>
+          {featuresList.map((feat, idx) => (
+            <p key={idx} style={{ color: "#555", margin: "8px 0" }}>{feat}</p>
+          ))}
 
           {/* Buttons */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 32 }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 24 }}>
             <Link href="/personal">
               <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}
                 onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
@@ -147,24 +137,21 @@ export default function Home() {
         </div>
 
         {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%", marginTop: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
-            <div key={index} style={{ position: "relative" }}>
-              <div style={cardStyle}>
-                <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-                <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
-              </div>
-              {index < proSteps.length - 1 && arrowSVG}
+            <div key={index} style={cardStyle}>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
+              <h3>{item.title}</h3>
+              <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+              <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Dashboard */}
-      <section style={{ textAlign: "center", marginTop: 40 }}>
+      <section style={{ textAlign: "center", marginTop: 24 }}>
         <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16 }} />
 
         {/* Social Logos */}
