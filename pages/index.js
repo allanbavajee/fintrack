@@ -63,13 +63,14 @@ export default function Home() {
           <Link href="/">Home</Link>
           <Link href="/about-us">About Us</Link>
           <Link href="/services">Services</Link>
-          {!session ? (
-            <Link href="/auth">
-              <span style={{ background: "#1f6feb", color: "#fff", padding: "8px 16px", borderRadius: 6, cursor: "pointer" }}>Login / Signup</span>
-            </Link>
-          ) : (
-            <button onClick={handleLogout} style={{ background: "#ff4d4d", color: "#fff", border: "none", padding: "8px 16px", borderRadius: 6, cursor: "pointer" }}>Logout</button>
+          <Link href="/contact">Contact</Link>
+          {!session && (
+            <>
+              <Link href="/login"><span style={{ padding: "6px 12px", borderRadius: 6, background: "#1f6feb", color: "#fff", cursor: "pointer" }}>Login</span></Link>
+              <Link href="/signup"><span style={{ padding: "6px 12px", borderRadius: 6, background: "#ff6b61", color: "#fff", cursor: "pointer" }}>Signup</span></Link>
+            </>
           )}
+          {session && <button onClick={handleLogout} style={{ padding: "6px 12px", borderRadius: 6, background: "#ff4d4d", color: "#fff", cursor: "pointer" }}>Logout</button>}
         </nav>
       </header>
 
@@ -83,7 +84,7 @@ export default function Home() {
 
       {/* Main Content */}
       <section style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", maxWidth: 1300, margin: "0 auto", padding: "0 16px" }}>
-
+        
         {/* Personal Flow */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%", marginTop: 20 }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
@@ -102,39 +103,37 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%", marginTop: 20 }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-            <div style={{ background: "#f9f9f9", padding: 12, borderRadius: 12, textAlign: "center" }}>💰 Track personal income, expenses and savings</div>
-            <div style={{ background: "#f9f9f9", padding: 12, borderRadius: 12, textAlign: "center" }}>📊 Visualize your financial health with charts</div>
-            <div style={{ background: "#f9f9f9", padding: 12, borderRadius: 12, textAlign: "center" }}>📝 Create and manage clients, quotes and invoices</div>
-            <div style={{ background: "#f9f9f9", padding: 12, borderRadius: 12, textAlign: "center" }}>🔔 Receive weekly tips to improve your finances</div>
-            <div style={{ background: "#f9f9f9", padding: 12, borderRadius: 12, textAlign: "center" }}>🔒 Secure and personalized experience</div>
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "35%", marginTop: 20, background: "#f5f7fa", padding: 24, borderRadius: 16 }}>
+          <h2 style={{ fontSize: "1.7rem", marginBottom: 24, color: "#0d1f4c" }}>✨ Features</h2>
+          <ul style={{ listStyle: "none", paddingLeft: 0, lineHeight: 2, textAlign: "left" }}>
+            <li>💰 Track personal income, expenses and savings</li>
+            <li>📊 Visualize your financial health with charts</li>
+            <li>📝 Create and manage clients, quotes and invoices</li>
+            <li>🔔 Receive weekly tips to improve your finances</li>
+            <li>🔒 Secure and personalized experience with login</li>
+          </ul>
 
           <div style={{ display: "flex", justifyContent: "center", gap: 20, margin: "32px 0" }}>
             <Link href="/personal">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>Personal Mode</button>
             </Link>
             <Link href="/pro">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem", transition: "0.3s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>Pro Mode</button>
             </Link>
           </div>
 
-          {/* Social Logos */}
+          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16, marginTop: 20 }} />
+
+          {/* Social Icons */}
           <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
             {["fb","tiktok","wa","in","mail"].map((icon, idx) => (
               <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
                 <Image src={`/images/${icon}.png`} alt={icon} width={32} height={32} style={{ cursor: "pointer", transition: "transform 0.3s" }}
-                  onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
-                  onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"} />
+                  onMouseEnter={e => e.currentTarget.style.transform="scale(1.2)"} 
+                  onMouseLeave={e => e.currentTarget.style.transform="scale(1)"} />
               </a>
             ))}
           </div>
-
-          <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16, marginTop: 20 }} />
         </div>
 
         {/* Pro Flow */}
@@ -153,7 +152,6 @@ export default function Home() {
             </div>
           ))}
         </div>
-
       </section>
 
       {/* Footer */}
