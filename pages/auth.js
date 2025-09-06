@@ -25,26 +25,27 @@ export default function Auth() {
         </div>
 
         {/* Menu */}
-        <nav style={{ display: "flex", gap: 16, alignItems: "center", fontWeight: 500 }}>
-          {["Home", "About Us", "Contact Us", "Services"].map((item, idx) => (
-            <Link key={idx} href={`/${item.toLowerCase().replace(/\s/g, '-')}`}
-              style={{
-                textDecoration: "none",
-                color: "#0d1f4c",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
-              onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}
-            >
-              {item}
-            </Link>
-          ))}
-          <Link href="/auth" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
-            onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
-            onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>
-            Login | Signup
-          </Link>
-        </nav>
+         <nav style={{ display: "flex", gap: "24px", alignItems: "center" }}>
+    <Link href="/" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
+      onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+      onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>Home</Link>
+
+    <Link href="/about" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
+      onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+      onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>About Us</Link>
+
+    <Link href="/contact" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
+      onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+      onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>Contact Us</Link>
+
+    <Link href="/services" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
+      onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+      onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>Services</Link>
+
+    <Link href="/auth" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
+      onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
+      onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>Login|Signup</Link>
+  </nav>
       </header>
 
       {/* Auth Section */}
