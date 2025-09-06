@@ -1,5 +1,6 @@
 /* pages/personal.jsx */
 import { useState } from "react";
+import withAuth from "../utils/withAuth";
 
 export default function PersonalCoach() {
   // Transactions
