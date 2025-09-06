@@ -1,90 +1,76 @@
-// pages/auth.jsx
-import { useState } from "react";
-import Link from "next/link";
+/* pages/auth.jsx */
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 
 export default function AuthPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("login");
-  const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        router.replace("/"); // si déjà connecté → home
+      }
+    };
+    checkSession();
+  }, [router]);
+
+  const handleSignup = async () => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { first_name: firstName, last_name: lastName } },
+    });
+
+    if (error) setMessage(error.message);
+    else setMessage("✅ Inscription réussie ! Vérifie ton email pour confirmer.");
   };
 
-  // --- SIGN UP ---
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            firstname: formData.firstname,
-            lastname: formData.lastname,
-          },
-        },
-      });
-      if (error) throw error;
-      setMessage("✅ Signup successful! Please check your email to confirm.");
-    } catch (err) {
-      setMessage(`❌ ${err.message}`);
-    }
-  };
-
-  // --- LOGIN ---
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
-      if (error) throw error;
-      setMessage("✅ Login successful! Redirecting...");
-      window.location.href = "/"; // redirection vers la page d’accueil
-    } catch (err) {
-      setMessage(`❌ ${err.message}`);
+  const handleSignin = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) setMessage(error.message);
+    else {
+      setMessage("✅ Connexion réussie !");
+      router.replace("/"); // après login → home
     }
   };
 
   return (
-    <div style={{ fontFamily: "Inter, sans-serif", minHeight: "100vh", background: "#f9f9f9" }}>
-      {/* Header avec menu */}
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Inter, Arial, sans-serif" }}>
+      {/* Menu simple */}
       <header style={{
-        display: "flex", justifyContent: "space-between",
-        alignItems: "center", padding: "16px 32px",
-        background: "#fff", borderBottom: "1px solid #eee"
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "16px 32px", borderBottom: "1px solid #eee"
       }}>
         <h2 style={{ color: "#0d1f4c" }}>Fintrack</h2>
-        <nav style={{ display: "flex", gap: 16, alignItems: "center", fontWeight: 500 }}>
-          <Link href="/">Home</Link>
-          <Link href="/about-us">About Us</Link>
-          <Link href="/services">Services</Link>
-          <Link href="/contact-us">Contact Us</Link>
-          <Link href="/auth" style={{ fontWeight: 600 }}>Login|Signup</Link>
+        <nav style={{ display: "flex", gap: 16 }}>
+          <a href="/">Home</a>
+          <a href="/about-us">About Us</a>
+          <a href="/contact-us">Contact Us</a>
+          <a href="/services">Services</a>
         </nav>
       </header>
 
-      {/* Container Auth */}
-      <div style={{ maxWidth: 400, margin: "60px auto", padding: 24, background: "#fff", borderRadius: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
+      <div style={{ maxWidth: 420, margin: "40px auto", padding: 24, border: "1px solid #eee", borderRadius: 12 }}>
         {/* Tabs */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 20, marginBottom: 20 }}>
           <button
             onClick={() => setActiveTab("login")}
             style={{
-              flex: 1, padding: 12, border: "none",
-              background: activeTab === "login" ? "#1f6feb" : "#eee",
-              color: activeTab === "login" ? "#fff" : "#333",
-              cursor: "pointer", borderRadius: "8px 0 0 8px"
+              padding: "10px 20px",
+              border: "none",
+              borderBottom: activeTab === "login" ? "2px solid #1f6feb" : "2px solid transparent",
+              background: "transparent",
+              cursor: "pointer",
+              fontWeight: activeTab === "login" ? "700" : "400",
+              color: "#0d1f4c"
             }}
           >
             Login
@@ -92,57 +78,56 @@ export default function AuthPage() {
           <button
             onClick={() => setActiveTab("signup")}
             style={{
-              flex: 1, padding: 12, border: "none",
-              background: activeTab === "signup" ? "#1f6feb" : "#eee",
-              color: activeTab === "signup" ? "#fff" : "#333",
-              cursor: "pointer", borderRadius: "0 8px 8px 0"
+              padding: "10px 20px",
+              border: "none",
+              borderBottom: activeTab === "signup" ? "2px solid #1f6feb" : "2px solid transparent",
+              background: "transparent",
+              cursor: "pointer",
+              fontWeight: activeTab === "signup" ? "700" : "400",
+              color: "#0d1f4c"
             }}
           >
             Signup
           </button>
         </div>
 
-        {/* LOGIN FORM */}
-        {activeTab === "login" && (
-          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required style={inputStyle} />
-            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required style={inputStyle} />
-            <button type="submit" style={btnStyle}>Login</button>
-          </form>
-        )}
+        {message && <p style={{ color: "#ff6b61", marginBottom: 12 }}>{message}</p>}
 
-        {/* SIGNUP FORM */}
+        {/* Forms */}
         {activeTab === "signup" && (
-          <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <input type="text" name="firstname" placeholder="First Name" value={formData.firstname} onChange={handleChange} required style={inputStyle} />
-            <input type="text" name="lastname" placeholder="Last Name" value={formData.lastname} onChange={handleChange} required style={inputStyle} />
-            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required style={inputStyle} />
-            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required style={inputStyle} />
-            <button type="submit" style={btnStyle}>Signup</button>
-          </form>
+          <>
+            <input type="text" placeholder="First Name" value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              style={{ width: "100%", marginBottom: 12, padding: 10, borderRadius: 8, border: "1px solid #ddd" }} />
+            <input type="text" placeholder="Last Name" value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              style={{ width: "100%", marginBottom: 12, padding: 10, borderRadius: 8, border: "1px solid #ddd" }} />
+          </>
         )}
 
-        {/* Message */}
-        {message && <p style={{ marginTop: 20, textAlign: "center", color: message.startsWith("✅") ? "green" : "red" }}>{message}</p>}
+        <input type="email" placeholder="Email" value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{ width: "100%", marginBottom: 12, padding: 10, borderRadius: 8, border: "1px solid #ddd" }} />
+        <input type="password" placeholder="Password" value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ width: "100%", marginBottom: 20, padding: 10, borderRadius: 8, border: "1px solid #ddd" }} />
+
+        {activeTab === "signup" ? (
+          <button onClick={handleSignup} style={{
+            width: "100%", padding: "12px", border: "none", borderRadius: 8,
+            background: "#1f6feb", color: "#fff", fontWeight: "600", cursor: "pointer"
+          }}>
+            Signup
+          </button>
+        ) : (
+          <button onClick={handleSignin} style={{
+            width: "100%", padding: "12px", border: "none", borderRadius: 8,
+            background: "#1f6feb", color: "#fff", fontWeight: "600", cursor: "pointer"
+          }}>
+            Login
+          </button>
+        )}
       </div>
     </div>
   );
 }
-
-const inputStyle = {
-  padding: "12px 14px",
-  border: "1px solid #ccc",
-  borderRadius: 8,
-  fontSize: 14
-};
-
-const btnStyle = {
-  padding: "14px",
-  border: "none",
-  borderRadius: 8,
-  background: "#1f6feb",
-  color: "#fff",
-  fontWeight: 600,
-  fontSize: 15,
-  cursor: "pointer"
-};
