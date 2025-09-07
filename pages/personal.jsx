@@ -3,103 +3,147 @@ import { useState } from "react";
 import Header from "../components/Header";
 
 export default function Personal() {
-  const [transactions, setTransactions] = useState([]);
-  const [type, setType] = useState("expense");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
-  const [notes, setNotes] = useState("");
+  const [balance, setBalance] = useState(0);
+  const [income, setIncome] = useState("");
+  const [expense, setExpense] = useState("");
+  const [history, setHistory] = useState([]);
 
-  const addTransaction = () => {
-    if (!amount || !category) return;
-    setTransactions(prev => [
-      ...prev,
-      { type, amount: parseFloat(amount), category, notes, date: new Date().toLocaleDateString() }
-    ]);
-    setAmount(""); setCategory(""); setNotes("");
+  const addIncome = () => {
+    if (!income) return;
+    const value = parseFloat(income);
+    if (isNaN(value)) return;
+    setBalance(balance + value);
+    setHistory([...history, { type: "income", amount: value }]);
+    setIncome("");
   };
 
-  const totalIncome = transactions.filter(t => t.type === "income").reduce((sum, t) => sum + t.amount, 0);
-  const totalExpense = transactions.filter(t => t.type === "expense").reduce((sum, t) => sum + t.amount, 0);
-  const balance = totalIncome - totalExpense;
+  const addExpense = () => {
+    if (!expense) return;
+    const value = parseFloat(expense);
+    if (isNaN(value)) return;
+    setBalance(balance - value);
+    setHistory([...history, { type: "expense", amount: value }]);
+    setExpense("");
+  };
+
+  const totalIncome = history
+    .filter((h) => h.type === "income")
+    .reduce((sum, h) => sum + h.amount, 0);
+  const totalExpense = history
+    .filter((h) => h.type === "expense")
+    .reduce((sum, h) => sum + h.amount, 0);
 
   return (
-    <>
+    <div style={{ minHeight: "100vh", background: "#fafafa" }}>
       <Header />
 
-      <main style={{ maxWidth: 800, margin: "20px auto", padding: "0 16px", fontFamily: "Inter, sans-serif" }}>
-        <h1 style={{ textAlign: "center", marginBottom: 24 }}>Personal Finance Dashboard</h1>
+      <main style={{ maxWidth: 900, margin: "40px auto", padding: "0 16px" }}>
+        <h1 style={{ textAlign: "center", color: "#0d1f4c", marginBottom: 32 }}>
+          Personal Finance Dashboard
+        </h1>
 
-        {/* Summary */}
+        {/* Résumé */}
         <div style={{ display: "flex", justifyContent: "space-around", marginBottom: 32 }}>
           {[
             { label: "Balance", value: balance.toFixed(2) },
             { label: "Income", value: totalIncome.toFixed(2) },
-            { label: "Expense", value: totalExpense.toFixed(2) }
+            { label: "Expense", value: totalExpense.toFixed(2) },
           ].map((item, idx) => (
-            <div key={idx} style={{
-              background: "#f5f5f5", borderRadius: 12,
-              padding: "16px 24px", width: 120, textAlign: "center"
-            }}>
+            <div
+              key={idx}
+              style={{
+                background: "#f5f5f5",
+                borderRadius: 12,
+                padding: "16px 24px",
+                width: 120,
+                textAlign: "center",
+              }}
+            >
               <strong>{item.label}</strong>
-              <p style={{ margin: "8px 0 0", fontSize: 18, color: "#333" }}>{item.value} €</p>
+              <p style={{ margin: "8px 0 0", fontSize: 18, color: "#333" }}>
+                {item.value} €
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Input form */}
-        <div style={{ marginBottom: 32, padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
-          <h2>Add Transaction</h2>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
-            <select style={selectStyle} value={type} onChange={e => setType(e.target.value)}>
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-            <input style={inputStyle} type="number" placeholder="Amount" value={amount} onChange={e => setAmount(e.target.value)} />
-            <input style={inputStyle} type="text" placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} />
-            <input style={inputStyle} type="text" placeholder="Notes" value={notes} onChange={e => setNotes(e.target.value)} />
-            <button style={btnStyle} onClick={addTransaction}>Add</button>
+        {/* Ajout */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 20, marginBottom: 40 }}>
+          <div>
+            <input
+              type="number"
+              value={income}
+              onChange={(e) => setIncome(e.target.value)}
+              placeholder="Enter income"
+              style={{ padding: 10, borderRadius: 8, border: "1px solid #ccc" }}
+            />
+            <button
+              onClick={addIncome}
+              style={{
+                marginLeft: 8,
+                padding: "10px 20px",
+                borderRadius: 8,
+                border: "none",
+                background: "#1f6feb",
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Add Income
+            </button>
+          </div>
+
+          <div>
+            <input
+              type="number"
+              value={expense}
+              onChange={(e) => setExpense(e.target.value)}
+              placeholder="Enter expense"
+              style={{ padding: 10, borderRadius: 8, border: "1px solid #ccc" }}
+            />
+            <button
+              onClick={addExpense}
+              style={{
+                marginLeft: 8,
+                padding: "10px 20px",
+                borderRadius: 8,
+                border: "none",
+                background: "#ff6b61",
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Add Expense
+            </button>
           </div>
         </div>
 
-        {/* Transaction history */}
-        <div>
-          <h2>History</h2>
-          {transactions.length === 0 ? (
-            <p>No transactions yet.</p>
-          ) : (
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr>
-                  {["Date", "Type", "Amount", "Category", "Notes"].map((h, i) => (
-                    <th key={i} style={{ textAlign: "left", padding: "8px 4px", borderBottom: "2px solid #ddd" }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.map((t, i) => (
-                  <tr key={i} style={{ borderBottom: "1px solid #eee" }}>
-                    <td style={tdStyle}>{t.date}</td>
-                    <td style={tdStyle}>{t.type}</td>
-                    <td style={tdStyle}>{t.amount.toFixed(2)} €</td>
-                    <td style={tdStyle}>{t.category}</td>
-                    <td style={tdStyle}>{t.notes}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+        {/* Historique */}
+        <section>
+          <h2 style={{ marginBottom: 16, color: "#0d1f4c" }}>Transaction History</h2>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {history.map((item, idx) => (
+              <li
+                key={idx}
+                style={{
+                  marginBottom: 10,
+                  padding: "10px 16px",
+                  borderRadius: 8,
+                  background: item.type === "income" ? "#e6f4ea" : "#fdecea",
+                  color: item.type === "income" ? "#137333" : "#b3261e",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span>{item.type === "income" ? "Income" : "Expense"}</span>
+                <span>{item.amount} €</span>
+              </li>
+            ))}
+          </ul>
+        </section>
       </main>
-    </>
+    </div>
   );
 }
-
-const inputStyle = {
-  padding: "10px", borderRadius: 6, border: "1px solid #ccc", flex: "1 1 120px"
-};
-const selectStyle = { ...inputStyle, width: 140 };
-const btnStyle = {
-  padding: "10px 20px", borderRadius: 6, border: "none", background: "#1f6feb", color: "#fff",
-  cursor: "pointer", fontWeight: 600
-};
-const tdStyle = { padding: "8px 4px" };
