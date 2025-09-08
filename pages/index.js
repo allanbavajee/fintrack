@@ -104,65 +104,85 @@ export default function Home() {
       </section>
 
       {/* Features & Flows Section */}
-      <section style={{ display: "flex", justifyContent: "center", gap: 40, maxWidth: 1400, margin: "0 auto", padding: "0 16px", alignItems: "flex-start" }}>
-        {/* Personal Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
-          <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
-          {personalSteps.map((item, index) => (
-            <div key={index} style={{
-              ...cardStyle,
-              transition: "all 0.3s",
-            }}
-              onMouseEnter={e => e.currentTarget.style.background = "#e6f4ea"}
-              onMouseLeave={e => e.currentTarget.style.background = "#f9f9f9"}
-            >
-              <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
-              <h3>{item.title}</h3>
-              <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-              <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
-            </div>
-          ))}
-        </div>
+<section style={{ display: "flex", justifyContent: "center", gap: 40, maxWidth: 1400, margin: "0 auto", padding: "0 16px" }}>
+  
+  {/* Personal Flow */}
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
+    <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
+    {personalSteps.map((item, index) => (
+      <div key={index} style={cardStyle}>
+        <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
+        <h3>{item.title}</h3>
+        <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+        <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
+      </div>
+    ))}
+  </div>
 
-        {/* Features */}
-        <div style={{ width: "40%", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
-          {featuresList.map((feat, idx) => (
-            <p key={idx} style={{ color: "#555", margin: "8px 0", whiteSpace: "nowrap" }}>{feat}</p>
-          ))}
+  {/* Features */}
+  <div style={{ width: "40%", textAlign: "center" }}>
+    <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
+    {featuresList.map((feat, idx) => (
+      <p key={idx} style={{ color: "#555", margin: "8px 0", whiteSpace: "pre-line" }}>{feat}</p>
+    ))}
 
-          {/* Buttons Flow */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 16 }}>
-            <Link href="/personal">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
-            </Link>
-            <Link href="/pro">
-              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
-            </Link>
-          </div>
-        </div>
+    {/* Buttons + Dashboard Wrapper */}
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24, marginTop: 24 }}>
+      
+      {/* Buttons Flow */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 20 }}>
+        <Link href="/personal">
+          <button style={{
+            padding: "16px 40px", borderRadius: 16, border: "none",
+            cursor: "pointer", background: "#ff6b61", color: "#fff",
+            fontWeight: 700, fontSize: "1.1rem"
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} 
+            onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
+        </Link>
+        <Link href="/pro">
+          <button style={{
+            padding: "16px 40px", borderRadius: 16, border: "none",
+            cursor: "pointer", background: "#1f6feb", color: "#fff",
+            fontWeight: 700, fontSize: "1.1rem"
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} 
+            onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
+        </Link>
+      </div>
 
-        {/* Pro Flow */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
-          <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
-          {proSteps.map((item, index) => (
-            <div key={index} style={{
-              ...cardStyle,
-              transition: "all 0.3s",
-            }}
-              onMouseEnter={e => e.currentTarget.style.background = "#e0f7fa"}
-              onMouseLeave={e => e.currentTarget.style.background = "#f9f9f9"}
-            >
-              <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
-              <h3>{item.title}</h3>
-              <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
-              <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Dashboard */}
+      <Image src="/images/dashboard.png" alt="Dashboard Example" width={350} height={220} style={{ borderRadius: 16 }} />
+
+      {/* Social Logos */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}>
+        {["fb", "tiktok", "wa", "in", "mail"].map((icon, idx) => (
+          <a key={idx} href="#" target="_blank" rel="noopener noreferrer">
+            <Image src={`/images/${icon}.png`} alt={icon} width={32} height={32} style={{ cursor: "pointer", transition: "transform 0.3s" }}
+              onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+            />
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </div>
+
+  {/* Pro Flow */}
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
+    <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
+    {proSteps.map((item, index) => (
+      <div key={index} style={cardStyle}>
+        <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
+        <h3>{item.title}</h3>
+        <p style={{ fontSize: 13, color: "#555" }}>{item.desc}</p>
+        <p style={{ fontSize: 12, color: "#333", marginTop: 6 }}>{item.extra}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
 
       {/* Dashboard */}
       <section style={{ textAlign: "center", marginTop: 16 }}>
