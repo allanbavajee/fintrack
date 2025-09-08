@@ -1,6 +1,7 @@
 // pages/personal.jsx
 import { useState } from "react";
 import Header from "../components/Header";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 export default function Personal() {
   const [balance, setBalance] = useState(0);
@@ -29,25 +30,33 @@ export default function Personal() {
   const totalIncome = history
     .filter((h) => h.type === "income")
     .reduce((sum, h) => sum + h.amount, 0);
+
   const totalExpense = history
     .filter((h) => h.type === "expense")
     .reduce((sum, h) => sum + h.amount, 0);
 
+  // Données pour PieChart
+  const chartData = [
+    { name: "Income", value: totalIncome },
+    { name: "Expense", value: totalExpense },
+  ];
+  const COLORS = ["#1f6feb", "#ff6b61"];
+
   return (
     <div style={{ minHeight: "100vh", background: "#fafafa" }}>
+      {/* ✅ Header dynamique */}
       <Header />
 
-      <main style={{ maxWidth: 900, margin: "40px auto", padding: "0 16px" }}>
+      <main style={{ maxWidth: 1000, margin: "40px auto", padding: "0 16px" }}>
         <h1 style={{ textAlign: "center", color: "#0d1f4c", marginBottom: 32 }}>
           Personal Finance Dashboard
         </h1>
 
-        {/* Résumé */}
+        {/* Résumé rapide */}
         <div style={{ display: "flex", justifyContent: "space-around", marginBottom: 32 }}>
-          {[
-            { label: "Balance", value: balance.toFixed(2) },
+          {[{ label: "Balance", value: balance.toFixed(2) },
             { label: "Income", value: totalIncome.toFixed(2) },
-            { label: "Expense", value: totalExpense.toFixed(2) },
+            { label: "Expense", value: totalExpense.toFixed(2) }
           ].map((item, idx) => (
             <div
               key={idx}
@@ -55,8 +64,9 @@ export default function Personal() {
                 background: "#f5f5f5",
                 borderRadius: 12,
                 padding: "16px 24px",
-                width: 120,
+                width: 140,
                 textAlign: "center",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
               }}
             >
               <strong>{item.label}</strong>
@@ -67,7 +77,29 @@ export default function Personal() {
           ))}
         </div>
 
-        {/* Ajout */}
+        {/* Graphique */}
+        <div style={{ height: 300, marginBottom: 40 }}>
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={100}
+                fill="#8884d8"
+                label
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Formulaire Ajout */}
         <div style={{ display: "flex", justifyContent: "center", gap: 20, marginBottom: 40 }}>
           <div>
             <input
@@ -121,7 +153,7 @@ export default function Personal() {
         </div>
 
         {/* Historique */}
-        <section>
+        <section style={{ marginBottom: 40 }}>
           <h2 style={{ marginBottom: 16, color: "#0d1f4c" }}>Transaction History</h2>
           <ul style={{ listStyle: "none", padding: 0 }}>
             {history.map((item, idx) => (
@@ -141,6 +173,17 @@ export default function Personal() {
                 <span>{item.amount} €</span>
               </li>
             ))}
+          </ul>
+        </section>
+
+        {/* Guide d’utilisation */}
+        <section style={{ marginTop: 40, background: "#fff", padding: 24, borderRadius: 12, boxShadow: "0 2px 6px rgba(0,0,0,0.1)" }}>
+          <h2 style={{ color: "#0d1f4c", marginBottom: 16 }}>How to use this dashboard?</h2>
+          <ul style={{ lineHeight: "1.8", color: "#444" }}>
+            <li>➕ Enter an <b>income</b> and click <b>Add Income</b>.</li>
+            <li>➖ Enter an <b>expense</b> and click <b>Add Expense</b>.</li>
+            <li>📊 Visualize your balance with the Pie Chart.</li>
+            <li>📝 Track every transaction in the history list.</li>
           </ul>
         </section>
       </main>
