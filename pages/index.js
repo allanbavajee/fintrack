@@ -81,15 +81,15 @@ export default function Home() {
                 color: "#0d1f4c",
                 transition: "all 0.2s",
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = "#ff6b61"; e.currentTarget.style.fontWeight = "700"; e.currentTarget.style.textDecoration="underline"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "#0d1f4c"; e.currentTarget.style.fontWeight = "500"; e.currentTarget.style.textDecoration="none"; }}
+              onMouseEnter={e => { e.currentTarget.style.color = "#ff6b61"; e.currentTarget.style.fontWeight = "bold"; e.currentTarget.style.textDecoration = "underline"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "#0d1f4c"; e.currentTarget.style.fontWeight = "500"; e.currentTarget.style.textDecoration = "none"; }}
             >
               {item}
             </Link>
           ))}
           <Link href="/auth" style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
-            onMouseEnter={e => e.currentTarget.style.color = "#ff6b61"}
-            onMouseLeave={e => e.currentTarget.style.color = "#0d1f4c"}>
+            onMouseEnter={e => { e.currentTarget.style.color = "#ff6b61"; e.currentTarget.style.fontWeight = "bold"; e.currentTarget.style.textDecoration = "underline"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "#0d1f4c"; e.currentTarget.style.fontWeight = "600"; e.currentTarget.style.textDecoration = "none"; }}>
             Login|Signup
           </Link>
         </nav>
@@ -110,9 +110,12 @@ export default function Home() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
           <h2 style={{ color: "#1f6feb", marginBottom: 24 }}>Personal Flow</h2>
           {personalSteps.map((item, index) => (
-            <div key={index} style={{...cardStyle, transition: "0.3s", cursor:"pointer"}}
-                 onMouseEnter={e=> e.currentTarget.style.background="#e6f4ea"}
-                 onMouseLeave={e=> e.currentTarget.style.background="#f9f9f9"}
+            <div key={index} style={{
+              ...cardStyle,
+              transition: "all 0.3s",
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = "#e6f4ea"}
+            onMouseLeave={e => e.currentTarget.style.background = "#f9f9f9"}
             >
               <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
               <h3>{item.title}</h3>
@@ -124,34 +127,23 @@ export default function Home() {
 
         {/* Features */}
         <div style={{ width: "40%", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.8rem", marginBottom: 12, color: "#0d1f4c" }}>✨ Features</h2>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: 20, color: "#0d1f4c" }}>✨ Features</h2>
+          
           {featuresList.map((feat, idx) => (
-            <p key={idx} style={{ color: "#555", margin: "4px 0", lineHeight: "1.5" }}>{feat}</p>
+            <p key={idx} style={{ color: "#555", margin: "8px 0", whiteSpace: "nowrap" }}>
+              {feat}
+            </p>
           ))}
 
           {/* Buttons Flow */}
           <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 10 }}>
             <Link href="/personal">
-              <button style={{
-                padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", 
-                background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem"
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} 
-              onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}
-              >
-                Personal Mode
-              </button>
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#ff6b61", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#ff5045"} onMouseLeave={e => e.currentTarget.style.background = "#ff6b61"}>Personal Mode</button>
             </Link>
             <Link href="/pro">
-              <button style={{
-                padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer",
-                background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem"
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} 
-              onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}
-              >
-                Pro Mode
-              </button>
+              <button style={{ padding: "16px 40px", borderRadius: 16, border: "none", cursor: "pointer", background: "#1f6feb", color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#155ccc"} onMouseLeave={e => e.currentTarget.style.background = "#1f6feb"}>Pro Mode</button>
             </Link>
           </div>
         </div>
@@ -160,9 +152,12 @@ export default function Home() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "25%" }}>
           <h2 style={{ color: "#0ea5a0", marginBottom: 24 }}>Pro Flow</h2>
           {proSteps.map((item, index) => (
-            <div key={index} style={{...cardStyle, transition: "0.3s", cursor:"pointer"}}
-                 onMouseEnter={e=> e.currentTarget.style.background="#e0f4ff"}
-                 onMouseLeave={e=> e.currentTarget.style.background="#f9f9f9"}
+            <div key={index} style={{
+              ...cardStyle,
+              transition: "all 0.3s",
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = "#e0f7fa"}
+            onMouseLeave={e => e.currentTarget.style.background = "#f9f9f9"}
             >
               <div style={{ fontSize: 36, marginBottom: 8 }}>{item.icon}</div>
               <h3>{item.title}</h3>
