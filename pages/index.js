@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
 import { supabase } from "../lib/supabaseClient";
 
 /* DATA */
@@ -55,7 +54,65 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "Inter, Arial, sans-serif" }}>
-      <Header />
+      {/* Header */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "16px 32px",
+          background: "#fff",
+          borderBottom: "1px solid #eee",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Image src="/images/fintrack.logo.png" alt="Fintrack Logo" width={140} height={50} />
+          <span style={{ fontSize: 14, color: "#555" }}>Your money, your way.</span>
+        </div>
+
+        {/* Menu top right */}
+        <nav style={{ display: "flex", gap: 16, alignItems: "center", fontWeight: 500 }}>
+          {["Home", "About Us", "Contact Us", "Services"].map((item, idx) => (
+            <Link
+              key={idx}
+              href={`/${item.toLowerCase().replace(/\s/g, '-')}`}
+              style={{
+                textDecoration: "none",
+                color: "#0d1f4c",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#ff6b61";
+                e.currentTarget.style.fontWeight = "bold";
+                e.currentTarget.style.textDecoration = "underline";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "#0d1f4c";
+                e.currentTarget.style.fontWeight = "500";
+                e.currentTarget.style.textDecoration = "none";
+              }}
+            >
+              {item}
+            </Link>
+          ))}
+          <Link
+            href="/auth"
+            style={{ textDecoration: "none", color: "#0d1f4c", fontWeight: 600 }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#ff6b61";
+              e.currentTarget.style.fontWeight = "bold";
+              e.currentTarget.style.textDecoration = "underline";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "#0d1f4c";
+              e.currentTarget.style.fontWeight = 600;
+              e.currentTarget.style.textDecoration = "none";
+            }}
+          >
+            Login|Signup
+          </Link>
+        </nav>
+      </header>
 
       {/* Welcome Section */}
       <section style={{ maxWidth: 1000, margin: "40px auto", textAlign: "center" }}>
@@ -71,7 +128,7 @@ export default function Home() {
         style={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "flex-start",
           gap: 20,
           maxWidth: 1400,
           margin: "0 auto",
@@ -96,7 +153,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Features Centered on Specific Line */}
+        {/* Center Feature Line + Buttons + Dashboard */}
         <div style={{ flexDirection: "column", textAlign: "center", marginTop: 30 }}>
           <p style={{ fontSize: 16, fontWeight: 500, margin: 0, color: "#0d1f4c" }}>
             📊 Visualize your financial health with charts
